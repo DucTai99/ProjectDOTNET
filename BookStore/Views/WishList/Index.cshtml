@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumbs Area Start -->
+<div class="breadcrumbs-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumbs">
+                    <h2>Danh sách theo dõi</h2>
+                    <ul class="breadcrumbs-list">
+                        <li>
+                            <a title="Return to Home" href="../Home">Trang chủ</a>
+                        </li>
+                        <li>Danh sách theo dõi</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumbs Area Start -->
+<!-- Cart Area Start -->
+<div class="shopping-cart-area section-padding">
+    <!-- <% ArrayList<Sach> listSach = (ArrayList<Sach>) request.getAttribute("listSach");%> -->
+    <div class="container">
+        <div class="row" style="display: flex; flex-direction: row-reverse;">
+            <div class="col-md-8 col-sm-12">
+                <!-- <% for (Sach sach : listSach) {%> -->
+                <div class="product">
+                    <!-- <% if (sach.getKhuyenMai() > 0) { %> -->
+                    <div class="img-product"
+                         style="position: relative; margin-right: 20px;">
+                        <img src="~/Assets/Client/img/shop/tt20.jpeg" alt="" />
+                        <div style="
+                    width: 20%;
+                    z-index: 999;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                  ">
+                            <img src="~/Assets/Client/img/sale.png" alt="" />
+                            <p style="
+      font-size: 10px;
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    ">
+                99%
+            </p>
+                        </div>
+                    </div>
+                    <!-- <% } else {%>
+                          <div class="img-product" style="margin-right: 20px">
+                              <img src=<%=Util.fullPath(sach.getHinhAnh())%> alt="">
+                          </div>
+                          <% }%> -->
+                    <div class="title-product">
+                        <h4><a href="#">Book Name</a></h4>
+                        <!-- <% if (sach.getKhuyenMai() > 0) { %> -->
+                        <p>
+                            250.000đ
+                            <span style="color: black;" class="old-price">500.000đ</span>
+                        </p>
+                        <!-- <% } else {%>
+                                <p><%=sach.getGia()%>.000đ</p>
+                                <% }%> -->
+                        <a href="#"><i class="flaticon-delete"></i></a>
+                    </div>
+                </div>
+                <!-- <%}%> -->
+
+                <div class="shopingcart-bottom-area">
+                    <a class="left-shoping-cart" href="shop.html">Tiếp tục mua sắm</a>
+                    <div class="shopingcart-bottom-area pull-right">
+                        <a class="right-shoping-cart" href="#">Xóa tất cả sản phẩm</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="subtotal-main-area">
+                    <div class="subtotal-area" style="padding-top: 20px;">
+                        <h2 style="
+                    font-size: 20px;
+                    border-bottom: none;
+                    padding: 0px 20px 20px 20px;
+                  ">
+                            <i style="margin-right: 20px;" class="flaticon-people"></i><a href="../Account">Thông tin tài khoản</a>
+                        </h2>
+                        <h2 style="
+                    font-size: 20px;
+                    border-bottom: none;
+                    padding: 0px 20px 20px 20px;
+                  ">
+                            <i style="margin-right: 20px;" class="far fa-heart"></i><a href="#">Danh sách theo dõi</a>
+                        </h2>
+                        <h2 style="
+                    font-size: 20px;
+                    border-bottom: none;
+                    padding: 0px 20px 20px 20px;
+                  ">
+                            <i style="margin-right: 20px;" class="flaticon-shop"></i><a href="../Cart">Giỏ hàng của tôi</a>
+                        </h2>
+                        <h2 style="
+                    font-size: 20px;
+                    border-bottom: none;
+                    padding: 0px 20px 20px 20px;
+                  ">
+                            <i style="margin-right: 20px;" class="fa fa-list-ol"></i><a href="../Account">Quản lí đơn hàng</a>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Area End -->
