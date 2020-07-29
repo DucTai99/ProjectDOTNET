@@ -8,7 +8,7 @@ namespace Model.EF
     public partial class BookStoreDbContext : DbContext
     {
         public BookStoreDbContext()
-            : base("name=BookStore")
+            : base("name=BookStoreDbContext")
         {
         }
 

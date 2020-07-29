@@ -30,8 +30,8 @@ E:\Java\dotnet\Project\BookStore\Model\bin\Debug\System.Buffers.xml
 E:\Java\dotnet\Project\BookStore\Model\bin\Debug\System.Memory.xml
 E:\Java\dotnet\Project\BookStore\Model\bin\Debug\System.Numerics.Vectors.xml
 E:\Java\dotnet\Project\BookStore\Model\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
-E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csprojAssemblyReference.cache
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csproj.CopyComplete
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.dll
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.pdb
+E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csprojAssemblyReference.cache
