@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PagedList;
 
 namespace Model.DAO
 {
-    class BooksDao
+    public class BooksDao
     {
         private BookStoreDbContext db;
         public BooksDao() {
@@ -20,6 +21,10 @@ namespace Model.DAO
             listBook = db.saches.ToList();
 
             return listBook;
+        }
+
+        public IEnumerable<sach> listAllBookWithPaging(int pageNum, int pageSize) {
+            return db.saches.OrderBy(sach => sach.tenSach).ToPagedList(pageNum, pageSize);
         }
     }
 }
