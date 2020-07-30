@@ -103,6 +103,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAO\BooksDao.cs" />
+    <Compile Include="DAO\UserDao.cs" />
     <Compile Include="EF\bill.cs" />
     <Compile Include="EF\billcontainsach.cs" />
     <Compile Include="EF\BookStoreDbContext.cs" />
@@ -121,9 +123,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DAO\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
