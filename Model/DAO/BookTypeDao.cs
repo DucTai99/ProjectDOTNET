@@ -15,6 +15,9 @@ namespace Model.DAO
             db = new BookStoreDbContext();
         }
 
+        public theloaisach getBookTypeWithId(int id){
+            return db.theloaisaches.Find(id);
+        }
         public IEnumerable<theloaisach> getAllType() {
             return db.theloaisaches;
         }
