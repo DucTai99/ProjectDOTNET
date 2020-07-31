@@ -24,7 +24,12 @@ namespace Model.DAO
         }
 
         public IEnumerable<sach> listAllBookWithPaging(int pageNum, int pageSize) {
-            return db.saches.OrderBy(sach => sach.tenSach).ToPagedList(pageNum, pageSize);
+            return db.saches.OrderBy(book => book.maSach).ToPagedList(pageNum, pageSize);
+        }
+
+        public IEnumerable<sach> listBookWithType(int idType)
+        {
+            return db.saches.Where(book => book.loaiSach == idType);
         }
     }
 }

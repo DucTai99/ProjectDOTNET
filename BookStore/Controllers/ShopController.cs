@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using Model.EF;
+using Microsoft.Ajax.Utilities;
 
 namespace BookStore.Controllers
 {
@@ -23,6 +24,14 @@ namespace BookStore.Controllers
         public ActionResult SingleProduct()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult listBookWithType(int id)
+        {
+            IEnumerable<sach> listBook = new BooksDao().listBookWithType(id);
+            ViewData["listBookWithType"] = listBook;
+            return PartialView();
         }
     }
 }

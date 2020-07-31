@@ -1983,6 +1983,7 @@
     <Content Include="Assets\Client\img\wishlist\2.jpg" />
     <Content Include="Assets\Client\img\wishlist\3.jpg" />
     <Content Include="Assets\Client\js\bootstrap.min.js" />
+    <Content Include="Assets\Client\js\controller\shopController.js" />
     <Content Include="Assets\Client\js\jquery-ui.min.js" />
     <Content Include="Assets\Client\js\jquery.countdown.min.js" />
     <Content Include="Assets\Client\js\jquery.counterup.min.js" />
@@ -2125,6 +2126,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="Views\Shop\listBookWithType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

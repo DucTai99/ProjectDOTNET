@@ -145,7 +145,7 @@
     <!-- Header Area End -->
 
     <!-- Main Area Start -->
-    @RenderBody();
+    @RenderBody()
     <!-- Main Area End -->
 
     <!-- Footer Area Start -->
@@ -184,5 +184,6 @@
     <script src="~/Assets/Client/js/main.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    @RenderSection("jsFooter",required:false)
 </body>
 </html>
