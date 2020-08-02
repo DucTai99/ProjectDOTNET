@@ -20,13 +20,15 @@ namespace BookStore.Controllers
             return View(model);
         }
 
-        //Detail
+        //Detail Book
         public ActionResult SingleProduct(int id)
         {
             var bookDao = new BooksDao().bookWithID(id);
             ViewData["book"] = bookDao;
             //Cùng thể loại
             ViewData["sameBook"] = new BooksDao().sameCate(id);
+            //show thể loại ra ngoài 
+            ViewData["showCateBook"] = new BooksDao().listByCateId(id);
 
             if (id == null)
             {

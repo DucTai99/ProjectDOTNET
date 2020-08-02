@@ -1,10 +1,10 @@
 ﻿
 @using PagedList.Mvc
 @using Model.EF;
+@using Model.ViewModel;
 
 @{ ViewBag.Title = "SingleProduct";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //var cungTL = (List<Model.EF.sach>).ViewBag.cungTL;
 }
 
 <!-- Breadcrumbs Area Start -->
@@ -16,7 +16,7 @@
                     <h2>Chi tiết sản phẩm</h2>
                     <ul class="breadcrumbs-list">
                         <li>
-                            <a title="Return to Home" href="index.html">Trang chủ</a>
+                            <a href = "@Url.Action("Index","Shop")" title="Return to Home">Trang chủ</a>
                         </li>
                         <li>Chi tiết sản phẩm</li>
                     </ul>
@@ -45,11 +45,13 @@
 
 
                             <a class="venobox"
-                               href="img/single-product/bg-1.jpg"
+                               href="@Url.Action("SingleProduct","Shop",new{ id=book.maSach })"
                                data-gall="gallery"
                                title="">
-                                <img src="img/shop/tt12.jpg" alt="" />
-                                <img src="@book.hinhAnh" />
+
+                               
+
+                                <img src="@book.hinhAnh" alt="" />
 
                             </a>
 
@@ -108,7 +110,7 @@
                 </div>
             </div>
 
-            @*//DETAILS __ Tú*@
+            @*//DETAILS __ *@
 
             <div class="col-md-6 col-sm-5">
 
@@ -204,23 +206,26 @@
                         <div role="tabpanel" class="tab-pane" id="data">
                             <table class="table-data-sheet">
 
+                                @*show tên loại sách*@
+
+                                @{var cateBook = (BookViewModel)ViewData["showCateBook"]; }
 
                                 <tbody>
                                     <tr class="odd">
                                         <td>Tên</td>
-                                        <td>@book.tenSach</td>
+                                        <td>@cateBook.tenSach</td>
                                     </tr>
                                     <tr class="even">
+
                                         <td>Thể loại</td>
-                                        <td>@book.loaiSach</td>
+                                        <td>@cateBook.tenTheLoai</td>
                                     </tr>
                                     <tr class="odd">
                                         <td>Tên tác giả</td>
-                                        <td>@book.tenTacGia</td>
+                                        <td>@cateBook.tenTacGia</td>
                                     </tr>
                                 </tbody>
-                          
-
+                              
                             </table>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="reviews">
@@ -245,7 +250,7 @@
                                     <div class="comment-here"
                                          style="
                           box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-                    padding: 10px 5px;
+                                    padding: 10px 5px;
                         ">
                                         <div class="user-comment">
                                             <i class="fas fa-user-ninja"></i>
@@ -287,7 +292,7 @@
                 <div class="col-md-3">
                     <div class="single-banner">
                         <div class="product-wrapper">
-                            <a href="#" class="single-banner-image-wrapper">
+                            <a href = "@Url.Action("SingleProduct","Shop",new{ id=sameBook.maSach }) "class="single-banner-image-wrapper">
                                 <img alt="" src="@sameBook.hinhAnh" />
                             </a>
                             <div class="product-description">
