@@ -27,8 +27,23 @@ namespace Model.DAO
             return db.saches.Find(id);
         }
 
+        public IEnumerable<sach> getAllBookSale()
+        {
+            return db.saches.Where(book => book.khuyenMai > 0).OrderByDescending(book => book.khuyenMai);
+        }
+
         public IEnumerable<sach> listAllBookWithPaging(int pageNum, int pageSize) {
             return db.saches.OrderBy(book => book.maSach).ToPagedList(pageNum, pageSize);
+        }
+
+        public IEnumerable<sach> getAllOfBooks()
+        {
+            return db.saches;
+        }
+
+        public IEnumerable<sach> getAllBooksBetweenPrice(int firstPrice, int secondPrice)
+        {
+            return db.saches.Where(book => (book.gia - (book.gia * book.khuyenMai / 100)) > firstPrice && (book.gia - (book.gia * book.khuyenMai / 100)) < secondPrice).OrderBy(book => book.gia - (book.gia * book.khuyenMai / 100));
         }
 
         public IEnumerable<sach> listBookWithType(int idType)

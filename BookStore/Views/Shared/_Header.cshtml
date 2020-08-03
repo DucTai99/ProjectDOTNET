@@ -4,7 +4,7 @@
         <div class="row header-header">
             <div class="col-md-2 col-sm-6 col-xs-6">
                 <div class="header-logo">
-                    <a href="../Home/Index">
+                    <a href="@Url.Action("Index","Home")">
                         <img src="~/Assets/Client/img/logo.png" alt="" />
                     </a>
                 </div>
@@ -20,13 +20,13 @@
                                 <div class="user-item">
                                     <div class="sign-in">
                                         <i class="fas fa-user-plus"></i>
-                                        <a href="../Login/SignUp">Đăng kí</a>
+                                        <a href="@Url.Action("SignUp","Login")">Đăng kí</a>
                                     </div>
                                 </div>
                                 <div class="user-item">
                                     <div class="sign-in">
                                         <i class="fas fa-sign-in-alt"></i>
-                                        <a href="../Login/SignIn">Đăng nhập</a>
+                                        <a href="@Url.Action("SignIn","Login")">Đăng nhập</a>
                                     </div>
                                 </div>
                             </div>
@@ -43,8 +43,8 @@
                 <div class="mainmenu text-center">
                     <nav>
                         <ul id="nav">
-                            <li><a href="../Shop/Index">Sách</a></li>
-                            <li><a href="../Shop/Index">Khuyến mãi</a></li>
+                            <li><a href="@Url.Action("Index","Shop")">Sách</a></li>
+                            <li><a href="@Url.Action("Sale","Shop")">Khuyến mãi</a></li>
                             <li><a href="#footer">Liên Hệ</a></li>
                         </ul>
                     </nav>
@@ -61,13 +61,13 @@
                                 <div class="user-item">
                                     <div class="sign-in">
                                         <i class="fas fa-user-plus"></i>
-                                        <a href="../Login/SignUp">Đăng kí</a>
+                                        <a href="@Url.Action("SignUp","Login")">Đăng kí</a>
                                     </div>
                                 </div>
                                 <div class="user-item">
                                     <div class="sign-in">
                                         <i class="fas fa-sign-in-alt"></i>
-                                        <a href="../Login/SignIn">Đăng nhập</a>
+                                        <a href="@Url.Action("SignIn","Login")">Đăng nhập</a>
                                     </div>
                                 </div>
                             </div>
@@ -93,8 +93,8 @@
                 <div class="mobile-menu">
                     <nav id="dropdown">
                         <ul>
-                            <li><a href="../Shop/Index">Sách</a></li>
-                            <li><a href="../Shop/Index">Khuyến mãi</a></li>
+                            <li><a href="@Url.Action("Index","Shop")">Sách</a></li>
+                            <li><a href="@Url.Action("Sale","Shop")">Khuyến mãi</a></li>
                             <li><a href="#footer">Liên Hệ</a></li>
                         </ul>
                     </nav>

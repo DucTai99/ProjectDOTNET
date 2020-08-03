@@ -2,12 +2,13 @@
 @using PagedList.Mvc
 @using Model.EF; 
 @using System.Globalization;
+@using Model.DAO;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section jsFooter{
-   <script src="/Assets/Client/js/controller/shopController.js"></script>
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
 }
 
 <!-- Breadcrumbs Area Start -->
@@ -19,7 +20,7 @@
                     <h2>Danh Mục Sách</h2>
                     <ul class="breadcrumbs-list">
                         <li>
-                            <a title="Quay lại trang chủ" href="index.html">Trang chủ </a>
+                            <a title="Quay lại trang chủ" href="@Url.Action("Index","Home")">Trang chủ </a>
                         </li>
                         <li>Sách</li>
                     </ul>
@@ -40,12 +41,12 @@
                             <h2 class="sidebar-title text-center">Danh mục</h2>
                             <ul class="sidebar-menu">
                                 <li>
-                                    <a href="index.html">
+                                    <a href="@Url.Action("Index","Shop")">
                                         <i class="fa fa-angle-double-right"></i> Tất cả
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="index.html">
+                                    <a href="#" class="type-id" data-id="0">
                                         <i class="fa fa-angle-double-right"></i> Khuyến mãi
                                     </a>
                                 </li>
@@ -70,7 +71,7 @@
                                                id="amount"
                                                name="price"
                                                placeholder="Add Your Price" />
-                                        <div class="widget-buttom">
+                                        <div class="widget-buttom" id="searchWithPrice">
                                             <input type="submit" value="Tìm Kiếm" />
                                         </div>
                                     </div>
@@ -173,7 +174,7 @@
                                                     <div class="banner-bottom text-center">
                                                         <div class="banner-bottom-title"
                                                              style="height: 40px;">
-                                                            <a href="#">@book.tenSach </a>
+                                                            <a href="@Url.Action("SingleProduct","Shop",new { id = book.maSach})">@book.tenSach </a>
                                                         </div>
                                                         <div style="color: #32b5f3;" class="price-2">
                                                             @{var newPrice = (book.gia * 1000) - (book.gia*1000 * khuyenMai / 100);}
@@ -188,8 +189,8 @@
                                                 {
                                                     <div class="banner-bottom text-center">
                                                         <div class="banner-bottom-title" style="height: 40px">
-                                                            <a href="#">
-                                                                <!--<%= Util.fullPath("singleProductController?idProduct=") + listSach.get(i).getMaSach()%>><%=listSach.get(i).getTenSach()%>-->
+                                                            <a href="@Url.Action("SingleProduct","Shop",new { id = book.maSach})">
+                                                                @book.tenSach
                                                             </a>
                                                         </div>
                                                         <div style="color: #32b5f3" class="price-2">
@@ -246,7 +247,7 @@
                                         <div class="col-xs-12 col-sm-7 col-md-8">
                                             <div class="deal-product-content">
                                                 <h4>
-                                                    <a href="#" title="Book Name">
+                                                    <a href="@Url.Action("SingleProduct","Shop",new { id = book.maSach})" title="Book Name">
                                                         @book.tenSach
                                                     </a>
                                                 </h4>
@@ -293,7 +294,10 @@
  
         <div id="quickview-wrapper">
             <!-- Modal -->
-            @foreach (var book in Model)
+            @{ 
+                var allOfBooks = new BooksDao().getAllOfBooks();
+            }
+            @foreach (var book in allOfBooks)
             {
                 var target = "productModal" + book.maSach;
                 <div class="modal fade" id="@target" tabindex="-1" role="dialog">

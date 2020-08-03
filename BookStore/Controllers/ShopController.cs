@@ -21,18 +21,33 @@ namespace BookStore.Controllers
             return View(model);
         }
 
-        public ActionResult SingleProduct(int id)
+        public ActionResult SingleProduct(int id = 1)
         {
             var book = new BooksDao().getBookWithID(id);
+            if (book == null)
+            {
+                return RedirectToAction("Index","Shop");
+            }
             ViewData["book"] = book;
-            //ViewData["bookType"] = new BookTypeDao().getBookTypeWithId(book.);
             return View();
         }
 
         [HttpPost]
-        public ActionResult listBookWithType(int id)
+        public ActionResult listBookWithType(int id,int firstPrice = 0,int secondePrice = 0)
         {
-            IEnumerable<sach> listBook = new BooksDao().listBookWithType(id);
+            IEnumerable<sach> listBook;
+            if (id == 0)
+            {
+                listBook = new BooksDao().getAllBookSale();
+            }
+            else if (id == -1)
+            {
+                listBook = new BooksDao().getAllBooksBetweenPrice(firstPrice,secondePrice);
+            }
+            else
+            {
+                listBook = new BooksDao().listBookWithType(id);
+            }
             ViewData["listBookWithType"] = listBook;
             return PartialView();
         }
