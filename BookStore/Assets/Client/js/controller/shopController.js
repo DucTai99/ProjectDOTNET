@@ -22,12 +22,12 @@
 
         $('#searchWithPrice').on('click', function () {
             var firstPrice = $('#amount').val().substr(0, 2);
-            var secondPrice = $('#amount').val().substr(6,3);
+            var secondPrice = $('#amount').val().substr(6, 3);
             if ($('#amount').val().charAt(2) != "K") {
                 firstPrice = $('#amount').val().substr(0, 3);
                 var secondPrice = $('#amount').val().substr(7, 3);
             }
-            if ($('#amount').val().charAt(8) == "K") { 
+            if ($('#amount').val().charAt(8) == "K") {
                 secondPrice = $('#amount').val().substr(6, 2);
             }
             var change = $("#change");
@@ -46,14 +46,36 @@
             })
         });
 
-
-
-
-
-        
-
-
-
+        $('#search-text').keyup(function (event) {
+            event.preventDefault();
+            var name = $(this).val().trim();
+            var search = $("#search");
+            $.ajax({
+                type: "GET",
+                url: "/Shop/listBookSearch",
+                data: {
+                    "name": name
+                },
+                success: function (response) {
+                    if (name != "") {
+                        search.html(response);
+                        search.css({
+                            "opacity": 1,
+                            "visibility": "visible",
+                            "transform": "scaleY(1)",
+                        })
+                    }
+                    else {
+                        search.html("");
+                        search.css({
+                            "opacity": 0,
+                            "visibility": "hidden",
+                            "transform": "scaleY(0)",
+                        })
+                    }
+                }
+            })
+        });
     }
 }
 book.init();

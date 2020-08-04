@@ -2128,6 +2128,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Views\Shop\listBookWithType.cshtml" />
+    <Content Include="Views\Shop\listBookSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

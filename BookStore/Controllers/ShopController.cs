@@ -51,5 +51,12 @@ namespace BookStore.Controllers
             ViewData["listBookWithType"] = listBook;
             return PartialView();
         }
+
+        [HttpGet]
+        public ActionResult listBookSearch(String name)
+        {
+            ViewData["listBookSearch"] = new BooksDao().listBookSearch(name);
+            return PartialView();
+        }
     }
 }

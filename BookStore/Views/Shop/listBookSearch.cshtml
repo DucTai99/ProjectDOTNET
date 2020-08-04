@@ -1,0 +1,23 @@
+﻿@using System.Globalization;
+@using Model.EF;
+@{
+    IEnumerable<sach> listBook = (IEnumerable<sach>)ViewData["listBookSearch"];
+}
+@foreach (var book in listBook)
+{
+    <div class="cart-product" style="display: flex;padding: 5px">
+        <div class="cart-product-image" style="width: 35%;">
+            <a href="@Url.Action("SingleProduct","Shop", new { id = book.maSach})">
+                <img src="@book.hinhAnh" alt="" />
+            </a>
+        </div>
+        <div class="cart-product-info" style="width: 60%">
+            <a href="@Url.Action("SingleProduct","Shop", new { id = book.maSach})">
+                @book.tenSach
+            </a>
+            <p class="cart-price">
+                <span style="color: black"> @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ</span>
+            </p>
+        </div>
+    </div>
+}

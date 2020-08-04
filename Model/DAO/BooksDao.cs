@@ -50,5 +50,10 @@ namespace Model.DAO
         {
             return db.saches.Where(book => book.loaiSach == idType);
         }
+
+        public IEnumerable<sach> listBookSearch(String name)
+        {
+            return db.saches.Where(book => book.tenSach.Contains(name) || book.tenTacGia.Contains(name)).ToList();
+        }
     }
 }

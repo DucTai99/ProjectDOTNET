@@ -28,6 +28,7 @@ namespace BookStore.Controllers
                 {
                     Session["UserId"] = userInDB.idUser.ToString();
                     Session["UserEmail"] = userInDB.email.ToString();
+                    Session["UserLevel"] = userInDB.level.ToString();
                     return RedirectToAction("Index","Home");
                 }
             }
