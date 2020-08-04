@@ -13,7 +13,7 @@
                     <h2>Đăng kí</h2>
                     <ul class="breadcrumbs-list">
                         <li>
-                            <a title="Return to Home" href="../Home/Index">Trang chủ</a>
+                            <a title="Return to Home" href="@Url.Action("Index","Home")">Trang chủ</a>
                         </li>
                         <li>Đăng kí</li>
                     </ul>
@@ -23,60 +23,102 @@
     </div>
 </div>
 <!-- Breadcrumbs Area Start -->
+<!-- Modal when sigin success start-->
+@if (ViewBag.success != null)
+{
+    <div class="modal show" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #32b5f3">
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: white">Đăng ký thành công</h3>
+                </div>
+                <div class="modal-body">
+                    Đăng nhập lại để tiếp tục
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" style="display: inline-block; background: #efefef; color: black" id="closeModal" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-default" style="display: inline-block" id="redirectSignIn">Chấp nhận</button>
+                </div>
+                <script>
+                    $("#closeModal").on("click", function () {
+                        $("#staticBackdrop").removeClass("show");
+                    })
+
+                    $("#redirectSignIn").on("click", function () {
+                        window.location.replace("@Url.Action("SignIn", "Login")");
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+}
+<!-- Modal when sigin success end-->
 <!-- Loging Area Start -->
 <div class="login-account section-padding">
     <div class="container">
         <div class="row"
              style="display: flex; align-items: center; justify-content: center;">
             <div class="col-md-6 col-sm-6">
-                <form name="signupForm"
-                      action=""
-                      class="create-account-form"
-                      method="post">
-                    <!-- <% ArrayList<String> listMsg = null;
-                                  if((listMsg = (ArrayList<String>) request.getAttribute("listMsg"))!=null){
-                                  for (int i = 0; i < listMsg.size(); i++) {%>
-                                <h3 style="color: red"><%=listMsg.get(i)%></h3>
-                              <%
-                                  }
-                                  }
-                              %> -->
 
-                    <h2 class="heading-title">
-                        Tạo tài khoản mới
-                    </h2>
-                    <p id="result"></p>
-                    <p class="form-row">
-                        <input style="outline: none;"
-                               onfocusout="display()"
-                               type="email"
-                               name="email"
-                               placeholder="Địa chỉ email" />
-                    </p>
-                    <p class="form-row">
-                        <input style="outline: none;"
-                               type="password"
-                               name="password"
-                               placeholder="Mật khẩu" />
-                    </p>
-                    <p class="form-row">
-                        <input style="outline: none;"
-                               type="password"
-                               name="cfpassword"
-                               placeholder="Nhập lại mật khẩu" />
-                    </p>
-                    <div class="submit">
-                        <button name="submitcreate"
-                                id="submitcreate"
-                                type="submit"
-                                class="btn-default">
-                            <span>
-                                <i class="fa fa-user left"></i>
-                                Đăng kí
-                            </span>
-                        </button>
+                @using (Html.BeginForm("SignUp", "Login", FormMethod.Post))
+                {
+                    <!-- <% ArrayList<String> listMsg = null;
+                        if((listMsg = (ArrayList<String>) request.getAttribute("listMsg"))!=null){
+                        for (int i = 0; i < listMsg.size(); i++) {%>
+                      <h3 style="color: red"><%=listMsg.get(i)%></h3>
+                    <%
+                        }
+                        }
+                    %> -->
+                    <div class="create-account-form">
+
+
+                        <h2 class="heading-title">
+                            Tạo tài khoản mới
+                        </h2>
+                        <p id="result"></p>
+                        <p class="form-row">
+                            <input style="outline: none;"
+                                   onfocusout="display()"
+                                   type="email"
+                                   name="email"
+                                   placeholder="Địa chỉ email" value="@ViewBag.email" />
+                        </p>
+                        @if (ViewBag.existEmail != null)
+                        {
+                            <p style="color: red">@ViewBag.existEmail</p>
+                        }
+                        <p class="form-row">
+                            <input style="outline: none;"
+                                   type="password"
+                                   name="password"
+                                   placeholder="Mật khẩu" />
+                        </p>
+                        <p class="form-row">
+                            <input style="outline: none;"
+                                   type="password"
+                                   name="cfpassword"
+                                   placeholder="Nhập lại mật khẩu" />
+                        </p>
+                        @if (ViewBag.errorPassWord != null)
+                        {
+                            <p style="color: red">@ViewBag.errorPassWord</p>
+                        }
+                        <div class="submit">
+                            <button name="submitcreate"
+                                    id="submitcreate"
+                                    type="submit"
+                                    class="btn-default">
+                                <span>
+                                    <i class="fa fa-user left"></i>
+                                    Đăng kí
+                                </span>
+                            </button>
+                        </div>
                     </div>
-                </form>
+                }
+
+
             </div>
         </div>
     </div>
