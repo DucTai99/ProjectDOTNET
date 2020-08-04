@@ -23,6 +23,10 @@ namespace Model.DAO
             return listBook;
         }
 
+        public sach getBookWithID(int id) {
+            return db.saches.Find(id);
+        }
+
         public IEnumerable<sach> listAllBookWithPaging(int pageNum, int pageSize) {
             return db.saches.OrderBy(book => book.maSach).ToPagedList(pageNum, pageSize);
         }

@@ -21,8 +21,11 @@ namespace BookStore.Controllers
             return View(model);
         }
 
-        public ActionResult SingleProduct()
+        public ActionResult SingleProduct(int id)
         {
+            var book = new BooksDao().getBookWithID(id);
+            ViewData["book"] = book;
+            //ViewData["bookType"] = new BookTypeDao().getBookTypeWithId(book.);
             return View();
         }
 
