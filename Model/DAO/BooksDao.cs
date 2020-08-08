@@ -55,5 +55,20 @@ namespace Model.DAO
         {
             return db.saches.Where(book => book.tenSach.Contains(name) || book.tenTacGia.Contains(name)).ToList();
         }
+
+        //Sách bán chạy
+        public List<billcontainsach> topSelling()
+        {
+            var books = db.billcontainsaches.OrderByDescending(bill => bill.quantity);
+            return books.ToList();
+        }
+        //SÁCH MỚI : 
+
+        public List<sach> newBook()
+        {
+            var newBooks = db.saches.OrderByDescending(book => book.ngayXuatBan);
+            return newBooks.ToList();
+        }
+
     }
 }

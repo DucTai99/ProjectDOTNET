@@ -15,8 +15,10 @@ namespace BookStore.Controllers
         // GET: Home
         public ActionResult Index()
         {
-           //BooksDao bd = new BooksDao();
-
+            var bookDao = new BooksDao();
+            ViewData["top3Selling"] = new BooksDao().topSelling().Take(3);
+            //list sách mới
+            ViewData["newBook"] = new BooksDao().newBook().Take(8);
 
             return View();
         }
