@@ -76,6 +76,27 @@
                 }
             })
         });
+
+        $('.add-item-to-cart').on('click', function (event) {
+            event.preventDefault();
+            var idBook = $(this).data('id');
+            var shoppingCart = $('.shoping-cart');
+            var addItemSuccess = $('#addItemSuccess');
+            addItemSuccess.removeClass("fade");
+            addItemSuccess.addClass("show");
+            $.ajax({
+                type: "POST",
+                url: "/Shop/addItemToCart",
+                data: {
+                    "idBook": idBook
+                },
+                success: function (response) {
+                    shoppingCart.html('');
+                    shoppingCart.html(response);
+                }
+            })
+        });
+
     }
 }
 book.init();

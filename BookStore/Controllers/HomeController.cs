@@ -15,9 +15,6 @@ namespace BookStore.Controllers
         // GET: Home
         public ActionResult Index()
         {
-           //BooksDao bd = new BooksDao();
-
-
             return View();
         }
 

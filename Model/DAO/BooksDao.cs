@@ -24,7 +24,7 @@ namespace Model.DAO
         }
 
         public sach getBookWithID(int id) {
-            return db.saches.Find(id);
+            return db.saches.Where(book => book.maSach == id).FirstOrDefault();
         }
 
         public IEnumerable<sach> getAllBookSale()

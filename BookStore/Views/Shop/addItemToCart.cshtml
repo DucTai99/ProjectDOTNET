@@ -1,0 +1,46 @@
+﻿@using Model.EF;
+@using System.Globalization;
+
+<a href="@Url.Action("Index", "Cart")">
+    <i class="flaticon-shop"></i>
+    @{
+        ShoppingCart shoppingCart = (ShoppingCart)ViewBag.shoppingCart;
+        var numItems = shoppingCart.getNumItems();
+    }
+    <span>@numItems</span>
+</a>
+<div class="add-to-cart-product">
+    @if (numItems == 0)
+    {
+        <div class="cart-product">
+            <a style="text-align: center">Chưa có sản phẩm</a>
+        </div>
+    }
+    @if (numItems > 0)
+    {
+        foreach (Item item in shoppingCart.listItem)
+        {
+            <div class="cart-product" style="display: flex;padding: 5px">
+                <div class="cart-product-image" style="width: 25%;">
+                    <a>
+                        <img src="@item.book.hinhAnh" alt="" style="height: 60px" />
+                    </a>
+                </div>
+                <div class="cart-product-info" style="width: 60%">
+                    <a>@item.book.tenSach</a>
+                    <p class="cart-price">
+                        <span style="padding-left: 35px"> x @item.quantity</span>
+                        <span style="color: black;padding-left: 35px"> @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.total * 1000)đ</span>
+                    </p>
+                </div>
+            </div>
+        }
+
+        <div class="cart-product">
+            <a class="btn btn-outline-success" style="text-align: center" href="@Url.Action("Index","Cart")">
+                Thanh toán
+            </a>
+        </div>
+    }
+</div>
+

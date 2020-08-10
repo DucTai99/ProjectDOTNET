@@ -79,4 +79,3 @@ E:\Java\dotnet\Project\BookStore\Model\bin\Debug\PagedList.dll
 E:\Java\dotnet\Project\BookStore\Model\bin\Debug\PagedList.Mvc.dll
 E:\Java\dotnet\Project\BookStore\Model\bin\Debug\PagedList.xml
 E:\Java\dotnet\Project\BookStore\Model\bin\Debug\PagedList.Mvc.xml
-C:\Users\DuongTai\Desktop\Project\Model\obj\Debug\Model.csprojAssemblyReference.cache

@@ -1,10 +1,14 @@
-﻿<!--Header Area Start-->
+﻿@using Model.EF;
+@using System.Globalization;
+
+<!--Header Area Start-->
+
 <div class="header-area">
     <div class="container">
         <div class="row header-header">
             <div class="col-md-2 col-sm-6 col-xs-6">
                 <div class="header-logo">
-                    <a href="@Url.Action("Index","Home")">
+                    <a href="@Url.Action("Index", "Home")">
                         <img src="~/Assets/Client/img/logo.png" alt="" />
                     </a>
                 </div>
@@ -23,13 +27,13 @@
                                     <div class="user-item">
                                         <div class="sign-in">
                                             <i class="fas fa-user-plus"></i>
-                                            <a href="@Url.Action("SignUp","Login")">Đăng kí</a>
+                                            <a href="@Url.Action("SignUp", "Login")">Đăng kí</a>
                                         </div>
                                     </div>
                                     <div class="user-item">
                                         <div class="sign-in">
                                             <i class="fas fa-sign-in-alt"></i>
-                                            <a href="@Url.Action("SignIn","Login")">Đăng nhập</a>
+                                            <a href="@Url.Action("SignIn", "Login")">Đăng nhập</a>
                                         </div>
                                     </div>
 
@@ -40,7 +44,7 @@
                                     <div class="user-item">
                                         <div class="sign-in">
                                             <i class="flaticon-people"></i>
-                                            <a href="@Url.Action("Index","Account")">
+                                            <a href="@Url.Action("Index", "Account")">
                                                 Xin chào @Session["UserEmail"]
                                             </a>
                                         </div>
@@ -66,7 +70,7 @@
                                     </div>
                                     <div class="user-item">
                                         <div class="listwish">
-                                            <i class="far fa-heart"></i><a href="@Url.Action("Index","WishList")">Theo dõi</a>
+                                            <i class="far fa-heart"></i><a href="@Url.Action("Index", "WishList")">Theo dõi</a>
                                         </div>
                                     </div>
 
@@ -87,8 +91,8 @@
                 <div class="mainmenu text-center">
                     <nav>
                         <ul id="nav">
-                            <li><a href="@Url.Action("Index","Shop")">Sách</a></li>
-                            <li><a href="@Url.Action("Sale","Shop")">Khuyến mãi</a></li>
+                            <li><a href="@Url.Action("Index", "Shop")">Sách</a></li>
+                            <li><a href="@Url.Action("Sale", "Shop")">Khuyến mãi</a></li>
                             <li><a href="#footer">Liên Hệ</a></li>
                         </ul>
                     </nav>
@@ -107,13 +111,13 @@
                                     <div class="user-item">
                                         <div class="sign-in">
                                             <i class="fas fa-user-plus"></i>
-                                            <a href="@Url.Action("SignUp","Login")">Đăng kí</a>
+                                            <a href="@Url.Action("SignUp", "Login")">Đăng kí</a>
                                         </div>
                                     </div>
                                     <div class="user-item">
                                         <div class="sign-in">
                                             <i class="fas fa-sign-in-alt"></i>
-                                            <a href="@Url.Action("SignIn","Login")">Đăng nhập</a>
+                                            <a href="@Url.Action("SignIn", "Login")">Đăng nhập</a>
                                         </div>
                                     </div>
 
@@ -124,7 +128,7 @@
                                     <div class="user-item">
                                         <div class="sign-in">
                                             <i class="flaticon-people"></i>
-                                            <a href="@Url.Action("Index","Account")">
+                                            <a href="@Url.Action("Index", "Account")">
                                                 Xin chào @Session["UserEmail"]
                                             </a>
                                         </div>
@@ -150,7 +154,7 @@
                                     </div>
                                     <div class="user-item">
                                         <div class="listwish">
-                                            <i class="far fa-heart"></i><a href="@Url.Action("Index","WishList")">Theo dõi</a>
+                                            <i class="far fa-heart"></i><a href="@Url.Action("Index", "WishList")">Theo dõi</a>
                                         </div>
                                     </div>
 
@@ -161,9 +165,48 @@
                         </li>
 
                         <li class="shoping-cart">
-                            <a href="@Url.Action("Index","Cart")">
+                            <a href="@Url.Action("Index", "Cart")">
                                 <i class="flaticon-shop"></i>
+                                @{
+                                    ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+                                    var numItems = shoppingCart.getNumItems();
+                                }
+                                <span>@numItems</span>
                             </a>
+                            <div class="add-to-cart-product">
+                                @if (numItems == 0)
+                                {
+                                    <div class="cart-product">
+                                        <a style="text-align: center">Chưa có sản phẩm</a>
+                                    </div>
+                                }
+                                @if (numItems > 0)
+                                {
+                                    foreach (Item item in shoppingCart.listItem)
+                                    {
+                                        <div class="cart-product" style="display: flex;padding: 5px">
+                                            <div class="cart-product-image" style="width: 25%;">
+                                                <a>
+                                                    <img src="@item.book.hinhAnh" alt="" style="height: 60px"/>
+                                                </a>
+                                            </div>
+                                            <div class="cart-product-info" style="width: 60%">
+                                                <a>@item.book.tenSach</a>
+                                                <p class="cart-price">
+                                                    <span style="padding-left: 35px"> x @item.quantity</span>
+                                                    <span style="color: black;padding-left: 35px"> @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.total * 1000)đ</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="cart-product">
+                                        <a class="btn btn-outline-success" style="text-align: center" href="@Url.Action("Index","Cart")">
+                                            Thanh toán
+                                        </a>
+                                    </div>
+                                }
+                            </div>
                         </li>
                     </ul>
                 </div>

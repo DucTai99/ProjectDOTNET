@@ -190,6 +190,7 @@
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\WishListController.cs" />
     <Compile Include="Filter\AccessFilter.cs" />
+    <Compile Include="Filter\ShoppingCartFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2129,6 +2130,7 @@
     <None Include="packages.config" />
     <Content Include="Views\Shop\listBookWithType.cshtml" />
     <Content Include="Views\Shop\listBookSearch.cshtml" />
+    <Content Include="Views\Shop\addItemToCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">
