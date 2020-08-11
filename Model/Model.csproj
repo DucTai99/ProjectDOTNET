@@ -116,10 +116,12 @@
     <Compile Include="EF\billcontainsach.cs" />
     <Compile Include="EF\BookStoreDbContext.cs" />
     <Compile Include="EF\comment.cs" />
+    <Compile Include="EF\Item.cs" />
     <Compile Include="EF\logo.cs" />
     <Compile Include="EF\payment.cs" />
     <Compile Include="EF\sach.cs" />
     <Compile Include="EF\salecode.cs" />
+    <Compile Include="EF\ShoppingCart.cs" />
     <Compile Include="EF\theloaisach.cs" />
     <Compile Include="EF\tinhtrangbill.cs" />
     <Compile Include="EF\user.cs" />

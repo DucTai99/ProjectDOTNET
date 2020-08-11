@@ -58,5 +58,15 @@ namespace BookStore.Controllers
             ViewData["listBookSearch"] = new BooksDao().listBookSearch(name);
             return PartialView();
         }
+
+        public ActionResult addItemToCart(int idBook)
+        {
+            var book = new BooksDao().getBookWithID(idBook);
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            Item item = new Item(book);
+            shoppingCart.addItem(item);
+            ViewBag.shoppingCart = shoppingCart;
+            return PartialView();
+        }
     }
 }

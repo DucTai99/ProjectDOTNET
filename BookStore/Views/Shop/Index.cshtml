@@ -130,7 +130,7 @@
                                                     </a>
                                                     <div class="product-description">
                                                         <div class="functional-buttons">
-                                                            <a title="Thêm vào giỏ hàng" href="#">
+                                                            <a title="Thêm vào giỏ hàng" class="add-item-to-cart" data-id="@book.maSach" href="#">
                                                                 <i class="fa fa-shopping-cart"></i>
                                                             </a>
                                                             <a href="#"
@@ -292,6 +292,36 @@
     </div>
 </div>
 <!-- Shop Area End -->
+<!-- Modal for add item to cart success-->
+<div class="modal fade" id="addItemSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Thêm vào giỏ hàng thành công
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="display: inline-block; background: #efefef; color: black" id="closeModal" data-dismiss="modal">Continue</button>
+                <button type="button" class="btn btn-default" style="display: inline-block" id="redirectShoppingCart">Đến giỏ hàng</button>
+            </div>
+            <script>
+                    $("#closeModal").on("click", function () {
+                        $("#addItemSuccess").removeClass("show");
+                        $("#addItemSuccess").addClass("fade");
+                    })
+
+                    $("#redirectShoppingCart").on("click", function () {
+                        window.location.replace("@Url.Action("Index", "Cart")");
+                    })
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Modal for add item to cart success-->
 <!--Quickview Product Start -->
 
 <div id="quickview-wrapper">

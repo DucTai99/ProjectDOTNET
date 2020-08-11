@@ -21,6 +21,7 @@ namespace BookStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SignIn(user user)
         {
+            var req = this.Request.Url;
             if (ModelState.IsValid)
             {
                 var userInDB = new UserDao().login(user); 

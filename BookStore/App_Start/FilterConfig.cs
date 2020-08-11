@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using BookStore.Filter;
+using System.Web;
 using System.Web.Mvc;
 
 namespace BookStore
@@ -7,6 +8,7 @@ namespace BookStore
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            GlobalFilters.Filters.Add(new ShoppingCartFilter());
             filters.Add(new HandleErrorAttribute());
         }
     }
