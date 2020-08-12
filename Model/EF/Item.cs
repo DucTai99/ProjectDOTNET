@@ -17,7 +17,14 @@ namespace Model.EF
         {
             this.book = book;
             this.quantity = 1;
-            this.price = this.book.gia;
+            if (book.khuyenMai > 0)
+            {
+                this.price = this.book.gia - (this.book.gia * this.book.khuyenMai / 100);
+            }
+            else
+            {
+                this.price = this.book.gia;
+            }
             this.total = this.quantity * this.price;
 
         }

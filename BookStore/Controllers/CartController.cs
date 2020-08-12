@@ -15,6 +15,8 @@ namespace BookStore.Controllers
         // GET: Cart
         public ActionResult Index()
         {
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            ViewBag.shoppingCart = shoppingCart;
             return View();
         }
 

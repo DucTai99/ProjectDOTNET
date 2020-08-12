@@ -124,7 +124,7 @@
                     success: function (response) {
                         $("#CommentArea").html('');
                         $("#CommentArea").html(response);
-                        $("#commentText").val() = "";
+                        $("#commentText").text() = '';
                     }
                 })
             }
