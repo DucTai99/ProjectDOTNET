@@ -1,7 +1,12 @@
-﻿
+﻿@using Model.EF;
+@using System.Globalization;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ShoppingCart shoppingCart = (ShoppingCart)ViewBag.shoppingCart;
 }
 
 <!-- Breadcrumbs Area Start -->
@@ -13,7 +18,7 @@
                     <h2>Giỏ Hàng</h2>
                     <ul class="breadcrumbs-list">
                         <li>
-                            <a title="Return to Home" href="../Home/Index">Trang chủ</a>
+                            <a title="Return to Home" href="@Url.Action("Index","Home")">Trang chủ</a>
                         </li>
                         <li>Giỏ Hàng</li>
                     </ul>
@@ -28,70 +33,66 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-sm-12">
-                <div class="product">
-                    <div style="display: flex; align-items: center; width: 90%;">
-                        <!-- <% if (cart.gioHang.get(i).getKhuyenMai() > 0) { %> -->
-                        <div class="img-product"
-                             style="position: relative; margin-right: 20px;">
-                            <img src="~/Assets/Client/img/shop/tn3.jpeg" alt="" />
-                            <div style="
-                      width: 20%;
-                      z-index: 999;
-                      position: absolute;
-                      top: 0;
-                      right: 0;
-                    ">
-                                <img src="~/Assets/Client/img/sale.png" alt="" />
-                                <p style="
-                        font-size: 10px;
-                        color: white;
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                      ">
-                                    50%
-                                </p>
+                @foreach (var item in shoppingCart.listItem)
+                {
+                    <div class="product">
+                        <div style="display: flex; align-items: center; width: 90%;">
+                            @if (item.book.khuyenMai > 0)
+                            {
+                                <div class="img-product"
+                                     style="position: relative; margin-right: 20px;">
+                                    <img src="@item.book.hinhAnh" alt="" />
+                                    <div style="width: 20%;z-index: 999;position: absolute;top: 0; right: 0;">
+                                        <img src="~/Assets/Client/img/sale.png" alt="" />
+                                        <p style="font-size: 10px;color: white;position: absolute;top: 50%;left: 50%; transform: translate(-50%, -50%);">
+                                            @item.book.khuyenMai%
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            @if (item.book.khuyenMai == 0)
+                            {
+                                <div class="img-product" style="margin-right: 20px">
+                                    <img src="@item.book.hinhAnh" alt="">
+                                </div>
+                            }
+                            <div class="title-product">
+                                <h4>
+                                    <a href="@Url.Action("SingleProduct","Shop", new { id = item.book.maSach})">@item.book.tenSach</a>
+                                </h4>
+                                @if (item.book.khuyenMai > 0)
+                                {
+                                    <p>
+                                        <span id="@item.book.maSach">@item.quantity x @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.price * 1000)đ</span>
+                                        <span style="color: black;" class="old-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.book.gia * 1000)đ</span>
+                                    </p>
+                                }
+                                @if (item.book.khuyenMai == 0)
+                                {
+                                    <p>
+                                        <span id="@item.book.maSach">@item.quantity</span>
+                                        x @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.price * 1000)đ
+                                    </p>
+
+                                }
+                                <a href="#">
+                                    <i class="flaticon-delete"></i>
+                                </a>
                             </div>
                         </div>
-                        <!-- <% } else {%>
-                                <div class="img-product" style="margin-right: 20px">
-                                    <img src=<%=Util.fullPath(cart.gioHang.get(i).getHinhAnh())%> alt="">
-                                </div>
-                                <% }%> -->
-                        <div class="title-product">
-                            <h4>
-                                <a href="#">Book Name</a>
-                            </h4>
-                            <!-- <% if (cart.gioHang.get(i).getKhuyenMai() > 0) { %> -->
-                            <p>
-                                <span id="1">5 x 2500.000đ</span>
-                                <span style="color: black;" class="old-price">500.000đ</span>
-                            </p>
-                            <!-- <% } else {%>
-                                      <p><span
-                                              id="<%=cart.gioHang.get(i).getMaSach()%>"><%=cart.gioHang.get(i).getSoLuongMua()%></span>
-                                          x <%=cart.gioHang.get(i).getGia()%>
-                                          .000đ</p>
-                                      <% }%> -->
-                            <a href="#">
-                                <i class="flaticon-delete"></i>
-                            </a>
+
+                        <div class="quantity-product" style="width: 20%;">
+                            <span class="pull-left" id="quantity-wanted-p">
+                                <span class="dec qtybutton">-</span>
+                                <!-- <p style="display: none"><%=cart.gioHang.get(i).getMaSach()%></p> -->
+                                <input type="text" value="@item.quantity" class="cart-plus-minus-box" />
+                                <span class="inc qtybutton">+</span>
+                            </span>
                         </div>
                     </div>
-
-                    <div class="quantity-product" style="width: 20%;">
-                        <span class="pull-left" id="quantity-wanted-p">
-                            <span class="dec qtybutton">-</span>
-                            <!-- <p style="display: none"><%=cart.gioHang.get(i).getMaSach()%></p> -->
-                            <input type="text" value="5" class="cart-plus-minus-box" />
-                            <span class="inc qtybutton">+</span>
-                        </span>
-                    </div>
-                </div>
-                <!-- <%}%> -->
+                }
                 <div class="shopingcart-bottom-area" style="margin-bottom: 30px;">
-                    <a class="left-shoping-cart" href="../Shop">Tiếp tục mua sắm</a>
+                    <a class="left-shoping-cart" href="@Url.Action("Index","Shop")">Tiếp tục mua sắm</a>
                     <div class="shopingcart-bottom-area pull-right">
                         <a class="right-shoping-cart" href="#">Xóa tất cả sản phẩm</a>
                     </div>
@@ -105,7 +106,7 @@
                 <div class="subtotal-main-area">
                     <div class="subtotal-area">
                         <h2 style="padding: 20px;">
-                            Tạm tính<span id="tamTinh">500.000đ</span>
+                            Tạm tính<span id="tamTinh">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", shoppingCart.total * 1000)đ</span>
                         </h2>
                     </div>
                     <!-- <%if (khuyenMai > 0) {%>
@@ -116,7 +117,7 @@
                     <div class="subtotal-area">
                         <!-- <%if (khuyenMai > 0) {%> -->
                         <h2 style="font-size: 28px; padding: 20px;">
-                            Tổng tiền<span id="tongTien1" style="color: #32b5f3;">500.000đ</span>
+                            Tổng tiền<span id="tongTien1" style="color: #32b5f3;">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", shoppingCart.total * 1000)đ</span>
                         </h2>
                         <!-- <%} else {%>
                                 <h2 style="font-size: 28px;padding: 20px">Tổng tiền<span id="tongTien" style="color: #32b5f3;"><%=cart.tongTien()%>.000đ</span>
