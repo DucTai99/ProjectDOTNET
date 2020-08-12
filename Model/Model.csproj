@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="DAO\BooksDao.cs" />
     <Compile Include="DAO\BookTypeDao.cs" />
+    <Compile Include="DAO\CommentDao.cs" />
     <Compile Include="DAO\UserDao.cs" />
     <Compile Include="EF\bill.cs" />
     <Compile Include="EF\billcontainsach.cs" />

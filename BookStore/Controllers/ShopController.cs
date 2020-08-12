@@ -68,5 +68,19 @@ namespace BookStore.Controllers
             ViewBag.shoppingCart = shoppingCart;
             return PartialView();
         }
+
+        [HttpPost]
+        public ActionResult addComment(int idBook, String content)
+        {
+            comment comment = new comment();
+            comment.idUser = Int32.Parse(Session["UserId"].ToString());
+            comment.maSach = idBook;
+            comment.commentText = content;
+            CommentDao commentDao = new CommentDao();
+            commentDao.addComment(comment);
+            var book = new BooksDao().getBookWithID(idBook);
+            ViewData["book"] = book;
+            return PartialView();
+        }
     }
 }
