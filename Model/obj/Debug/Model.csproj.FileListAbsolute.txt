@@ -34,7 +34,6 @@ E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csproj.CoreCompileInputs.
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csproj.CopyComplete
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.dll
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.pdb
-E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csprojAssemblyReference.cache
 C:\Users\DuongTai\Desktop\Project\Model\bin\Debug\Model.dll.config
 C:\Users\DuongTai\Desktop\Project\Model\bin\Debug\Model.dll
 C:\Users\DuongTai\Desktop\Project\Model\bin\Debug\Model.pdb

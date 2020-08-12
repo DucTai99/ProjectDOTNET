@@ -1,0 +1,21 @@
+﻿@using Model.EF;
+@using System.Globalization;
+@{
+    sach book = (sach)ViewData["book"];
+}
+@foreach (comment comment in book.comments)
+{
+    <div class="comment-here" style=" box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);padding: 10px 5px;">
+        <div class="user-comment">
+            <i class="fas fa-user-ninja"></i>
+        </div>
+        <div class="AreaComment"
+             style="display: flex; flex-direction: column;">
+            <p style="margin: 0px; font-weight: 600;">@comment.user.email</p>
+            <p>
+                @comment.commentText
+            </p>
+        </div>
+    </div>
+
+}

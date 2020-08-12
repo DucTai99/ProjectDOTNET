@@ -2131,6 +2131,7 @@
     <Content Include="Views\Shop\listBookWithType.cshtml" />
     <Content Include="Views\Shop\listBookSearch.cshtml" />
     <Content Include="Views\Shop\addItemToCart.cshtml" />
+    <Content Include="Views\Shop\addComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">
