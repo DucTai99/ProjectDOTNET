@@ -159,11 +159,9 @@
                                     </div>
 
                                 }
-
-
                             </div>
                         </li>
-
+                        
                         <li class="shoping-cart">
                             <a href="@Url.Action("Index", "Cart")">
                                 <i class="flaticon-shop"></i>
@@ -171,42 +169,56 @@
                                     ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
                                     var numItems = shoppingCart.getNumItems();
                                 }
-                                <span>@numItems</span>
-                            </a>
-                            <div class="add-to-cart-product">
-                                @if (numItems == 0)
-                                {
-                                    <div class="cart-product">
-                                        <a style="text-align: center">Chưa có sản phẩm</a>
-                                    </div>
-                                }
                                 @if (numItems > 0)
                                 {
-                                    foreach (Item item in shoppingCart.listItem)
-                                    {
-                                        <div class="cart-product" style="display: flex;padding: 5px">
-                                            <div class="cart-product-image" style="width: 25%;">
-                                                <a>
-                                                    <img src="@item.book.hinhAnh" alt="" style="height: 60px"/>
+                                    <span>@numItems</span>
+                                }
+                            </a>
+                            @if (numItems > 0)
+                            {
+                                <div class="add-to-cart-product">
+                                    <div style="max-height: 300px;overflow-y: scroll">
+                                        @foreach (Item item in shoppingCart.listItem)
+                                        {
+                                            <div class="cart-product">
+                                                <div class="cart-product-image" style="position: relative">
+                                                    <a href="@Url.Action("SingleProduct","Shop", new { id = item.book.maSach})">
+                                                        <img src="@item.book.hinhAnh" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="cart-product-info">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new { id = item.book.maSach })">@item.book.tenSach</a>
+                                                    <p class="cart-price">
+                                                        @if (item.book.khuyenMai > 0)
+                                                        {
+                                                            <b id="@item.book.maSach" style="font-weight: 100">@item.quantity</b><span>x</span><span>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.price * 1000)đ</span>
+                                                            <span style="color: black; font-size: 13px" class="old-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.book.gia * 1000)đ</span>
+                                                        }
+                                                        @if (item.book.khuyenMai == 0)
+                                                        {
+                                                            <span>@item.quantity</span><span>x</span><span>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.price * 1000)đ</span>
+                                                        }
+                                                    </p>
+                                                </div>
+                                                <a href="../XoaKhoiGioHangController?maSach=<%=cart.gioHang.get(i).getMaSach()%>">
+                                                    <div class="cart-product-remove">
+                                                        <i class="fa fa-times"></i>
+                                                    </div>
                                                 </a>
                                             </div>
-                                            <div class="cart-product-info" style="width: 60%">
-                                                <a>@item.book.tenSach</a>
-                                                <p class="cart-price">
-                                                    <span style="padding-left: 35px"> x @item.quantity</span>
-                                                    <span style="color: black;padding-left: 35px"> @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.total * 1000)đ</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    }
-
-                                    <div class="cart-product">
-                                        <a class="btn btn-outline-success" style="text-align: center" href="@Url.Action("Index","Cart")">
-                                            Thanh toán
-                                        </a>
+                                        }
                                     </div>
-                                }
-                            </div>
+                                    <div class="total-cart-price">
+                                        <div class="cart-product-line">
+                                            <span>Tổng Cộng :</span>
+                                            <span id="total">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", shoppingCart.total * 1000)đ</span>
+                                        </div>
+                                    </div>
+                                    <div class="cart-checkout">
+                                        <a href="@Url.Action("Index","Cart")">Thanh Toán<i class="fa fa-chevron-right"></i></a>
+                                    </div>
+                                </div>
+                            }
                         </li>
                     </ul>
                 </div>
