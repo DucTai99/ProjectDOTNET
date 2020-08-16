@@ -2132,6 +2132,7 @@
     <Content Include="Views\Shop\listBookSearch.cshtml" />
     <Content Include="Views\Shop\addItemToCart.cshtml" />
     <Content Include="Views\Shop\addComment.cshtml" />
+    <Content Include="Views\Shop\removeItemFormCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

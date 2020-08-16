@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PagedList;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace Model.DAO
 {
@@ -55,5 +56,20 @@ namespace Model.DAO
         {
             return db.saches.Where(book => book.tenSach.Contains(name) || book.tenTacGia.Contains(name)).ToList();
         }
+
+        public dynamic listBookTopSell()
+        {
+            var query = (from b in db.billcontainsaches
+                         group b by b.idSach into g
+                         let Sum = g.Sum(b => b.quantity)
+                         orderby Sum
+                         select new
+                         {
+                             Id = g.Key,
+                             Sum,
+                         }).Take(12).ToList();
+            return query;
+        }
+
     }
 }
