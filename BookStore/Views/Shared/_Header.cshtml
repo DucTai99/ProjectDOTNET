@@ -161,7 +161,6 @@
                                 }
                             </div>
                         </li>
-                        
                         <li class="shoping-cart">
                             <a href="@Url.Action("Index", "Cart")">
                                 <i class="flaticon-shop"></i>
@@ -200,7 +199,7 @@
                                                         }
                                                     </p>
                                                 </div>
-                                                <a href="../XoaKhoiGioHangController?maSach=<%=cart.gioHang.get(i).getMaSach()%>">
+                                                <a class="remove-item-from-cart" data-id="@item.book.maSach" href="#">
                                                     <div class="cart-product-remove">
                                                         <i class="fa fa-times"></i>
                                                     </div>

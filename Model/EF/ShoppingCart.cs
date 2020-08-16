@@ -20,34 +20,51 @@ namespace Model.EF
 
         public void addItem(Item itemToAdd)
         {
-            
             Item item = listItem.Where(itemInList => itemInList.book.maSach == itemToAdd.book.maSach).FirstOrDefault();
             if (item!=null)
             {
                 item.increaseQuantity();
-                total = total + item.price;
+                calculatorTotal();
             }
             else
             {
                 listItem.Add(itemToAdd);
-                total = total + itemToAdd.price;
+                calculatorTotal();
             }
 
         }
 
         public decimal calculatorTotal()
         {
+            total = 0;
             foreach (var item in listItem)
             {
                 total = total + item.total;
             }
-
             return total;
         }
 
         public int getNumItems()
         {
-            return listItem.ToArray().Length;
+            int numItem = 0;
+            foreach (var item in listItem)
+            {
+                numItem = numItem + item.quantity;
+            }
+            return numItem;
+        }
+
+        public void removeItem(int idBook)
+        {
+            foreach (var product in listItem)
+            {
+                if(product.book.maSach == idBook)
+                {
+                    listItem.Remove(product);
+                    calculatorTotal();
+                    break;
+                }
+            }
         }
     }
 }

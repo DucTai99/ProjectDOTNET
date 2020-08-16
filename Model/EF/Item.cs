@@ -26,7 +26,6 @@ namespace Model.EF
                 this.price = this.book.gia;
             }
             this.total = this.quantity * this.price;
-
         }
         public decimal calculateTotal()
         {

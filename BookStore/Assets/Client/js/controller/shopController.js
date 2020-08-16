@@ -78,7 +78,6 @@
         });
 
         $('.add-item-to-cart').on('click', function (event) {
-
             event.preventDefault();
             var idBook = $(this).data('id');
             var shoppingCart = $('.shoping-cart');
@@ -97,6 +96,27 @@
                 }
             })
         });
+
+        $('.remove-item-from-cart').on('click', function (event) {
+            alert("first");
+            event.preventDefault();
+            var idBook = $(this).data('id');
+            var shoppingCart = $('.shoping-cart');
+            alert("remove" + idBook);
+            $.ajax({
+                type: "POST",
+                url: "/Shop/removeItemFormCart",
+                data: {
+                    "idBook": idBook
+                },
+                success: function (response) {
+                    console.log(response)
+                    shoppingCart.html('');
+                    shoppingCart.html(response);
+                }
+            })
+        });
+
 
         $('#btn-submit-comment').on('click', function (event) {
             event.preventDefault();

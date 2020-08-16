@@ -69,6 +69,14 @@ namespace BookStore.Controllers
             return PartialView();
         }
 
+        public ActionResult removeItemFormCart(int idBook)
+        {
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            shoppingCart.removeItem(idBook);
+            ViewBag.shoppingCart = shoppingCart;
+            return PartialView();
+        }
+
         [HttpPost]
         public ActionResult addComment(int idBook, String content)
         {
