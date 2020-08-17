@@ -2133,6 +2133,10 @@
     <Content Include="Views\Shop\addItemToCart.cshtml" />
     <Content Include="Views\Shop\addComment.cshtml" />
     <Content Include="Views\Shop\removeItemFormCart.cshtml" />
+    <Content Include="Views\Cart\removeItem.cshtml" />
+    <Content Include="Views\Cart\removeAllItem.cshtml" />
+    <Content Include="Views\Cart\changeNumItem.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">
