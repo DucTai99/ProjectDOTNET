@@ -39,7 +39,7 @@ namespace Model.EF
             total = 0;
             foreach (var item in listItem)
             {
-                total = total + item.total;
+                total = total + item.calculateTotal();
             }
             return total;
         }
@@ -61,6 +61,25 @@ namespace Model.EF
                 if(product.book.maSach == idBook)
                 {
                     listItem.Remove(product);
+                    calculatorTotal();
+                    break;
+                }
+            }
+        }
+
+        public void removeAllItem()
+        {
+            listItem.Clear();
+            calculatorTotal();
+        }
+
+        public void changeNumItem(int idBook,int number)
+        {
+            foreach (var product in listItem)
+            {
+                if (product.book.maSach == idBook)
+                {
+                    product.quantity = number;
                     calculatorTotal();
                     break;
                 }

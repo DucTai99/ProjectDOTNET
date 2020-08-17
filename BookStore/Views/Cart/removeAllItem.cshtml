@@ -1,15 +1,9 @@
 ﻿@using Model.EF;
 @using System.Globalization;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "removeAllItem";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@{
     ShoppingCart shoppingCart = (ShoppingCart)ViewBag.shoppingCart;
-}
-@section jsFooter{
-    <script src="~/Assets/Client/js/controller/shopController.js"></script>
 }
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
@@ -96,10 +90,10 @@
 
                             <div class="quantity-product" style="width: 20%;">
                                 <span class="pull-left" id="quantity-wanted-p">
-                                    <span class="dec qtybutton" data-id="@item.book.maSach">-</span>
+                                    <span class="dec qtybutton">-</span>
                                     <!-- <p style="display: none"><%=cart.gioHang.get(i).getMaSach()%></p> -->
                                     <input type="text" value="@item.quantity" class="cart-plus-minus-box" />
-                                    <span class="inc qtybutton" data-id="@item.book.maSach">+</span>
+                                    <span class="inc qtybutton">+</span>
                                 </span>
                             </div>
                         </div>
@@ -113,9 +107,9 @@
                 }
             </div>
             <!-- <%  int khuyenMai = 0;
-                  if(request.getAttribute("khuyenMai") != null){
-                  khuyenMai = (int) request.getAttribute("khuyenMai");
-              }%> -->
+                if(request.getAttribute("khuyenMai") != null){
+                khuyenMai = (int) request.getAttribute("khuyenMai");
+            }%> -->
             <div class="col-md-4 col-sm-12">
                 <div class="subtotal-main-area">
                     <div class="subtotal-area">
@@ -133,10 +127,10 @@
                         }
                     </div>
                     <!-- <%if (khuyenMai > 0) {%>
-                          <div class="subtotal-area">
-                              <h2 style="padding: 20px">Mã khuyến mãi<span id="tamTinh1"><%=khuyenMai%>%</span></h2>
-                          </div>
-                          <%}%> -->
+                      <div class="subtotal-area">
+                          <h2 style="padding: 20px">Mã khuyến mãi<span id="tamTinh1"><%=khuyenMai%>%</span></h2>
+                      </div>
+                      <%}%> -->
                     <div class="subtotal-area">
                         <!-- <%if (khuyenMai > 0) {%> -->
                         @if (shoppingCart.total != 0)
@@ -188,4 +182,33 @@
         </div>
     </div>
 </div>
+<script>
+    $('.remove-item').on('click', function (event) {
+        event.preventDefault();
+        var idBook = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "/Cart/removeItem",
+            data: {
+                "idBook": idBook
+            },
+            success: function (response) {
+                $(document).html('');
+                $(document).html(response);
+            }
+        })
+    });
+
+    $(".right-shoping-cart").on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/Cart/removeAllItem",
+            success: function (response) {
+                $(document).html('');
+                $(document).html(response);
+            }
+        });
+    })
+</script>
 <!-- Cart Area End -->
