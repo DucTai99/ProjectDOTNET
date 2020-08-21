@@ -37,7 +37,6 @@ namespace BookStore.Controllers
         {
             ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
             shoppingCart.removeAllItem();
-            ViewBag.shoppingCart = shoppingCart;
             return PartialView();
         }
 
@@ -45,7 +44,6 @@ namespace BookStore.Controllers
         {
             ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
             shoppingCart.changeNumItem(idBook, number);
-            ViewBag.shoppingCart = shoppingCart;
             return PartialView();
         }
     }

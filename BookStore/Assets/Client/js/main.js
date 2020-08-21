@@ -252,7 +252,8 @@
         //tongSoLuong();
         //tienKhuyenMai(giamGia);
     });
-    function changeNumItem(idBook,number) {
+    function changeNumItem(idBook, number) {
+        var topBody = $('#topBody');
         $.ajax({
             type: "POST",
             url: "/Cart/changeNumItem",
@@ -261,9 +262,8 @@
                 "number": number
             },
             success: function (response) {
-                console.log(response);
-                $(document).html('');
-                $(document).html(response);
+                topBody.html('');
+                topBody.html(response);
             }
         })
     }

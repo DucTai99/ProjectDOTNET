@@ -2,8 +2,11 @@
 @using System.Globalization;
 @{
     ViewBag.Title = "changeNumItem";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ShoppingCart shoppingCart = (ShoppingCart)ViewBag.shoppingCart;
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+}
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
 }
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
