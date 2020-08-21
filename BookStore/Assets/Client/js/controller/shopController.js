@@ -117,8 +117,7 @@
         $('.remove-item').on('click', function (event) {
             event.preventDefault();
             var idBook = $(this).data('id');
-            var document = $('html');
-            console.log(document);
+            var topBody = $('#topBody');
             $.ajax({
                 type: "POST",
                 url: "/Cart/removeItem",
@@ -126,22 +125,21 @@
                     "idBook": idBook
                 },
                 success: function (response) {
-                    console.log(response);
-                    $(document).html('');
-                    //$(document).
-                    $(document).html(response);
+                    topBody.html('');
+                    topBody.html(response);
                 }
             })
         });
 
         $(".right-shoping-cart").on('click', function (event) {
             event.preventDefault();
+            var topBody = $('#topBody');
             $.ajax({
                 type: "POST",
                 url: "/Cart/removeAllItem",
                 success: function (response) {
-                    $(document).html('');
-                    $(document).html(response);
+                    topBody.html('');
+                    topBody.html(response);
                 }
             });
         });

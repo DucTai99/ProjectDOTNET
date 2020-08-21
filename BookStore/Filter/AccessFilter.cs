@@ -17,7 +17,9 @@ namespace BookStore.Filter
             var userId = session["UserId"];
             if (userId == null)
             {
-                controller.HttpContext.Response.Redirect("/Login/SignIn?redController=" + controllerRoute + "&redAction=" + actionRoute);
+                session["redController"] = controllerRoute;
+                session["redAction"] = actionRoute;
+                controller.HttpContext.Response.Redirect("/Login/SignIn");
             }
 
             base.OnActionExecuting(filterContext);

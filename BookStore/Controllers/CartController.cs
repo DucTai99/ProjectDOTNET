@@ -25,11 +25,11 @@ namespace BookStore.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult removeItem(int idBook)
         {
             ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
             shoppingCart.removeItem(idBook);
-            ViewBag.shoppingCart = shoppingCart;
             return PartialView();
         }
 

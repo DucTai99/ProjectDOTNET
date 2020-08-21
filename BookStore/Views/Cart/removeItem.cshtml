@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "removeItem";
     Layout = "~/Views/Shared/_Layout2.cshtml";
-    ShoppingCart shoppingCart = (ShoppingCart)ViewBag.shoppingCart;
+    ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
 }
 @section jsFooter{
     <script src="~/Assets/Client/js/controller/shopController.js"></script>
