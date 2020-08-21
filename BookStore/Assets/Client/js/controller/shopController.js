@@ -144,6 +144,55 @@
             });
         });
 
+        $(".qtybutton").on("click", function () {
+            var idBook = $(this).data('id');
+            var $button = $(this);
+            var oldValue = $button.parent().find("input").val();
+            if ($button.text() == "+") {
+                if (oldValue < 10) {
+                    var newVal = parseFloat(oldValue) + 1;
+                }
+                else {
+                    newVal = 10;
+                }
+            } else {
+                // Don't allow decrementing below zero
+                if (oldValue > 1) {
+                    var newVal = parseFloat(oldValue) - 1;
+                } else {
+                    newVal = 1;
+                }
+            }
+            $button.parent().find("input").val(newVal);
+            $.ajax({
+                type: "POST",
+                url: "/Cart/changeNumItem",
+                data: {
+                    "idBook": idBook,
+                    "number": newVal,
+                },
+                success: function (response) {
+                    $('#topBody').html('');
+                    $('#topBody').html(response);
+                }
+            })
+        });
+
+        $("#submit-code-sale").on('click', function () {
+            var codeSale = $("#codeSale").val();
+            $.ajax({
+                type: "POST",
+                url: "/Cart/useCodeSale",
+                data: {
+                    "codeSale": codeSale
+                },
+                success: function (response) {
+                    $('#topBody').html('');
+                    $('#topBody').html(response);
+                }
+            })
+        });
+
         $('#btn-submit-comment').on('click', function (event) {
             event.preventDefault();
             var lableUserEmail = $('#lableUserEmail').text();
@@ -170,7 +219,7 @@
                     success: function (response) {
                         $("#CommentArea").html('');
                         $("#CommentArea").html(response);
-                        $("#commentText").text() = '';
+                        $("#commentText").val("");
                     }
                 })
             }

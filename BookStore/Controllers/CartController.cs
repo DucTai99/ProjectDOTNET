@@ -46,5 +46,12 @@ namespace BookStore.Controllers
             shoppingCart.changeNumItem(idBook, number);
             return PartialView();
         }
+
+        public ActionResult useCodeSale(String codeSale)
+        {
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            shoppingCart.totalWithSaleCode(codeSale);
+            return PartialView();
+        }
     }
 }

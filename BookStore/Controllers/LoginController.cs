@@ -24,21 +24,24 @@ namespace BookStore.Controllers
             var req = this.Request.Url;
             if (ModelState.IsValid)
             {
-                var userInDB = new UserDao().login(user); 
+                var userInDB = new UserDao().login(user);
                 if (userInDB != null)
                 {
                     Session["UserId"] = userInDB.idUser.ToString();
                     Session["UserEmail"] = userInDB.email.ToString();
                     Session["UserLevel"] = userInDB.level.ToString();
-                    var redController = Session["redController"].ToString();
-                    if (redController != null)
+                    if (Session["redController"] != null)
                     {
+                        var redController = Session["redController"].ToString();
                         var redAction = Session["redAction"].ToString();
                         Session["redController"] = null;
                         Session["redAction"] = null;
                         return RedirectToAction(redAction, redController);
                     }
-                    return RedirectToAction("Index","Home");
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
             ViewBag.message = "Sai tên đăng nhập hoặc mật khẩu";
@@ -62,7 +65,7 @@ namespace BookStore.Controllers
             }
             else
             {
-                bool success = userDao.signUp(email,password);
+                bool success = userDao.signUp(email, password);
                 if (!success)
                 {
                     ViewBag.existEmail = "Email này đã tồn tại";
