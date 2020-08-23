@@ -57,19 +57,27 @@ namespace Model.DAO
             return db.saches.Where(book => book.tenSach.Contains(name) || book.tenTacGia.Contains(name)).ToList();
         }
 
-        public dynamic listBookTopSell()
+        public List<sach> listBookTopSell()
         {
+            List<sach> listBookTopSell = new List<sach>();
             var query = (from b in db.billcontainsaches
                          group b by b.idSach into g
-                         let Sum = g.Sum(b => b.quantity)
-                         orderby Sum
                          select new
                          {
                              Id = g.Key,
-                             Sum,
-                         }).Take(12).ToList();
-            return query;
+                             Sum = g.Sum(b => b.quantity),
+                         }).OrderByDescending(a => a.Sum).Take(12).ToList();
+            List<int> listIdBook = query.Select(i => i.Id).ToList();
+            foreach(int id in listIdBook)
+            {
+                listBookTopSell.Add(getBookWithID(id));
+            }
+            return listBookTopSell;
         }
 
+        public List<sach> listBookNewest()
+        {
+            return db.saches.OrderByDescending(book => book.ngayXuatBan).Take(12).ToList();
+        }
     }
 }
