@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
+}
+
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
     <div class="container">
@@ -57,7 +61,7 @@
                               top: 0;
                               right: 0;
                             ">
-                                    <img src="img/sale.png" alt="" />
+                                    <img src="~/Assets/Client/img/sale.png" alt="" />
                                     <p style="
                                     font-size: 20px;
                                     position: absolute;
@@ -76,7 +80,7 @@
                                href="img/single-product/bg-2.jpg"
                                data-gall="gallery"
                                title="">
-                                <img src="img/shop/tt12.jpg" alt="" />
+                                <img src="~/Assets/Client/img/shop/tt12.jpg" alt="" />
                             </a>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="three">
@@ -84,7 +88,7 @@
                                href="img/single-product/bg-3.jpg"
                                data-gall="gallery"
                                title="">
-                                <img src="img/shop/tt12.jpg" alt="" />
+                                <img src="~/Assets/Client/img/shop/tt12.jpg" alt="" />
                             </a>
                         </div>
                     </div>
@@ -108,7 +112,7 @@
                             <h2>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ</h2>
                         }
                     </div>
-                    
+
                     <form action="" method="get">
                         <input style="visibility: hidden;"
                                name="maSach"
@@ -171,7 +175,7 @@
                     <div class="clearfix"></div>
                     <div class="tab-content review">
                         <div role="tabpanel" class="tab-pane active" id="more-info">
-                            <p>Hay cực kì</p>
+                            <p>@book.moTa</p>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="data">
                             <table class="table-data-sheet">
@@ -198,36 +202,38 @@
                                         <i class="fas fa-user-ninja"></i>
                                     </div>
                                     <form name="commentArea" class="AreaComment">
-                                        <label style="display: block;">NoName</label>
+                                        @if (Session["UserId"] != null)
+                                        {
+                                            <label style="display: block;" id="lableUserEmail">@Session["UserEmail"]</label>
+                                        }
+                                        @if (Session["UserId"] == null)
+                                        {
+                                            <label style="display: block;" id="lableUserEmail">NoName</label>
+                                        }
+                                        <input type="hidden" id="maSach" style="display : none" value="@book.maSach"/>
                                         <input type="text"
                                                placeholder="Thêm bình luận ...."
-                                               name="commentText" />
-                                        <input type="button" value="Đăng" onclick="comment()" />
+                                               id="commentText" />
+                                        <input type="button" value="Đăng" id="btn-submit-comment" />
                                     </form>
                                 </div>
                                 <div id="CommentArea">
-                                    <!-- <%
-                                                      ArrayList<Comment> listComment = (ArrayList<Comment>) request.getAttribute("listComment");
-                                                      for (int i = 0; i < listComment.size(); i++) {
-                                                  %> -->
-                                    <div class="comment-here"
-                                         style="
-                          box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-                          padding: 10px 5px;
-                        ">
-                                        <div class="user-comment">
-                                            <i class="fas fa-user-ninja"></i>
+                                    @foreach (comment comment in book.comments)
+                                    {
+                                        <div class="comment-here" style=" box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);padding: 10px 5px;">
+                                            <div class="user-comment">
+                                                <i class="fas fa-user-ninja"></i>
+                                            </div>
+                                            <div class="AreaComment"
+                                                 style="display: flex; flex-direction: column;">
+                                                <p style="margin: 0px; font-weight: 600;">@comment.user.email</p>
+                                                <p>
+                                                    @comment.commentText
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div class="AreaComment"
-                                             style="display: flex; flex-direction: column;">
-                                            <p style="margin: 0px; font-weight: 600;">NoName</p>
-                                            <p>
-                                                No commnent
-                                            </p>
-                                        </div>
-                                    </div>
 
-                                    <!-- <%}%> -->
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -239,7 +245,7 @@
     </div>
 </div>
 <!-- Single Product Area End -->
-@{ 
+@{
     var dao = new Model.DAO.BooksDao();
     IEnumerable<sach> listBook = dao.listBookWithType(book.theloaisach.maTheLoai);
 }
@@ -250,49 +256,50 @@
         <div class="row">
             <div class="related-product indicator-style">
 
-                @foreach (var relatedBook in listBook) {
-                <div class="col-md-3">
-                    <div class="single-banner">
-                        <div class="product-wrapper">
-                            <a href="#" class="single-banner-image-wrapper">
-                                <img alt="" src="@relatedBook.hinhAnh" />
-                            </a>
-                            <div class="product-description">
-                                <div class="functional-buttons">
-                                    <a title="Thêm vào giỏ hàng" href="#">
-                                        <i class="fa fa-shopping-cart"></i>
-                                    </a>
-                                    <a href="#" title="Add to Wishlist">
-                                        <i class="far fa-heart"></i>
-                                    </a>
-                                    @{ 
-                                        var idBook = "#productModal" + relatedBook.maSach;
-                                    }
-                                    <a href="#"
-                                       title="Xem nhanh"
-                                       data-toggle="modal"
-                                       data-target="@idBook">
-                                        <i class="fas fa-compress-alt"></i>
-                                    </a>
+                @foreach (var relatedBook in listBook)
+                {
+                    <div class="col-md-3">
+                        <div class="single-banner">
+                            <div class="product-wrapper">
+                                <a href="#" class="single-banner-image-wrapper">
+                                    <img alt="" src="@relatedBook.hinhAnh" />
+                                </a>
+                                <div class="product-description">
+                                    <div class="functional-buttons">
+                                        <a title="Thêm vào giỏ hàng" href="#">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </a>
+                                        <a href="#" title="Add to Wishlist">
+                                            <i class="far fa-heart"></i>
+                                        </a>
+                                        @{
+                                            var idBook = "#productModal" + relatedBook.maSach;
+                                        }
+                                        <a href="#"
+                                           title="Xem nhanh"
+                                           data-toggle="modal"
+                                           data-target="@idBook">
+                                            <i class="fas fa-compress-alt"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        @{
-                            var khuyenMaiOfRelatedBook = relatedBook.khuyenMai;
-                        }
-                        @if (khuyenMaiOfRelatedBook > 0)
-                        {
-                            var newPrice = (relatedBook.gia * 1000) - (relatedBook.gia * 1000 * khuyenMaiOfRelatedBook / 100);
-                            <div style="
+                            @{
+                                var khuyenMaiOfRelatedBook = relatedBook.khuyenMai;
+                            }
+                            @if (khuyenMaiOfRelatedBook > 0)
+                            {
+                                var newPrice = (relatedBook.gia * 1000) - (relatedBook.gia * 1000 * khuyenMaiOfRelatedBook / 100);
+                                <div style="
                             width: 15%;
                             z-index: 999;
                             position: absolute;
                             top: 0;
                             right: 0;
                             ">
-                                <img src="img/sale.png" alt="" />
+                                    <img src="~/Assets/Client/img/sale.png" alt="" />
 
-                                <p style="
+                                    <p style="
                                 font-size: 14px;
                                 position: absolute;
                                 left: 15%;
@@ -300,43 +307,45 @@
                                 transform: translate(0, -50%);
                                 color: white;
                                 ">
-                                    @relatedBook.khuyenMai%
-                                </p>
-                            </div>
-                            <div class="banner-bottom text-center">
-                                <div class="banner-bottom-title" style="height: 40px;">
-                                    <a href="#">@relatedBook.tenSach</a>
+                                        @relatedBook.khuyenMai%
+                                    </p>
                                 </div>
-                                <div style="color: #32b5f3;" class="price-2">
-                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
-                                    <span style="color: black;" class="old-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", relatedBook.gia * 1000)đ</span>
+                                <div class="banner-bottom text-center">
+                                    <div class="banner-bottom-title" style="height: 40px;">
+                                        <a href="#">@relatedBook.tenSach</a>
+                                    </div>
+                                    <div style="color: #32b5f3;" class="price-2">
+                                        @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                        <span style="color: black;" class="old-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", relatedBook.gia * 1000)đ</span>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                        @if (khuyenMaiOfRelatedBook == 0)
-                        {
-                            <div class="banner-bottom text-center">
-                                <div class="banner-bottom-title" style="height: 40px">
-                                    <a href="#">
-                                        @relatedBook.tenSach
-                                    </a>
-                                </div>
-                                <div style="color: #32b5f3" class="price-2">
-                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", relatedBook.gia * 1000)<span>đ</span>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
                             }
+                            @if (khuyenMaiOfRelatedBook == 0)
+                            {
+                                <div class="banner-bottom text-center">
+                                    <div class="banner-bottom-title" style="height: 40px">
+                                        <a href="#">
+                                            @relatedBook.tenSach
+                                        </a>
+                                    </div>
+                                    <div style="color: #32b5f3" class="price-2">
+                                        @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", relatedBook.gia * 1000)<span>đ</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
 <!-- Related Product Area End -->
+
 <!--Quickview Product Start -->
 <div id="quickview-wrapper">
-@foreach (var relatedBook in listBook) {
+    @foreach (var relatedBook in listBook)
+    {
         <!-- Modal -->
         var idBook = "productModal" + relatedBook.maSach;
         <div class="modal fade" id="@idBook" tabindex="-1" role="dialog">
@@ -380,7 +389,7 @@
                                 </div>
                                 <div style="height: 300px; overflow-y: scroll;"
                                      class="quick-desc">
-                                    Hay cực kì
+                                    @relatedBook.moTa
                                 </div>
                             </div>
                             <!-- .product-info -->
@@ -389,6 +398,26 @@
                 </div>
             </div>
         </div>
-}
+    }
+    <!-- Modal for add item to cart success-->
+    <div class="modal animate__animated animate__fadeInDown" id="signIn" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="display:flex; justify-content:center">
+            <div class="modal-content" style="width:30vw">
+                <div class="modal-header">
+                    <button type="button"
+                            class="close"
+                            id="close_modal"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="text-align:center">Vui lòng đăng nhập để bình luận</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for add item to cart success-->
 </div>
 <!--End of Quickview Product-->

@@ -78,6 +78,7 @@
         });
 
         $('.add-item-to-cart').on('click', function (event) {
+
             event.preventDefault();
             var idBook = $(this).data('id');
             var shoppingCart = $('.shoping-cart');
@@ -95,6 +96,38 @@
                     shoppingCart.html(response);
                 }
             })
+        });
+
+        $('#btn-submit-comment').on('click', function (event) {
+            event.preventDefault();
+            var lableUserEmail = $('#lableUserEmail').text();
+            if (lableUserEmail == "NoName") {
+                var signIn = $('#signIn');
+                signIn.css({ "display": "block" });
+                signIn.on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $("#close_modal").on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+            }
+            else {
+                var idBook = $("#maSach").val();
+                var content = $("#commentText").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Shop/addComment",
+                    data: {
+                        "idBook": idBook,
+                        "content" : content,
+                    },
+                    success: function (response) {
+                        $("#CommentArea").html('');
+                        $("#CommentArea").html(response);
+                        $("#commentText").text() = '';
+                    }
+                })
+            }
         });
 
     }

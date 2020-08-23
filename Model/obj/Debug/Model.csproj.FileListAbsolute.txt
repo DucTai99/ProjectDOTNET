@@ -34,7 +34,6 @@ E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csproj.CoreCompileInputs.
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csproj.CopyComplete
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.dll
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.pdb
-E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csprojAssemblyReference.cache
 C:\Users\DuongTai\Desktop\Project\Model\bin\Debug\Model.dll.config
 C:\Users\DuongTai\Desktop\Project\Model\bin\Debug\Model.dll
 C:\Users\DuongTai\Desktop\Project\Model\bin\Debug\Model.pdb
@@ -80,6 +79,7 @@ E:\Java\dotnet\Project\BookStore\Model\bin\Debug\PagedList.Mvc.dll
 E:\Java\dotnet\Project\BookStore\Model\bin\Debug\PagedList.xml
 E:\Java\dotnet\Project\BookStore\Model\bin\Debug\PagedList.Mvc.xml
 <<<<<<< HEAD
+<<<<<<< HEAD
 C:\Users\DuongTai\Desktop\Project\Model\obj\Debug\Model.csprojAssemblyReference.cache
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\Model\bin\Debug\Model.dll.config
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\Model\bin\Debug\Model.dll
@@ -124,3 +124,6 @@ F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\Model\obj\Debug\Model.dll
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\Model\obj\Debug\Model.pdb
 =======
 >>>>>>> 1c08678eb1733a18ef46f99ee08a64c2d08240f0
+=======
+E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csprojAssemblyReference.cache
+>>>>>>> 1de62216c5d5e98fc311bde124973863b094f1fb
