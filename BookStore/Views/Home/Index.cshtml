@@ -1,9 +1,15 @@
-﻿
+﻿@using Model.EF;
+@using System.Globalization;
+@using Model.DAO;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<sach> listBookNewest = ViewData["listBookNewest"] as List<sach>;
+    List<sach> listBookTopSell = ViewData["listBookTopSell"] as List<sach>;
 }
-
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
+}
 <!-- slider Area Start -->
 <div class="slider-area">
     <div class="bend niceties preview-1">
@@ -58,36 +64,20 @@
         </div>
         <div class="row">
             <div class="banner-list">
-                <div class="col-md-4 col-sm-6">
-                    <div class="single-banner">
-                        <a href="shop.html">
-                            <img alt="img" src="~/Assets/Client/img/shop/td21.jpeg" />
-                        </a>
-                        <div class="banner-bottom text-center">
-                            <a href="#">TOP SÁCH BÁN CHẠY 2019</a>
+                @for (var i = 0; i < 3; i++)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div class="single-banner">
+                            <a href="@Url.Action("SingleProduct", "Shop", new {id =listBookTopSell[i].maSach})">
+                                <img alt="img" src="@listBookTopSell[i].hinhAnh" />
+                            </a>
+                            <div class="banner-bottom text-center">
+                                <a href="#">TOP SÁCH BÁN CHẠY 2019</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="single-banner">
-                        <a href="shop.html">
-                            <img alt="img" src="~/Assets/Client/img/shop/td9.jpeg" />
-                        </a>
-                        <div class="banner-bottom text-center">
-                            <a href="#">TOP SÁCH BÁN CHẠY 2019</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="single-banner">
-                        <a href="shop.html">
-                            <img alt="img" src="~/Assets/Client/img/shop/tn14.jpeg" />
-                        </a>
-                        <div class="banner-bottom text-center">
-                            <a href="#">TOP SÁCH BÁN CHẠY 2019</a>
-                        </div>
-                    </div>
-                </div>
+
+                }
             </div>
         </div>
     </div>
@@ -122,1438 +112,270 @@
             <div class="product-list tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="arrival">
                     <div class="featured-product-list indicator-style">
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="shop.html" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn15.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
+                        @for (var i = 0; i < listBookNewest.Count; i++)
+                        {
+                            <div class="single-p-banner">
+                                <div class="col-md-3">
+                                    <div class="single-banner">
+                                        <div class="product-wrapper">
+                                            <a href="@Url.Action("SingleProduct", "Shop", new {id =listBookNewest[i].maSach})" class="single-banner-image-wrapper">
+                                                <img alt="" src="@listBookNewest[i].hinhAnh" />
+                                            </a>
+                                            <div class="product-description">
+                                                <div class="functional-buttons">
+                                                    <a title="Thêm vào giỏ hàng " href="#" class="add-item-to-cart" data-id="@listBookNewest[i].maSach">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </a>
+                                                    <a href="#" title="Thêm vào danh sách yêu thích" class="add-item-to-wishlist" data-id="@listBookNewest[i].maSach">
+                                                        <i class="far fa-heart"></i>
+                                                    </a>
+                                                    @{
+                                                        var target = "#productModal" + listBookNewest[i].maSach;
+                                                    }
+                                                    <a href="#"
+                                                       title="Xem nhanh"
+                                                       data-toggle="modal"
+                                                       data-target="@target">
+                                                        <i class="fas fa-compress-alt"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
+                                        @if (listBookNewest[i].khuyenMai > 0)
+                                        {
+                                            <div style="width: 15%; z-index: 999; position: absolute; top: 0; right: 0;">
+                                                <img src="~/Assets/Client/img/sale.png" alt="" />
+                                                <p style="font-size: 14px; position: absolute; left: 15%; top: 55%; transform: translate(0, -50%); color: white;">
+                                                    @listBookNewest[i].khuyenMai%
+                                                </p>
+                                            </div>
+                                            <div class="banner-bottom text-center">
+                                                <div class="banner-bottom-title" style="height: 40px;">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = listBookNewest[i].maSach})">@listBookNewest[i].tenSach </a>
+                                                </div>
+                                                <div style="color: #32b5f3;" class="price-2">
+                                                    @{var newPrice = (listBookNewest[i].gia * 1000) - (listBookNewest[i].gia * 1000 * listBookNewest[i].khuyenMai / 100);}
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                                    <span style="color: black;" class="old-price">
+                                                        @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", listBookNewest[i].gia * 1000)đ
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (listBookNewest[i].khuyenMai == 0)
+                                        {
+                                            <div class="banner-bottom text-center">
+                                                <div class="banner-bottom-title" style="height: 40px">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = listBookNewest[i].maSach})">
+                                                        @listBookNewest[i].tenSach
+                                                    </a>
+                                                </div>
+                                                <div style="color: #32b5f3" class="price-2">
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", listBookNewest[i].gia * 1000)<span>đ</span>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#"> Name Book </a>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="single-banner">
+                                        <div class="product-wrapper">
+                                            <a href="@Url.Action("SingleProduct", "Shop", new {id =listBookNewest[++i].maSach})" class="single-banner-image-wrapper">
+                                                <img alt="" src="@listBookNewest[i].hinhAnh" />
+                                            </a>
+                                            <div class="product-description">
+                                                <div class="functional-buttons">
+                                                    <a title="Thêm vào giỏ hàng " href="#" class="add-item-to-cart" data-id="@listBookNewest[i].maSach">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </a>
+                                                    <a href="#" title="Thêm vào danh sách yêu thích" class="add-item-to-wishlist" data-id="@listBookNewest[i].maSach">
+                                                        <i class="far fa-heart"></i>
+                                                    </a>
+                                                    @{
+                                                        var target1 = "#productModal" + listBookNewest[i].maSach;
+                                                    }
+                                                    <a href="#"
+                                                       title="Xem nhanh"
+                                                       data-toggle="modal"
+                                                       data-target="@target1">
+                                                        <i class="fas fa-compress-alt"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            250.000đ
-                                            <span style="color: black;" class="old-price">500.000đ</span>
-                                        </div>
+                                        @if (listBookNewest[i].khuyenMai > 0)
+                                        {
+                                            <div style="width: 15%; z-index: 999; position: absolute; top: 0; right: 0;">
+                                                <img src="~/Assets/Client/img/sale.png" alt="" />
+                                                <p style="font-size: 14px; position: absolute; left: 15%; top: 55%; transform: translate(0, -50%); color: white;">
+                                                    @listBookNewest[i].khuyenMai%
+                                                </p>
+                                            </div>
+                                            <div class="banner-bottom text-center">
+                                                <div class="banner-bottom-title" style="height: 40px;">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = listBookNewest[i].maSach})">@listBookNewest[i].tenSach </a>
+                                                </div>
+                                                <div style="color: #32b5f3;" class="price-2">
+                                                    @{var newPrice = (listBookNewest[i].gia * 1000) - (listBookTopSell[i].gia * 1000 * listBookNewest[i].khuyenMai / 100);}
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                                    <span style="color: black;" class="old-price">
+                                                        @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", listBookNewest[i].gia * 1000)đ
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (listBookNewest[i].khuyenMai == 0)
+                                        {
+                                            <div class="banner-bottom text-center">
+                                                <div class="banner-bottom-title" style="height: 40px">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = listBookNewest[i].maSach})">
+                                                        @listBookNewest[i].tenSach
+                                                    </a>
+                                                </div>
+                                                <div style="color: #32b5f3" class="price-2">
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", listBookNewest[i].gia * 1000)<span>đ</span>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn16.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachMoiNhat.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachMoiNhat.get(i).getMaSach()%>><%=listSachMoiNhat.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachMoiNhat.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="shop.html" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn15.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#"> Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            250.000đ
-                                            <span style="color: black;" class="old-price">500.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn16.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachMoiNhat.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachMoiNhat.get(i).getMaSach()%>><%=listSachMoiNhat.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachMoiNhat.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="shop.html" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn15.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#"> Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            250.000đ
-                                            <span style="color: black;" class="old-price">500.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn16.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachMoiNhat.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachMoiNhat.get(i).getMaSach()%>><%=listSachMoiNhat.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachMoiNhat.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="shop.html" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn15.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#"> Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            250.000đ
-                                            <span style="color: black;" class="old-price">500.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn16.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachMoiNhat.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachMoiNhat.get(i).getMaSach()%>><%=listSachMoiNhat.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachMoiNhat.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="shop.html" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn15.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#"> Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            250.000đ
-                                            <span style="color: black;" class="old-price">500.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn16.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachMoiNhat.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachMoiNhat.get(i).getMaSach()%>><%=listSachMoiNhat.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachMoiNhat.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="shop.html" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn15.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#"> Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            250.000đ
-                                            <span style="color: black;" class="old-price">500.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn16.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachMoiNhat.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachMoiNhat.get(i).getMaSach()%>><%=listSachMoiNhat.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachMoiNhat.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                        </div>
+
+                        }
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="sale">
                     <div class="featured-product-list indicator-style">
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
+                        @for (var i = 0; i < listBookTopSell.Count; i++)
+                        {
+                            <div class="single-p-banner">
+                                <div class="col-md-3">
+                                    <div class="single-banner">
+                                        <div class="product-wrapper">
+                                            <a href="@Url.Action("SingleProduct", "Shop", new {id =listBookTopSell[i].maSach})" class="single-banner-image-wrapper">
+                                                <img alt="" src="@listBookTopSell[i].hinhAnh" />
+                                            </a>
+                                            <div class="product-description">
+                                                <div class="functional-buttons">
+                                                    <a title="Thêm vào giỏ hàng " href="#" class="add-item-to-cart" data-id="@listBookTopSell[i].maSach">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </a>
+                                                    <a href="#" title="Thêm vào danh sách yêu thích" class="add-item-to-wishlist" data-id="@listBookTopSell[i].maSach">
+                                                        <i class="far fa-heart"></i>
+                                                    </a>
+                                                    @{
+                                                        var target = "#productModal" + listBookTopSell[i].maSach;
+                                                    }
+                                                    <a href="#"
+                                                       title="Xem nhanh"
+                                                       data-toggle="modal"
+                                                       data-target="@target">
+                                                        <i class="fas fa-compress-alt"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- <% if (listSachBanChay.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachBanChay.get(i).getMaSach()%>><%=listSachBanChay.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachBanChay.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
+                                        @if (listBookTopSell[i].khuyenMai > 0)
+                                        {
+                                            <div style="width: 15%; z-index: 999; position: absolute; top: 0; right: 0;">
+                                                <img src="~/Assets/Client/img/sale.png" alt="" />
+                                                <p style="font-size: 14px; position: absolute; left: 15%; top: 55%; transform: translate(0, -50%); color: white;">
+                                                    @listBookTopSell[i].khuyenMai%
+                                                </p>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
+                                            <div class="banner-bottom text-center">
+                                                <div class="banner-bottom-title" style="height: 40px;">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = listBookTopSell[i].maSach})">@listBookTopSell[i].tenSach </a>
+                                                </div>
+                                                <div style="color: #32b5f3;" class="price-2">
+                                                    @{var newPrice = (listBookTopSell[i].gia * 1000) - (listBookTopSell[i].gia * 1000 * listBookTopSell[i].khuyenMai / 100);}
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                                    <span style="color: black;" class="old-price">
+                                                        @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", listBookTopSell[i].gia * 1000)đ
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (listBookTopSell[i].khuyenMai == 0)
+                                        {
+                                            <div class="banner-bottom text-center">
+                                                <div class="banner-bottom-title" style="height: 40px">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = listBookTopSell[i].maSach})">
+                                                        @listBookTopSell[i].tenSach
+                                                    </a>
+                                                </div>
+                                                <div style="color: #32b5f3" class="price-2">
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", listBookTopSell[i].gia * 1000)<span>đ</span>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
+                                <div class="col-md-3">
+                                    <div class="single-banner">
+                                        <div class="product-wrapper">
+                                            <a href="@Url.Action("SingleProduct", "Shop", new {id =listBookTopSell[++i].maSach})" class="single-banner-image-wrapper">
+                                                <img alt="" src="@listBookTopSell[i].hinhAnh" />
+                                            </a>
+                                            <div class="product-description">
+                                                <div class="functional-buttons">
+                                                    <a title="Thêm vào giỏ hàng " href="#" class="add-item-to-cart" data-id="@listBookTopSell[i].maSach">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </a>
+                                                    <a href="#" title="Thêm vào danh sách yêu thích" class="add-item-to-wishlist" data-id="@listBookTopSell[i].maSach">
+                                                        <i class="far fa-heart"></i>
+                                                    </a>
+                                                    @{
+                                                        var target1 = "#productModal" + listBookTopSell[i].maSach;
+                                                    }
+                                                    <a href="#"
+                                                       title="Xem nhanh"
+                                                       data-toggle="modal"
+                                                       data-target="@target1">
+                                                        <i class="fas fa-compress-alt"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- <% if (listSachBanChay.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachBanChay.get(i).getMaSach()%>><%=listSachBanChay.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachBanChay.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
+                                        @if (listBookTopSell[i].khuyenMai > 0)
+                                        {
+                                            <div style="width: 15%; z-index: 999; position: absolute; top: 0; right: 0;">
+                                                <img src="~/Assets/Client/img/sale.png" alt="" />
+                                                <p style="font-size: 14px; position: absolute; left: 15%; top: 55%; transform: translate(0, -50%); color: white;">
+                                                    @listBookTopSell[i].khuyenMai%
+                                                </p>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
+                                            <div class="banner-bottom text-center">
+                                                <div class="banner-bottom-title" style="height: 40px;">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = listBookTopSell[i].maSach})">@listBookTopSell[i].tenSach </a>
+                                                </div>
+                                                <div style="color: #32b5f3;" class="price-2">
+                                                    @{var newPrice = (listBookTopSell[i].gia * 1000) - (listBookTopSell[i].gia * 1000 * listBookTopSell[i].khuyenMai / 100);}
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                                    <span style="color: black;" class="old-price">
+                                                        @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", listBookTopSell[i].gia * 1000)đ
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (listBookTopSell[i].khuyenMai == 0)
+                                        {
+                                            <div class="banner-bottom text-center">
+                                                <div class="banner-bottom-title" style="height: 40px">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = listBookTopSell[i].maSach})">
+                                                        @listBookTopSell[i].tenSach
+                                                    </a>
+                                                </div>
+                                                <div style="color: #32b5f3" class="price-2">
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", listBookTopSell[i].gia * 1000)<span>đ</span>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachBanChay.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachBanChay.get(i).getMaSach()%>><%=listSachBanChay.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachBanChay.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachBanChay.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachBanChay.get(i).getMaSach()%>><%=listSachBanChay.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachBanChay.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachBanChay.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachBanChay.get(i).getMaSach()%>><%=listSachBanChay.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachBanChay.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-p-banner">
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng " href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <% if (listSachBanChay.get(i).getKhuyenMai() > 0) { %> -->
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                    <!-- <% } else {%>
-                                                  <div class="banner-bottom text-center">
-                                                      <div class="banner-bottom-title" style="height: 40px">
-                                                          <a href=<%= Util.fullPath("singleProductController?idProduct=") + listSachBanChay.get(i).getMaSach()%>><%=listSachBanChay.get(i).getTenSach()%>
-                                                          </a>
-                                                      </div>
-                                                      <div style="color: #32b5f3" class="price-2"><%=listSachBanChay.get(i).getGia()%>.000<span>đ</span>
-                                                      </div>
-                                                  </div>
-                                                  <% }%> -->
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="single-banner">
-                                    <div class="product-wrapper">
-                                        <a href="#" class="single-banner-image-wrapper">
-                                            <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
-                                        </a>
-                                        <div class="product-description">
-                                            <div class="functional-buttons">
-                                                <a title="Thêm vào giỏ hàng" href="#">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="#" title="Thêm vào danh sách yêu thích">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                                <a href="#"
-                                                   title="Xem nhanh"
-                                                   data-toggle="modal"
-                                                   data-target="#productModal1">
-                                                    <i class="fas fa-compress-alt"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="
-                          width: 15%;
-                          z-index: 999;
-                          position: absolute;
-                          top: 0;
-                          right: 0;
-                        ">
-                                        <img src="~/Assets/Client/img/sale.png" alt="" />
-                                        <p style="
-                            font-size: 14px;
-                            position: absolute;
-                            left: 15%;
-                            top: 55%;
-                            transform: translate(0, -50%);
-                            color: white;
-                          ">
-                                            50%
-                                        </p>
-                                    </div>
-                                    <div class="banner-bottom text-center">
-                                        <div class="banner-bottom-title" style="height: 40px;">
-                                            <a href="#">Name Book </a>
-                                        </div>
-                                        <div style="color: #32b5f3;" class="price-2">
-                                            500.000đ
-                                            <span style="color: black;" class="old-price">250.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+                        }
                     </div>
                 </div>
             </div>
@@ -1645,56 +467,160 @@
     </div>
 </div>
 <!-- News Letter Area End -->
+<!-- Modal for add item to cart success-->
+<div class="modal fade" style="z-index:9999" id="addItemSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Thêm vào giỏ hàng thành công
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="display: inline-block; background: #efefef; color: black" id="closeModal" data-dismiss="modal">Continue</button>
+                <button type="button" class="btn btn-default" style="display: inline-block" id="redirectShoppingCart">Đến giỏ hàng</button>
+            </div>
+            <script>
+                    $("#closeModal").on("click", function () {
+                        $("#addItemSuccess").removeClass("show");
+                        $("#addItemSuccess").addClass("fade");
+                    })
+
+                    $("#redirectShoppingCart").on("click", function () {
+                        window.location.replace("@Url.Action("Index", "Cart")");
+                    })
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Modal for add item to cart success-->
+<!-- Need to signIn-->
+<div class="modal fade" style="z-index:9999" id="needToSignIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Ban cần đăng nhâp để thêm vào sản phẩm yêu thích
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="display: inline-block; background: #efefef; color: black" id="closeNeedToSignIn" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-default" style="display: inline-block" id="redirectSignIn">Đăng nhâp</button>
+            </div>
+            <script>
+                    $("#closeNeedToSignIn").on("click", function () {
+                        $("#needToSignIn").removeClass("show");
+                        $("#needToSignIn").addClass("fade");
+                    })
+
+                    $("#redirectSignIn").on("click", function () {
+                        window.location.replace("@Url.Action("SignIn", "Login")");
+                    })
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Need to signIn-->
+<!-- Modal for add item to wishlist success-->
+<div class="modal fade" style="z-index:9999" id="addItemToWishList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Đã thêm vào danh sách yêu thích
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for add item to wishlist success-->
 <!--Quickview Product Start -->
 <div id="quickview-wrapper">
     <!-- Modal -->
-    <div class="modal fade" id="productModal1" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-product" style="display: flex;">
-                        <div class="product-images" style="width: 60%;">
-                            <div class="main-image images">
-                                <img alt="" src="~/Assets/Client/img/shop/tn2.jpeg" />
+    @foreach (var book in listBookTopSell)
+    {
+        var target = "productModal" + book.maSach;<div class="modal fade" id="@target" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-product" style="display: flex;">
+                            <div class="product-images" style="width: 60%;">
+                                <div class="main-image images" style="position: relative;">
+                                    <img alt="" src="@book.hinhAnh" />
+                                    @{
+                                        var khuyenMai = book.khuyenMai;
+                                    }
+                                    @if (khuyenMai > 0)
+                                    {
+                                        <div style=" width: 18%; z-index: 999; position: absolute; top: 0; right: 0; ">
+                                            <img src="~/Assets/Client/img/sale.png" alt="" />
+                                            <p style=" font-size: 18px; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ">
+                                                @khuyenMai%
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
                             </div>
+                            <div class="product-info">
+                                <h1 style="font-size: 22px;">@book.tenSach</h1>
+                                <div class="price-box">
+                                    @if (khuyenMai > 0)
+                                    {
+                                        var newPrice = (book.gia * 1000) - (book.gia * 1000 * khuyenMai / 100);
+                                        <p class="s-price">
+                                            <span class="special-price">
+                                                <span class="amount" style="font-size: 25px;">
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                                </span>
+                                            </span>
+                                            <span style="color: black;" class="old-price">
+                                                @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ
+                                            </span>
+                                        </p>
+                                    }
+                                    @if (khuyenMai == 0)
+                                    {
+
+                                        <p class="s-price">
+                                            <span class="special-price">
+                                                <span class="amount" style="font-size: 25px">
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ
+                                                </span>
+                                            </span>
+                                        </p>
+                                    }
+                                </div>
+                                <a href="@Url.Action("SingleProduct", "Shop", new {id = book.maSach})" class="see-all">Xem chi tiết</a>
+                                <div class="quick-add-to-cart">
+                                    <a style=" display: flex; justify-content: center;  align-items: center; " class="single_add_to_cart_button add-item-to-cart"
+                                       data-id="@book.maSach"
+                                       href="#">
+                                        Mua Ngay
+                                    </a>
+                                </div>
+                                <div style="height: 300px; overflow-y: scroll;"
+                                     class="quick-desc">
+                                    @book.moTa
+                                </div>
+                            </div>
+                            <!-- .product-info -->
                         </div>
-                        <div class="product-info">
-                            <h1 style="font-size: 22px;">Book Name</h1>
-                            <div class="price-box">
-                                <p class="s-price">
-                                    <span class="special-price">
-                                        <span class="amount" style="font-size: 25px;">500.000đ</span>
-                                    </span>
-                                </p>
-                            </div>
-                            <a href="#" class="see-all">Xem chi tiết</a>
-                            <div class="quick-add-to-cart">
-                                <a style="
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                      "
-                                   class="single_add_to_cart_button"
-                                   href="#">Mua Ngay</a>
-                            </div>
-                            <div style="height: 300px; overflow-y: scroll;"
-                                 class="quick-desc">
-                                Hay cực
-                            </div>
-                        </div>
-                        <!-- .product-info -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    }
 </div>
 <!--End of Quickview Product-->

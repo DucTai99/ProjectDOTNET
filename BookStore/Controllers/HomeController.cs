@@ -15,7 +15,8 @@ namespace BookStore.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            dynamic list = new BooksDao().listBookTopSell();
+            ViewData["ListBookTopSell"] = new BooksDao().listBookTopSell();
+            ViewData["ListBookNewest"] = new BooksDao().listBookNewest();
             return View();
         }
 
