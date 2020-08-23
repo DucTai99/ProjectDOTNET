@@ -69,6 +69,23 @@ namespace BookStore.Controllers
             return PartialView();
         }
 
+        [HttpPost]
+        public ActionResult addItemToWishList(int idBook)
+        {
+            if (Session["UserId"] != null)
+            {
+                var idUser = Int32.Parse(Session["UserId"].ToString());
+                new WishListDao().addBookToWishList(idUser, idBook);
+                return Json(new
+                {
+                    error = "NoError"
+                });
+            }
+            return Json(new {
+                error = "NoUser"
+            }) ;
+        }
+
         public ActionResult removeItemFormCart(int idBook)
         {
             ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];

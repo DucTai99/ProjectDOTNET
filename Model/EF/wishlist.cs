@@ -18,5 +18,6 @@ namespace Model.EF
         public virtual sach sach { get; set; }
 
         public virtual user user { get; set; }
+
     }
 }

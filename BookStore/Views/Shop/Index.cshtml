@@ -133,8 +133,7 @@
                                                             <a title="Thêm vào giỏ hàng" class="add-item-to-cart" data-id="@book.maSach" href="#">
                                                                 <i class="fa fa-shopping-cart"></i>
                                                             </a>
-                                                            <a href="#"
-                                                               title="Thêm vào danh sách yêu thích">
+                                                            <a href="#" title="Thêm vào danh sách yêu thích" class="add-item-to-wishlist" data-id="@book.maSach">
                                                                 <i class="far fa-heart"></i>
                                                             </a>
                                                             @{
@@ -322,6 +321,49 @@
     </div>
 </div>
 <!-- Modal for add item to cart success-->
+
+<!-- Need to signIn-->
+<div class="modal fade" id="needToSignIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Ban cần đăng nhâp để thêm vào sản phẩm yêu thích
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="display: inline-block; background: #efefef; color: black" id="closeNeedToSignIn" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-default" style="display: inline-block" id="redirectSignIn">Đăng nhâp</button>
+            </div>
+            <script>
+                    $("#closeNeedToSignIn").on("click", function () {
+                        $("#needToSignIn").removeClass("show");
+                        $("#needToSignIn").addClass("fade");
+                    })
+
+                    $("#redirectSignIn").on("click", function () {
+                        window.location.replace("@Url.Action("SignIn", "Login")");
+                    })
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Need to signIn-->
+
+
+<!-- Modal for add item to wishlist success-->
+<div class="modal fade" id="addItemToWishList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Đã thêm vào danh sách yêu thích
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for add item to wishlist success-->
 <!--Quickview Product Start -->
 
 <div id="quickview-wrapper">

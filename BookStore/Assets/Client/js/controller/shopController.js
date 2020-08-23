@@ -225,6 +225,82 @@
             }
         });
 
+        $(".add-item-to-wishlist").on('click', function (event) {
+            event.preventDefault();
+            var idBook = $(this).data('id');
+            var addItemToWishList = $('#addItemToWishList');
+            var needToSignIn = $('#needToSignIn');
+            $.ajax({
+                type: "POST",
+                url: "/Shop/addItemToWishList",
+                data: {
+                    "idBook": idBook
+                },
+                success: function (response) {
+                    if (response.error == "NoUser") {
+                        needToSignIn.removeClass("fade");
+                        needToSignIn.addClass("show");
+                    }
+                    else {
+                        addItemToWishList.removeClass("fade");
+                        addItemToWishList.addClass("show");
+                        setTimeout(function () {
+                            addItemToWishList.removeClass("show");
+                            addItemToWishList.addClass("fade");
+                        }, 700);
+                    }
+                }
+            })
+        });
+
+        $("#changePass").on('click', function (event) {
+            event.preventDefault();
+            var currentPass = $('#current-pass');
+            var newPass = $('#newPass');
+            var cfPass = $('#cfPass');
+            if (currentPass.val() == "" || newPass.val() == "" || cfPass == "") {
+                $('#errorWrongNewPass').text("Cần nhâp đầy đủ");
+                $('#errorWrongNewPass').show();
+            }
+            else if (newPass.val() != cfPass.val()) {
+                var errorWrongNewPass = $('#errorWrongNewPass');
+                errorWrongNewPass.text("Nhâp mât khẩu lai sai");
+                errorWrongNewPass.show();
+                cfPass.val("");
+            }
+            else {
+                 $.ajax({
+                    type: "POST",
+                     url: "/Account/changePassWord",
+                    data: {
+                        "currentPass": currentPass.val(),
+                        "newPass": newPass.val()
+                    },
+                     success: function (response) {
+                         console.log(response);
+                        if (response.error == "CurrentPassWordWrong") {
+                            $('#errorWrongNewPass').text("Nhâp mât khẩu hiên tai sai ");
+                            $('#errorWrongNewPass').show();
+                            currentPass.val("");
+                            cfPass.val("");
+                            newPass.val("");
+                        }
+                        else {
+                            $('#changePassWordSuccess').removeClass("fade");
+                            $('#changePassWordSuccess').addClass("show");
+                            setTimeout(function () {
+                                $('#changePassWordSuccess').removeClass("show");
+                                $('#changePassWordSuccess').addClass("fade");
+                                $('#errorWrongNewPass').hide();
+                                currentPass.val("");
+                                cfPass.val("");
+                                newPass.val("");
+                            }, 1000);
+                        }
+                    }
+                })
+            }
+        });
     }
 }
 book.init();

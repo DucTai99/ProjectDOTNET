@@ -1,9 +1,14 @@
-﻿
+﻿@using Model.EF;
+@using System.Globalization;
 @{
     ViewBag.Title = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+    var userEmail = Session["UserEmail"].ToString();
+}
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
     <div class="container">
@@ -13,7 +18,7 @@
                     <h2>Thanh toán</h2>
                     <ul class="breadcrumbs-list">
                         <li>
-                            <a title="Return to Home" href="index.html">Trang chủ</a>
+                            <a title="Return to Home" href="@Url.Action("Index","Home")">Trang chủ</a>
                         </li>
                         <li>Thanh toán</li>
                     </ul>
@@ -79,7 +84,7 @@
                                                 <input type="text"
                                                        name="email"
                                                        placeholder="Địa chỉ email *"
-                                                       value="mail@gmail.com" />
+                                                       value="@userEmail" />
                                             </p>
                                         </div>
                                         <div class="col-md-6">
@@ -242,47 +247,41 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <!-- <% ArrayList<Sach> listSach = (ArrayList<Sach>) request.getAttribute("listSach");
-                                                                      for (int i = 0; i < cart.gioHang.size(); i++) {
-                                                                      %> -->
-                                                    <tr>
-                                                        <td><h3 class="product-name">Book Name</h3></td>
-                                                        <!-- <% if (cart.gioHang.get(i).getKhuyenMai() > 0) { %> -->
-                                                        <!-- <td>
-                                                          <span class="cart-price"
-                                                            ><span class="check-price"
-                                                              >500.000đ</span
-                                                            ></span
-                                                          >
-                                                        </td> -->
-                                                        <!-- <%} else {%> -->
-                                                        <td>
-                                                            <span class="cart-price"><span class="check-price">500.000đ</span></span>
-                                                        </td>
-                                                        <!-- <%}%> -->
-                                                        <td>5</td>
-                                                        <!-- <%  int tongTienSach = 0;
-                                                                            if (cart.gioHang.get(i).getKhuyenMai() > 0) {
-                                                                                tongTienSach = cart.gioHang.get(i).tienKhuyenMai()*cart.gioHang.get(i).getSoLuongMua();
-                                                                            } else {
-                                                                                tongTienSach = cart.gioHang.get(i).getGia()*cart.gioHang.get(i).getSoLuongMua();
-                                                                            }%> -->
-                                                        <!-- sub total starts here -->
-                                                        <td>
-                                                            <span class="cart-price">
-                                                                <span class="check-price">500.000đ</span>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <!-- <%}%> -->
-                                                    </tr>
+                                                    @foreach (Item item in shoppingCart.listItem)
+                                                    {
+
+                                                        <tr>
+                                                            <td>
+                                                                <h3 class="product-name">@item.book.tenSach</h3>
+                                                            </td>
+
+                                                            <td>
+                                                                <span class="cart-price">
+                                                                    <span class="check-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.price * 1000)đ</span>
+                                                                </span>
+                                                            </td>
+                                                            <td>@item.quantity</td>
+                                                            <!-- <%  int tongTienSach = 0;
+                                                                                if (cart.gioHang.get(i).getKhuyenMai() > 0) {
+                                                                                    tongTienSach = cart.gioHang.get(i).tienKhuyenMai()*cart.gioHang.get(i).getSoLuongMua();
+                                                                                } else {
+                                                                                    tongTienSach = cart.gioHang.get(i).getGia()*cart.gioHang.get(i).getSoLuongMua();
+                                                                                }%> -->
+                                                            <!-- sub total starts here -->
+                                                            <td>
+                                                                <span class="cart-price">
+                                                                    <span class="check-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.total * 1000)đ</span>
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                 </tbody>
 
                                                 <tfoot>
                                                     <tr>
                                                         <td colspan="3">Tạm tính</td>
                                                         <td>
-                                                            <span class="check-price">500.000đ</span>
+                                                            <span class="check-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", shoppingCart.total * 1000)đ</span>
                                                         </td>
                                                     </tr>
                                                     <!-- <% int khuyenMai = (int) request.getAttribute("khuyenMai");
@@ -290,7 +289,7 @@
                                                                   %> -->
                                                     <tr>
                                                         <td colspan="3">Mã giảm giá</td>
-                                                        <td><span class="check-price">50%</span></td>
+                                                        <td><span class="check-price">@shoppingCart.saleCode%</span></td>
                                                     </tr>
                                                     <!-- <%}%> -->
                                                     <tr>
@@ -298,7 +297,7 @@
                                                         <!-- <%if(khuyenMai>0){%> -->
                                                         <td>
                                                             <strong>
-                                                                <span class="check-price">250.000đ</span>
+                                                                <span class="check-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", shoppingCart.totalWithSaleCode("") * 1000)đ</span>
                                                             </strong>
                                                         </td>
                                                         <!-- <%} else {%>
@@ -311,7 +310,7 @@
                                         <div id="checkout-review-submit">
                                             <div class="cart-btn-3" id="review-buttons-container">
                                                 <p class="left">
-                                                    <a href="cart.html">Chỉnh sửa giỏ hàng</a>
+                                                    <a href="@Url.Action("Index","Cart")">Chỉnh sửa giỏ hàng</a>
                                                 </p>
                                                 <button type="submit"
                                                         title="Place Order"

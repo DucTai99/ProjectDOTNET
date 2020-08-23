@@ -3,7 +3,9 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
+}
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
     <div class="container">
@@ -13,7 +15,7 @@
                     <h2>Cá nhân</h2>
                     <ul class="breadcrumbs-list">
                         <li>
-                            <a title="Return to Home" href="../Home/Index">Trang chủ</a>
+                            <a title="Return to Home" href="@Url.Action("Index","Home")">Trang chủ</a>
                         </li>
                         <li>Cá nhân</li>
                     </ul>
@@ -65,166 +67,167 @@
                                             nếu nó đã thay đổi.
                                         </p>
                                         <p class="required">*Bắt buộc</p>
-                                        <form action="" method="post">
-                                            <p class="form-row">
-                                                <input type="text" placeholder="Địa chỉ email *" />
-                                            </p>
-                                            <p class="form-row">
-                                                <input type="text" placeholder="Địa chỉ *" />
-                                            </p>
-                                            <p class="form-row">
-                                                <input type="text" placeholder="Số điện thoại *" />
-                                            </p>
-                                            <div class="form-row">
-                                                <label>
-                                                    <span class="required">*</span>Giới tính
-                                                </label>
-                                                <div class="radio-inline">
-                                                    <label class="top">
-                                                        <span class="checked">
-                                                            <input type="radio"
-                                                                   name="gender"
-                                                                   value="male" />
-                                                        </span>
-                                                        Nam
-                                                    </label>
-                                                </div>
-                                                <div class="radio-inline">
-                                                    <label class="top">
-                                                        <span class="checked">
-                                                            <input type="radio"
-                                                                   name="gender"
-                                                                   value="female" />
-                                                        </span>
-                                                        Nữ
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="country-select shop-select">
-                                                <label>Ngày sinh</label>
-                                                <div class="row">
-                                                    <div class="col-xs-4">
-                                                        <select>
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
-                                                            <option>6</option>
-                                                            <option>7</option>
-                                                            <option>8</option>
-                                                            <option>9</option>
-                                                            <option>10</option>
-                                                            <option>11</option>
-                                                            <option>12</option>
-                                                            <option>13</option>
-                                                            <option>14</option>
-                                                            <option>15</option>
-                                                            <option>16</option>
-                                                            <option>17</option>
-                                                            <option>18</option>
-                                                            <option>19</option>
-                                                            <option>20</option>
-                                                            <option>21</option>
-                                                            <option>22</option>
-                                                            <option>23</option>
-                                                            <option>24</option>
-                                                            <option>25</option>
-                                                            <option>26</option>
-                                                            <option>27</option>
-                                                            <option>28</option>
-                                                            <option>29</option>
-                                                            <option>30</option>
-                                                            <option>31</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-xs-4">
-                                                        <select>
-                                                            <option>Tháng 1</option>
-                                                            <option>Tháng 2</option>
-                                                            <option>Tháng 3</option>
-                                                            <option>Tháng 4</option>
-                                                            <option>Tháng 5</option>
-                                                            <option>Tháng 6</option>
-                                                            <option>Tháng 7</option>
-                                                            <option>Tháng 8</option>
-                                                            <option>Tháng 9</option>
-                                                            <option>Tháng 10</option>
-                                                            <option>Tháng 11</option>
-                                                            <option>Tháng 12</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-xs-4">
-                                                        <select>
-                                                            <option>1989</option>
-                                                            <option>1990</option>
-                                                            <option>1991</option>
-                                                            <option>1992</option>
-                                                            <option>1993</option>
-                                                            <option>1994</option>
-                                                            <option>1995</option>
-                                                            <option>1996</option>
-                                                            <option>1997</option>
-                                                            <option>1998</option>
-                                                            <option>1999</option>
-                                                            <option>2000</option>
-                                                            <option>2001</option>
-                                                            <option>2002</option>
-                                                            <option>2003</option>
-                                                            <option>2004</option>
-                                                            <option>2005</option>
-                                                            <option>2006</option>
-                                                            <option>2007</option>
-                                                            <option>2008</option>
-                                                            <option>2009</option>
-                                                            <option>2010</option>
-                                                            <option>2011</option>
-                                                            <option>2012</option>
-                                                            <option>2013</option>
-                                                            <option>2014</option>
-                                                            <option>2016</option>
-                                                            <option>2016</option>
-                                                            <option>2017</option>
-                                                            <option>2018</option>
-                                                            <option>2019</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <p>Thay đổi mật khẩu</p>
-                                            <p class="form-row">
-                                                <input type="text"
-                                                       name="current-pass"
-                                                       placeholder="Mật khẩu hiện tại" />
-                                            </p>
-                                            <p class="form-row">
-                                                <input type="text"
-                                                       name="newPass"
-                                                       placeholder="Mật khẩu mới" />
-                                            </p>
-                                            <p class="form-row">
-                                                <input type="text"
-                                                       name="cfPass"
-                                                       placeholder="Nhập lại mật khẩu mới" />
-                                            </p>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <span>
-                                                        <input type="checkbox" checked="checked" />
+                                        <p class="form-row">
+                                            <input type="text" placeholder="Địa chỉ email *" />
+                                        </p>
+                                        <p class="form-row">
+                                            <input type="text" placeholder="Địa chỉ *" />
+                                        </p>
+                                        <p class="form-row">
+                                            <input type="text" placeholder="Số điện thoại *" />
+                                        </p>
+                                        <div class="form-row">
+                                            <label>
+                                                <span class="required">*</span>Giới tính
+                                            </label>
+                                            <div class="radio-inline">
+                                                <label class="top">
+                                                    <span class="checked">
+                                                        <input type="radio"
+                                                               name="gender"
+                                                               value="male" />
                                                     </span>
-                                                    Đăng ký nhận bản tin của chúng tôi!
+                                                    Nam
                                                 </label>
                                             </div>
-                                            <a title="Save"
-                                               class="btn button button-small"
-                                               href="index.jsp">
+                                            <div class="radio-inline">
+                                                <label class="top">
+                                                    <span class="checked">
+                                                        <input type="radio"
+                                                               name="gender"
+                                                               value="female" />
+                                                    </span>
+                                                    Nữ
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="country-select shop-select">
+                                            <label>Ngày sinh</label>
+                                            <div class="row">
+                                                <div class="col-xs-4">
+                                                    <select>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                        <option>6</option>
+                                                        <option>7</option>
+                                                        <option>8</option>
+                                                        <option>9</option>
+                                                        <option>10</option>
+                                                        <option>11</option>
+                                                        <option>12</option>
+                                                        <option>13</option>
+                                                        <option>14</option>
+                                                        <option>15</option>
+                                                        <option>16</option>
+                                                        <option>17</option>
+                                                        <option>18</option>
+                                                        <option>19</option>
+                                                        <option>20</option>
+                                                        <option>21</option>
+                                                        <option>22</option>
+                                                        <option>23</option>
+                                                        <option>24</option>
+                                                        <option>25</option>
+                                                        <option>26</option>
+                                                        <option>27</option>
+                                                        <option>28</option>
+                                                        <option>29</option>
+                                                        <option>30</option>
+                                                        <option>31</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <select>
+                                                        <option>Tháng 1</option>
+                                                        <option>Tháng 2</option>
+                                                        <option>Tháng 3</option>
+                                                        <option>Tháng 4</option>
+                                                        <option>Tháng 5</option>
+                                                        <option>Tháng 6</option>
+                                                        <option>Tháng 7</option>
+                                                        <option>Tháng 8</option>
+                                                        <option>Tháng 9</option>
+                                                        <option>Tháng 10</option>
+                                                        <option>Tháng 11</option>
+                                                        <option>Tháng 12</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <select>
+                                                        <option>1989</option>
+                                                        <option>1990</option>
+                                                        <option>1991</option>
+                                                        <option>1992</option>
+                                                        <option>1993</option>
+                                                        <option>1994</option>
+                                                        <option>1995</option>
+                                                        <option>1996</option>
+                                                        <option>1997</option>
+                                                        <option>1998</option>
+                                                        <option>1999</option>
+                                                        <option>2000</option>
+                                                        <option>2001</option>
+                                                        <option>2002</option>
+                                                        <option>2003</option>
+                                                        <option>2004</option>
+                                                        <option>2005</option>
+                                                        <option>2006</option>
+                                                        <option>2007</option>
+                                                        <option>2008</option>
+                                                        <option>2009</option>
+                                                        <option>2010</option>
+                                                        <option>2011</option>
+                                                        <option>2012</option>
+                                                        <option>2013</option>
+                                                        <option>2014</option>
+                                                        <option>2016</option>
+                                                        <option>2016</option>
+                                                        <option>2017</option>
+                                                        <option>2018</option>
+                                                        <option>2019</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>Thay đổi mật khẩu</p>
+                                        <p class="form-row">
+                                            <input type="password"
+                                                   id="current-pass"
+                                                   placeholder="Mật khẩu hiện tại" />
+                                        </p>
+                                        <p class="form-row">
+                                            <input type="password"
+                                                   id="newPass"
+                                                   placeholder="Mật khẩu mới" />
+                                        </p>
+                                        <p class="form-row">
+                                            <input type="password"
+                                                   id="cfPass"
+                                                   placeholder="Nhập lại mật khẩu mới" />
+                                        </p>
+                                        <p class="form-row" hidden id="errorWrongNewPass" style="color: red">
+                                            Mât khẩu nhâp lai bi sai
+                                        </p>
+                                        <div class="checkbox">
+                                            <label>
                                                 <span>
-                                                    Cập nhật
-                                                    <i class="fa fa-chevron-right"></i>
+                                                    <input type="checkbox" checked="checked" />
                                                 </span>
-                                            </a>
-                                            <input type="submit" value="Đổi mật khẩu" />
-                                        </form>
+                                                Đăng ký nhận bản tin của chúng tôi!
+                                            </label>
+                                        </div>
+                                        <a title="Save"
+                                           class="btn button button-small"
+                                           href="#">
+                                            <span>
+                                                Cập nhật
+                                                <i class="fa fa-chevron-right"></i>
+                                            </span>
+                                        </a>
+                                        <input type="submit" value="Đổi mật khẩu" id="changePass" />
                                     </div>
                                 </div>
                             </div>
@@ -392,3 +395,16 @@
     </div>
 </div>
 <!-- My Account Area End -->
+<!-- Modal for add item to wishlist success-->
+<div class="modal fade" id="changePassWordSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Đổi mât khẩu thành công
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for add item to wishlist success-->
