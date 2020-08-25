@@ -1,7 +1,6 @@
 ﻿@using Model.EF;
 @using System.Globalization;
 
-
 <a href="@Url.Action("Index", "Cart")">
     <i class="flaticon-shop"></i>
     @{
@@ -39,9 +38,9 @@
                             }
                         </p>
                     </div>
-                    <a data-id="@item.book.maSach" class="remove-item-from-cart">
+                    <a class="remove-item-from-cart" data-id="@item.book.maSach" href="#">
                         <div class="cart-product-remove">
-                            <i class="fa fa-times" ></i>
+                            <i class="fa fa-times"></i>
                         </div>
                     </a>
                 </div>

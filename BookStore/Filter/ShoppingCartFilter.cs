@@ -14,7 +14,7 @@ namespace BookStore.Filter
             HttpSessionStateBase session = filterContext.HttpContext.Session;
             Controller controller = filterContext.Controller as Controller;
             var i = controller.ControllerContext.RouteData;
-            if(session["shoppingCart"] == null)
+            if (session["shoppingCart"] == null)
             {
                 session["shoppingCart"] = new ShoppingCart();
             }

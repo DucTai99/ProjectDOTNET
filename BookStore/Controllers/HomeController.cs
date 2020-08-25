@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,20 +10,15 @@ namespace BookStore.Controllers
 {
     public class HomeController : Controller
     {
-        
+
         // GET: Home
         public ActionResult Index()
         {
-
-            var bookDao = new BooksDao();
-            ViewData["top3Selling"] = new BooksDao().topSelling().Take(3);
-            //list sách mới
-            ViewData["newBook"] = new BooksDao().newBook().Take(8);
-
-
-
+            ViewData["ListBookTopSell"] = new BooksDao().listBookTopSell();
+            ViewData["ListBookNewest"] = new BooksDao().listBookNewest();
             return View();
         }
 
+        //public IEnumerable<sach> listBookWithPage
     }
 }

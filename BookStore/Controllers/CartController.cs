@@ -26,5 +26,33 @@ namespace BookStore.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult removeItem(int idBook)
+        {
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            shoppingCart.removeItem(idBook);
+            return PartialView();
+        }
+
+        public ActionResult removeAllItem()
+        {
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            shoppingCart.removeAllItem();
+            return PartialView();
+        }
+
+        public ActionResult changeNumItem(int idBook, int number)
+        {
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            shoppingCart.changeNumItem(idBook, number);
+            return PartialView();
+        }
+
+        public ActionResult useCodeSale(String codeSale)
+        {
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            shoppingCart.totalWithSaleCode(codeSale);
+            return PartialView();
+        }
     }
 }

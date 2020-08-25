@@ -9,6 +9,7 @@ namespace Model.EF
     [Table("bookstore.wishlist")]
     public partial class wishlist
     {
+        [Key]
         public int id { get; set; }
 
         public int? idUser { get; set; }
@@ -18,5 +19,6 @@ namespace Model.EF
         public virtual sach sach { get; set; }
 
         public virtual user user { get; set; }
+
     }
 }

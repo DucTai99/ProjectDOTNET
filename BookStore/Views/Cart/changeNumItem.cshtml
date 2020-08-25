@@ -1,12 +1,9 @@
 ﻿@using Model.EF;
 @using System.Globalization;
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@{
-    ShoppingCart shoppingCart = (ShoppingCart)ViewBag.shoppingCart;
+    ViewBag.Title = "changeNumItem";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
 }
 @section jsFooter{
     <script src="~/Assets/Client/js/controller/shopController.js"></script>
@@ -63,14 +60,6 @@
                                         </div>
                                     </div>
                                 }
-
-
-
-
-
-
-
-
                                 @if (item.book.khuyenMai == 0)
                                 {
                                     <div class="img-product" style="margin-right: 20px">

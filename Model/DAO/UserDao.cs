@@ -17,9 +17,15 @@ namespace Model.DAO
 
         public bool updatePassword(int idUser, string oldPassWordUser, string newPassWordUser) {
             bool changeSuccess = false;
-            user userFromDB = db.users.First(user => user.idUser == idUser && user.password.Equals(oldPassWordUser));
-            userFromDB.password = newPassWordUser;
-            db.SaveChanges();
+            var currentPass = encMd5PassWord(oldPassWordUser);
+            var newPass = encMd5PassWord(newPassWordUser);
+            user userFromDB = db.users.Where(user => user.idUser == idUser && user.password.Equals(currentPass)).FirstOrDefault();
+            if (userFromDB != null)
+            {
+                userFromDB.password = newPass;
+                db.SaveChanges();
+                changeSuccess = true;
+            }
 
             return changeSuccess;
         }
@@ -67,6 +73,10 @@ namespace Model.DAO
             password = BitConverter.ToString(encodedBytes).Replace("-", "");
             var result = password.ToLower();
             return result;
+        }
+        public user getWislistWithIdUser(int idUser)
+        {
+            return db.users.Where(user => user.idUser == idUser).FirstOrDefault();
         }
     }
 }

@@ -24,16 +24,5 @@ namespace Model.DAO
             return true;
         }
 
-        ////
-        /// wislis
-
-        public IEnumerable<wishlist> listBookWistlist(int iDUser)
-        {
-            return db.wishlists.Where(wl => wl.idUser == iDUser);
-        }
-
-
-
-
     }
 }

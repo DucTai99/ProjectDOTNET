@@ -127,3 +127,4 @@ F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\Model\obj\Debug\Model.pdb
 E:\Java\dotnet\Project\BookStore\Model\obj\Debug\Model.csprojAssemblyReference.cache
 >>>>>>> 1de62216c5d5e98fc311bde124973863b094f1fb
 >>>>>>> Stashed changes
+>>>>>>> 4832da6cdf22c2026785e631ec6eb2a077e570d6

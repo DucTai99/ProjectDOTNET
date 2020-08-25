@@ -113,6 +113,7 @@
     <Compile Include="DAO\BookTypeDao.cs" />
     <Compile Include="DAO\CommentDao.cs" />
     <Compile Include="DAO\UserDao.cs" />
+    <Compile Include="DAO\WishListDao.cs" />
     <Compile Include="EF\bill.cs" />
     <Compile Include="EF\billcontainsach.cs" />
     <Compile Include="EF\BookStoreDbContext.cs" />

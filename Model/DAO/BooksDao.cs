@@ -6,24 +6,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PagedList;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace Model.DAO
 {
     public class BooksDao
     {
         private BookStoreDbContext db;
-        public BooksDao() {
+        public BooksDao()
+        {
             this.db = new BookStoreDbContext();
         }
 
-        public List<sach> getAllBook() {
+        public List<sach> getAllBook()
+        {
             List<sach> listBook = new List<sach>();
             listBook = db.saches.ToList();
 
             return listBook;
         }
 
-        public sach getBookWithID(int id) {
+        public sach getBookWithID(int id)
+        {
             return db.saches.Where(book => book.maSach == id).FirstOrDefault();
         }
 
@@ -32,7 +36,8 @@ namespace Model.DAO
             return db.saches.Where(book => book.khuyenMai > 0).OrderByDescending(book => book.khuyenMai);
         }
 
-        public IEnumerable<sach> listAllBookWithPaging(int pageNum, int pageSize) {
+        public IEnumerable<sach> listAllBookWithPaging(int pageNum, int pageSize)
+        {
             return db.saches.OrderBy(book => book.maSach).ToPagedList(pageNum, pageSize);
         }
 
@@ -56,23 +61,27 @@ namespace Model.DAO
             return db.saches.Where(book => book.tenSach.Contains(name) || book.tenTacGia.Contains(name)).ToList();
         }
 
-        //Sách bán chạy
-        public List<billcontainsach> topSelling()
+        public List<sach> listBookTopSell()
         {
-            var books = db.billcontainsaches.OrderByDescending(bill => bill.quantity);
-            return books.ToList();
+            List<sach> listBookTopSell = new List<sach>();
+            var query = (from b in db.billcontainsaches
+                         group b by b.idSach into g
+                         select new
+                         {
+                             Id = g.Key,
+                             Sum = g.Sum(b => b.quantity),
+                         }).OrderByDescending(a => a.Sum).Take(12).ToList();
+            List<int> listIdBook = query.Select(i => i.Id).ToList();
+            foreach (int id in listIdBook)
+            {
+                listBookTopSell.Add(getBookWithID(id));
+            }
+            return listBookTopSell;
         }
-        //SÁCH MỚI : 
 
-        public List<sach> newBook()
+        public List<sach> listBookNewest()
         {
-            var newBooks = db.saches.OrderByDescending(book => book.ngayXuatBan);
-            return newBooks.ToList();
+            return db.saches.OrderByDescending(book => book.ngayXuatBan).Take(12).ToList();
         }
-
-<<<<<<< Updated upstream
-=======
-       
->>>>>>> Stashed changes
     }
 }

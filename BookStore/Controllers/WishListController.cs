@@ -15,15 +15,9 @@ namespace BookStore.Controllers
         // GET: WishList
         public ActionResult Index()
         {
-
-            var idUser = Int32.Parse(Session["UserId"].ToString());
-            //WishListDao().addBookToWishList(idUser, idBook);
-            //WishListDao wlDao = new WishListDao();
-            //var wishList = new  WishListDao().addBookToWishList(idUser, idBook);
-            //var wl = new WishListDao().listBookWistlist(idBook);
-            var wl = new WishListDao().listBookWistlist(Int32.Parse(Session["UserId"].ToString()));
-            ViewData["wishListDao"] = wl;
-            return PartialView();
+            var user = new UserDao().getWislistWithIdUser(Int32.Parse(Session["UserId"].ToString()));
+            ViewData["user"] = user;
+            return View();
         }
     }
 }

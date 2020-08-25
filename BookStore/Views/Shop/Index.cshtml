@@ -10,7 +10,6 @@
 @section jsFooter{
     <script src="~/Assets/Client/js/controller/shopController.js"></script>
 }
-
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
     <div class="container">
@@ -133,8 +132,7 @@
                                                             <a title="Thêm vào giỏ hàng" class="add-item-to-cart" data-id="@book.maSach" href="#">
                                                                 <i class="fa fa-shopping-cart"></i>
                                                             </a>
-                                                            <a href="#"
-                                                               title="Thêm vào danh sách yêu thích">
+                                                            <a href="#" title="Thêm vào danh sách yêu thích" class="add-item-to-wishlist" data-id="@book.maSach">
                                                                 <i class="far fa-heart"></i>
                                                             </a>
                                                             @{
@@ -154,8 +152,7 @@
                                                 }
                                                 @if (khuyenMai > 0)
                                                 {
-                                                    <div style="
-                                                  width: 15%;
+                                                    <div style=" width: 15%;
                                                   z-index: 999;
                                                   position: absolute;
                                                   top: 0;
@@ -293,7 +290,7 @@
 </div>
 <!-- Shop Area End -->
 <!-- Modal for add item to cart success-->
-<div class="modal fade" id="addItemSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" style="z-index:9999" id="addItemSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #32b5f3">
@@ -322,6 +319,46 @@
     </div>
 </div>
 <!-- Modal for add item to cart success-->
+<!-- Need to signIn-->
+<div class="modal fade" style="z-index:9999" id="needToSignIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Ban cần đăng nhâp để thêm vào sản phẩm yêu thích
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="display: inline-block; background: #efefef; color: black" id="closeNeedToSignIn" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-default" style="display: inline-block" id="redirectSignIn">Đăng nhâp</button>
+            </div>
+            <script>
+                    $("#closeNeedToSignIn").on("click", function () {
+                        $("#needToSignIn").removeClass("show");
+                        $("#needToSignIn").addClass("fade");
+                    })
+
+                    $("#redirectSignIn").on("click", function () {
+                        window.location.replace("@Url.Action("SignIn", "Login")");
+                    })
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Need to signIn-->
+<!-- Modal for add item to wishlist success-->
+<div class="modal fade" style="z-index:9999" id="addItemToWishList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Đã thêm vào danh sách yêu thích
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for add item to wishlist success-->
 <!--Quickview Product Start -->
 
 <div id="quickview-wrapper">
@@ -353,22 +390,9 @@
                                     }
                                     @if (khuyenMai > 0)
                                     {
-                                        <div style="
-                                        width: 18%;
-                                        z-index: 999;
-                                        position: absolute;
-                                        top: 0;
-                                        right: 0;
-                                    ">
+                                        <div style=" width: 18%; z-index: 999; position: absolute; top: 0; right: 0; ">
                                             <img src="~/Assets/Client/img/sale.png" alt="" />
-                                            <p style="
-                                      font-size: 18px;
-                                      color: white;
-                                      position: absolute;
-                                      top: 50%;
-                                      left: 50%;
-                                      transform: translate(-50%, -50%);
-                                    ">
+                                            <p style=" font-size: 18px; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ">
                                                 @khuyenMai%
                                             </p>
                                         </div>
@@ -378,7 +402,6 @@
                             <div class="product-info">
                                 <h1 style="font-size: 22px;">@book.tenSach</h1>
                                 <div class="price-box">
-                                    <!-- <% if (listSach.get(i).getKhuyenMai() > 0) { %> -->
                                     @if (khuyenMai > 0)
                                     {
                                         var newPrice = (book.gia * 1000) - (book.gia * 1000 * khuyenMai / 100);
@@ -405,15 +428,11 @@
                                         </p>
                                     }
                                 </div>
-                                <a href="#" class="see-all">Xem chi tiết</a>
+                                <a href="@Url.Action("SingleProduct", "Shop", new {id = book.maSach})" class="see-all">Xem chi tiết</a>
                                 <div class="quick-add-to-cart">
-                                    <a style="
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                      "
-                                       class="single_add_to_cart_button"
-                                       href="%">
+                                    <a style=" display: flex; justify-content: center;  align-items: center; " class="single_add_to_cart_button add-item-to-cart"
+                                       data-id="@book.maSach"
+                                       href="#">
                                         Mua Ngay
                                     </a>
                                 </div>

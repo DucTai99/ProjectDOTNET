@@ -70,6 +70,31 @@ namespace BookStore.Controllers
         }
 
         [HttpPost]
+        public ActionResult addItemToWishList(int idBook)
+        {
+            if (Session["UserId"] != null)
+            {
+                var idUser = Int32.Parse(Session["UserId"].ToString());
+                new WishListDao().addBookToWishList(idUser, idBook);
+                return Json(new
+                {
+                    error = "NoError"
+                });
+            }
+            return Json(new {
+                error = "NoUser"
+            }) ;
+        }
+
+        public ActionResult removeItemFormCart(int idBook)
+        {
+            ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
+            shoppingCart.removeItem(idBook);
+            ViewBag.shoppingCart = shoppingCart;
+            return PartialView();
+        }
+
+        [HttpPost]
         public ActionResult addComment(int idBook, String content)
         {
             comment comment = new comment();

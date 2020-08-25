@@ -79,7 +79,6 @@ var book = {
         });
 
         $('.add-item-to-cart').on('click', function (event) {
-
             event.preventDefault();
             var idBook = $(this).data('id');
             var shoppingCart = $('.shoping-cart');
@@ -95,6 +94,102 @@ var book = {
                 success: function (response) {
                     shoppingCart.html('');
                     shoppingCart.html(response);
+                }
+            })
+        });
+
+        $('.remove-item-from-cart').on('click', function (event) {
+            event.preventDefault();
+            var idBook = $(this).data('id');
+            var shoppingCart = $('.shoping-cart');
+            $.ajax({
+                type: "POST",
+                url: "/Shop/removeItemFormCart",
+                data: {
+                    "idBook": idBook
+                },
+                success: function (response) {
+                    shoppingCart.html('');
+                    shoppingCart.html(response);
+                }
+            })
+        });
+
+        $('.remove-item').on('click', function (event) {
+            event.preventDefault();
+            var idBook = $(this).data('id');
+            var topBody = $('#topBody');
+            $.ajax({
+                type: "POST",
+                url: "/Cart/removeItem",
+                data: {
+                    "idBook": idBook
+                },
+                success: function (response) {
+                    topBody.html('');
+                    topBody.html(response);
+                }
+            })
+        });
+
+        $(".right-shoping-cart").on('click', function (event) {
+            event.preventDefault();
+            var topBody = $('#topBody');
+            $.ajax({
+                type: "POST",
+                url: "/Cart/removeAllItem",
+                success: function (response) {
+                    topBody.html('');
+                    topBody.html(response);
+                }
+            });
+        });
+
+        $(".qtybutton").on("click", function () {
+            var idBook = $(this).data('id');
+            var $button = $(this);
+            var oldValue = $button.parent().find("input").val();
+            if ($button.text() == "+") {
+                if (oldValue < 10) {
+                    var newVal = parseFloat(oldValue) + 1;
+                }
+                else {
+                    newVal = 10;
+                }
+            } else {
+                // Don't allow decrementing below zero
+                if (oldValue > 1) {
+                    var newVal = parseFloat(oldValue) - 1;
+                } else {
+                    newVal = 1;
+                }
+            }
+            $button.parent().find("input").val(newVal);
+            $.ajax({
+                type: "POST",
+                url: "/Cart/changeNumItem",
+                data: {
+                    "idBook": idBook,
+                    "number": newVal,
+                },
+                success: function (response) {
+                    $('#topBody').html('');
+                    $('#topBody').html(response);
+                }
+            })
+        });
+
+        $("#submit-code-sale").on('click', function () {
+            var codeSale = $("#codeSale").val();
+            $.ajax({
+                type: "POST",
+                url: "/Cart/useCodeSale",
+                data: {
+                    "codeSale": codeSale
+                },
+                success: function (response) {
+                    $('#topBody').html('');
+                    $('#topBody').html(response);
                 }
             })
         });
@@ -125,12 +220,88 @@ var book = {
                     success: function (response) {
                         $("#CommentArea").html('');
                         $("#CommentArea").html(response);
-                        $("#commentText").text() = '';
+                        $("#commentText").val("");
                     }
                 })
             }
         });
 
+        $(".add-item-to-wishlist").on('click', function (event) {
+            event.preventDefault();
+            var idBook = $(this).data('id');
+            var addItemToWishList = $('#addItemToWishList');
+            var needToSignIn = $('#needToSignIn');
+            $.ajax({
+                type: "POST",
+                url: "/Shop/addItemToWishList",
+                data: {
+                    "idBook": idBook
+                },
+                success: function (response) {
+                    if (response.error == "NoUser") {
+                        needToSignIn.removeClass("fade");
+                        needToSignIn.addClass("show");
+                    }
+                    else {
+                        addItemToWishList.removeClass("fade");
+                        addItemToWishList.addClass("show");
+                        setTimeout(function () {
+                            addItemToWishList.removeClass("show");
+                            addItemToWishList.addClass("fade");
+                        }, 700);
+                    }
+                }
+            })
+        });
+
+        $("#changePass").on('click', function (event) {
+            event.preventDefault();
+            var currentPass = $('#current-pass');
+            var newPass = $('#newPass');
+            var cfPass = $('#cfPass');
+            if (currentPass.val() == "" || newPass.val() == "" || cfPass == "") {
+                $('#errorWrongNewPass').text("Cần nhâp đầy đủ");
+                $('#errorWrongNewPass').show();
+            }
+            else if (newPass.val() != cfPass.val()) {
+                var errorWrongNewPass = $('#errorWrongNewPass');
+                errorWrongNewPass.text("Nhâp mât khẩu lai sai");
+                errorWrongNewPass.show();
+                cfPass.val("");
+            }
+            else {
+                 $.ajax({
+                    type: "POST",
+                     url: "/Account/changePassWord",
+                    data: {
+                        "currentPass": currentPass.val(),
+                        "newPass": newPass.val()
+                    },
+                     success: function (response) {
+                         console.log(response);
+                        if (response.error == "CurrentPassWordWrong") {
+                            $('#errorWrongNewPass').text("Nhâp mât khẩu hiên tai sai ");
+                            $('#errorWrongNewPass').show();
+                            currentPass.val("");
+                            cfPass.val("");
+                            newPass.val("");
+                        }
+                        else {
+                            $('#changePassWordSuccess').removeClass("fade");
+                            $('#changePassWordSuccess').addClass("show");
+                            setTimeout(function () {
+                                $('#changePassWordSuccess').removeClass("show");
+                                $('#changePassWordSuccess').addClass("fade");
+                                $('#errorWrongNewPass').hide();
+                                currentPass.val("");
+                                cfPass.val("");
+                                newPass.val("");
+                            }, 1000);
+                        }
+                    }
+                })
+            }
+        });
     }
 }
 book.init();

@@ -6,20 +6,24 @@ using System.Web.Mvc;
 
 namespace BookStore.Filter
 {
-    public class AccessFilter : ActionFilterAttribute
+    public class AdminFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             HttpSessionStateBase session = filterContext.HttpContext.Session;
             Controller controller = filterContext.Controller as Controller;
-            var controllerRoute = controller.RouteData.Values["controller"];
-            var actionRoute = controller.RouteData.Values["action"];
             var userId = session["UserId"];
             if (userId == null)
             {
-                session["redController"] = controllerRoute;
-                session["redAction"] = actionRoute;
                 controller.HttpContext.Response.Redirect("/Login/SignIn");
+            }
+            else
+            {
+                var userLevel = Int32.Parse(session["UserLevel"].ToString());
+                if (userLevel == 1)
+                {
+                    controller.HttpContext.Response.Redirect("/Home/Index");
+                }
             }
 
             base.OnActionExecuting(filterContext);
