@@ -70,5 +70,9 @@ namespace Model.DAO
             return newBooks.ToList();
         }
 
+<<<<<<< Updated upstream
+=======
+       
+>>>>>>> Stashed changes
     }
 }

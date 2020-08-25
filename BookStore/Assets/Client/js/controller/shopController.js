@@ -1,4 +1,5 @@
-﻿var book = {
+﻿
+var book = {
     init: function () {
         book.registerEvents();
     },

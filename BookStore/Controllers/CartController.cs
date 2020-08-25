@@ -17,6 +17,7 @@ namespace BookStore.Controllers
         {
             ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
             ViewBag.shoppingCart = shoppingCart;
+
             return View();
         }
 
