@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace BookStore.Areas.Admin.Controllers
 {
-    public class LogOutController : Controller
+    public class AdminLogOutController : Controller
     {
         // GET: Admin/LogOut
         public ActionResult Index()

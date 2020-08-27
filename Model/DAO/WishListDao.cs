@@ -23,5 +23,12 @@ namespace Model.DAO
             db.SaveChanges();
             return true;
         }
+
+        public List<wishlist> getWishListByIdUser(int idUser)
+        {
+            List<wishlist> list = db.wishlists.Where(wishlist => wishlist.idUser == idUser).ToList();
+
+            return list;
+        }
     }
 }
