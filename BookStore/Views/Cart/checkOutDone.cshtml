@@ -1,0 +1,38 @@
+﻿ <!-- Modal for checkout-->
+<div class="modal animate__animated animate__fadeInDown" style="display:block" id="checkout-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="display:flex; justify-content:center">
+        <div class="modal-content" style="width:30vw">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        id="close_modal"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <a href="@Url.Action("Index","Home")">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="text-align:center">
+                    Bạn đã thanh toán thành công. Bấm OK để quay về Trang Chủ.
+                </p>
+            </div>
+            <div class="modal-footer" style="display:flex;justify-content:center;align-items:center">
+                <a id="a-close" style="display:flex;justify-content:center;align-items:center" class="btn btn-default" href="@Url.Action("Index","Home")">
+                    OK
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for checkout-->
+<script>
+    var signIn = $("#checkout-modal");
+    $("#close_modal").on('click', function () {
+        signIn.css({ "display": "none" });
+    });
+    $("#a-close").on('click', function () {
+        signIn.css({ "display": "none" });
+    });
+</script>

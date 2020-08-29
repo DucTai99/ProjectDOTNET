@@ -1,0 +1,453 @@
+﻿@model PagedList.IPagedList<Model.EF.sach>
+@using PagedList.Mvc
+@using Model.EF;
+@using System.Globalization;
+@using Model.DAO;
+@{
+    ViewBag.Title = "BookSale";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
+}
+<!-- Breadcrumbs Area Start -->
+<div class="breadcrumbs-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumbs">
+                    <h2>Danh Mục Sách</h2>
+                    <ul class="breadcrumbs-list">
+                        <li>
+                            <a title="Quay lại trang chủ" href="@Url.Action("Index","Home")">Trang chủ </a>
+                        </li>
+                        <li>Sách</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumbs Area Start -->
+<!-- Shop Area Start -->
+<div class="shopping-area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <div class="shop-widget">
+                    <div class="shop-widget-top">
+                        <aside class="widget widget-categories">
+                            <h2 class="sidebar-title text-center">Danh mục</h2>
+                            <ul class="sidebar-menu">
+                                <li>
+                                    <a href="@Url.Action("Index","Shop")">
+                                        <i class="fa fa-angle-double-right"></i> Tất cả
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("BookSale","Shop")">
+                                        <i class="fa fa-angle-double-right"></i> Khuyến mãi
+                                    </a>
+                                </li>
+                                @foreach (var bookType in ViewData["ListBookType"] as IEnumerable<theloaisach>)
+                                {
+                                    <li>
+                                        <a class="type-id" data-id="@bookType.maTheLoai" href="#">
+                                            <i class="fa fa-angle-double-right"></i>
+                                            @bookType.tenTheLoai
+                                        </a>
+                                    </li>
+                                }
+                                <!-- <% } %> -->
+                            </ul>
+                        </aside>
+                        <aside class="widget shop-filter">
+                            <h2 class="sidebar-title text-center">Giá</h2>
+                            <div class="info-widget">
+                                <div class="price-filter">
+                                    <div id="slider-range"></div>
+                                    <div class="price-slider-amount">
+                                        <input type="text"
+                                               id="amount"
+                                               name="price"
+                                               placeholder="Add Your Price" />
+                                        <div class="widget-buttom" id="searchWithPrice">
+                                            <input type="submit" value="Tìm Kiếm" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+            <div id="items" class="col-md-9 col-sm-9 col-xs-12">
+                <div class="shop-tab-area">
+                    <div class="shop-tab-list">
+                        <div class="shop-tab-pill pull-left">
+                            <ul>
+                                <li class="active" id="left">
+                                    <a data-toggle="pill" href="#home">
+                                        <i class="fa fa-th"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-toggle="pill" href="#menu1">
+                                        <i class="fa fa-th-list"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="search-book">
+                            <div name="SearchArea" class="form-inline">
+                                <input class="form-control mr-sm-2"
+                                       autocomplete="off"
+                                       id="search-text"
+                                       type="text"
+                                       name="searchBox"
+                                       placeholder="Search"
+                                       aria-label="Search" />
+                                <button class="btn btn-outline-success my-2 my-sm-0"
+                                        type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div id="search"></div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="change">
+                        <div class="row tab-pane fade in active" id="home">
+                            <div>
+                                @foreach (var book in Model)
+                                {
+                                    <div class="shop-single-product-area">
+                                        <div class="col-md-4 col-sm-6">
+                                            <div class="single-banner">
+                                                <div class="product-wrapper">
+                                                    <a href="@Url.Action("SingleProduct", "Shop", new {id = book.maSach})" class="single-banner-image-wrapper">
+                                                        <img alt="" src="@book.hinhAnh" />
+                                                    </a>
+                                                    <div class="product-description">
+                                                        <div class="functional-buttons">
+                                                            <a title="Thêm vào giỏ hàng" class="add-item-to-cart" data-id="@book.maSach" href="#">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </a>
+                                                            <a href="#" title="Thêm vào danh sách yêu thích" class="add-item-to-wishlist" data-id="@book.maSach">
+                                                                <i class="far fa-heart"></i>
+                                                            </a>
+                                                            @{
+                                                                var target = "#productModal" + book.maSach;
+                                                            }
+                                                            <a href="#"
+                                                               title="Xem nhanh"
+                                                               data-toggle="modal"
+                                                               data-target="@target">
+                                                                <i class="fas fa-compress-alt"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @{
+                                                    var khuyenMai = book.khuyenMai;
+                                                }
+                                                @if (khuyenMai > 0)
+                                                {
+                                                    <div style=" width: 15%;
+                                                  z-index: 999;
+                                                  position: absolute;
+                                                  top: 0;
+                                                  right: 0;
+                                                ">
+                                                        <img src="~/Assets/Client/img/sale.png" alt="" />
+                                                        <p style="
+                                                    font-size: 14px;
+                                                    position: absolute;
+                                                    left: 15%;
+                                                    top: 55%;
+                                                    transform: translate(0, -50%);
+                                                    color: white;
+                                                  ">
+                                                            @khuyenMai%
+                                                        </p>
+                                                    </div>
+                                                    <div class="banner-bottom text-center">
+                                                        <div class="banner-bottom-title"
+                                                             style="height: 40px;">
+                                                            <a href="@Url.Action("SingleProduct","Shop",new { id = book.maSach})">@book.tenSach </a>
+                                                        </div>
+                                                        <div style="color: #32b5f3;" class="price-2">
+                                                            @{var newPrice = (book.gia * 1000) - (book.gia * 1000 * khuyenMai / 100);}
+                                                            @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                                            <span style="color: black;" class="old-price">
+                                                                @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                @if (khuyenMai == 0)
+                                                {
+                                                    <div class="banner-bottom text-center">
+                                                        <div class="banner-bottom-title" style="height: 40px">
+                                                            <a href="@Url.Action("SingleProduct","Shop",new { id = book.maSach})">
+                                                                @book.tenSach
+                                                            </a>
+                                                        </div>
+                                                        <div style="color: #32b5f3" class="price-2">
+                                                            @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)<span>đ</span>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div id="menu1" class="tab-pane fade">
+                            <div id="single-product" class="row">
+                                @foreach (var book in Model)
+                                {
+                                    <div class="single-shop-product">
+                                        <div class="col-xs-12 col-sm-5 col-md-4">
+                                            <div class="left-item">
+                                                <a href="#" title="Book Name">
+                                                    <img src="@book.hinhAnh" alt="" />
+                                                </a>
+                                            </div>
+                                            <!-- <% if (listSach.get(i).getKhuyenMai() > 0) { %> -->
+                                            @{
+                                                var khuyenMai = book.khuyenMai;
+                                            }
+                                            @if (khuyenMai > 0)
+                                            {
+                                                <div style="
+                                                width: 15%;
+                                                z-index: 999;
+                                                position: absolute;
+                                                top: 0;
+                                                right: 0;
+                                              ">
+                                                    <img src="~/Assets/Client/img/sale.png" alt="" />
+                                                    <p style="
+                                                      font-size: 14px;
+                                                      position: absolute;
+                                                      left: 15%;
+                                                      top: 55%;
+                                                      transform: translate(0, -50%);
+                                                      color: white;
+                                                    ">
+                                                        @khuyenMai%
+                                                    </p>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="col-xs-12 col-sm-7 col-md-8">
+                                            <div class="deal-product-content">
+                                                <h4>
+                                                    <a style="font-size:24px" href="@Url.Action("SingleProduct","Shop",new { id = book.maSach})" title="Book Name">
+                                                        @book.tenSach
+                                                    </a>
+                                                </h4>
+                                                <div class="product-price">
+                                                    @if (khuyenMai > 0)
+                                                    {
+                                                        var newPrice = (book.gia * 1000) - (book.gia * 1000 * khuyenMai / 100);
+                                                        <span class="new-price">
+                                                            @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                                        </span>
+                                                        <span class="old-price">
+                                                            @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ
+                                                        </span>
+                                                    }
+                                                    @if (khuyenMai == 0)
+                                                    {
+                                                        <span class="new-price">
+                                                            @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ
+                                                        </span>
+                                                    }
+                                                </div>
+                                                <p style="font-size:14px">@book.moTa</p>
+                                                <div class="availability">
+                                                    <span><a href="#">Mua Ngay</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div style="padding-left: 200px">
+                            @Html.PagedListPager(Model, pageNum => Url.Action("BookSale", new { pageNum }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Shop Area End -->
+<!-- Modal for add item to cart success-->
+<div class="modal fade" style="z-index:9999" id="addItemSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Thêm vào giỏ hàng thành công
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="display: inline-block; background: #efefef; color: black" id="closeModal" data-dismiss="modal">Continue</button>
+                <button type="button" class="btn btn-default" style="display: inline-block" id="redirectShoppingCart">Đến giỏ hàng</button>
+            </div>
+            <script>
+                    $("#closeModal").on("click", function () {
+                        $("#addItemSuccess").removeClass("show");
+                        $("#addItemSuccess").addClass("fade");
+                    })
+
+                    $("#redirectShoppingCart").on("click", function () {
+                        window.location.replace("@Url.Action("Index", "Cart")");
+                    })
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Modal for add item to cart success-->
+<!-- Need to signIn-->
+<div class="modal fade" style="z-index:9999" id="needToSignIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Ban cần đăng nhâp để thêm vào sản phẩm yêu thích
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="display: inline-block; background: #efefef; color: black" id="closeNeedToSignIn" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-default" style="display: inline-block" id="redirectSignIn">Đăng nhâp</button>
+            </div>
+            <script>
+                    $("#closeNeedToSignIn").on("click", function () {
+                        $("#needToSignIn").removeClass("show");
+                        $("#needToSignIn").addClass("fade");
+                    })
+
+                    $("#redirectSignIn").on("click", function () {
+                        window.location.replace("@Url.Action("SignIn", "Login")");
+                    })
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Need to signIn-->
+<!-- Modal for add item to wishlist success-->
+<div class="modal fade" style="z-index:9999" id="addItemToWishList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32b5f3">
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Đã thêm vào danh sách yêu thích
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for add item to wishlist success-->
+<!--Quickview Product Start -->
+
+<div id="quickview-wrapper">
+    <!-- Modal -->
+    @{
+        var allOfBooks = new BooksDao().getAllBookSale();
+    }
+    @foreach (var book in allOfBooks)
+    {
+        var target = "productModal" + book.maSach;
+        <div class="modal fade" id="@target" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-product" style="display: flex;">
+                            <div class="product-images" style="width: 60%;">
+                                <div class="main-image images" style="position: relative;">
+                                    <img alt="" src="@book.hinhAnh" />
+                                    @{
+                                        var khuyenMai = book.khuyenMai;
+                                    }
+                                    @if (khuyenMai > 0)
+                                    {
+                                        <div style=" width: 18%; z-index: 999; position: absolute; top: 0; right: 0; ">
+                                            <img src="~/Assets/Client/img/sale.png" alt="" />
+                                            <p style=" font-size: 18px; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ">
+                                                @khuyenMai%
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h1 style="font-size: 22px;">@book.tenSach</h1>
+                                <div class="price-box">
+                                    @if (khuyenMai > 0)
+                                    {
+                                        var newPrice = (book.gia * 1000) - (book.gia * 1000 * khuyenMai / 100);
+                                        <p class="s-price">
+                                            <span class="special-price">
+                                                <span class="amount" style="font-size: 25px;">
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+                                                </span>
+                                            </span>
+                                            <span style="color: black;" class="old-price">
+                                                @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ
+                                            </span>
+                                        </p>
+                                    }
+                                    @if (khuyenMai == 0)
+                                    {
+
+                                        <p class="s-price">
+                                            <span class="special-price">
+                                                <span class="amount" style="font-size: 25px">
+                                                    @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ
+                                                </span>
+                                            </span>
+                                        </p>
+                                    }
+                                </div>
+                                <a href="@Url.Action("SingleProduct", "Shop", new {id = book.maSach})" class="see-all">Xem chi tiết</a>
+                                <div class="quick-add-to-cart">
+                                    <a style=" display: flex; justify-content: center;  align-items: center; " class="single_add_to_cart_button add-item-to-cart"
+                                       data-id="@book.maSach"
+                                       href="#">
+                                        Mua Ngay
+                                    </a>
+                                </div>
+                                <div style="height: 300px; overflow-y: scroll;"
+                                     class="quick-desc">
+                                    @book.moTa
+                                </div>
+                            </div>
+                            <!-- .product-info -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!--End of Quickview Product-->

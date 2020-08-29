@@ -228,3 +228,5 @@ E:\Java\dotnet\Project\BookStore\BookStore\bin\PagedList.dll
 E:\Java\dotnet\Project\BookStore\BookStore\bin\PagedList.Mvc.dll
 E:\Java\dotnet\Project\BookStore\BookStore\bin\PagedList.xml
 E:\Java\dotnet\Project\BookStore\BookStore\bin\PagedList.Mvc.xml
+E:\Java\dotnet\Project\BookStore\BookStore\bin\Common.dll
+E:\Java\dotnet\Project\BookStore\BookStore\bin\Common.pdb

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using Common;
 
 namespace BookStore.Controllers
 {
@@ -79,5 +81,23 @@ namespace BookStore.Controllers
             return View();
         }
 
+        public ActionResult ForgotPassword(string email)
+        {
+            UserDao userDao = new UserDao();
+            string newPassword = userDao.randomPassword();
+            if (userDao.updatePasswordRandom(email,newPassword))
+            {
+                string content = System.IO.File.ReadAllText(Server.MapPath("~/Assets/Client/template/sendnewpassword.html"));
+                content = content.Replace("{{Password}}", newPassword);
+                new MailHelper().sendMail(email, "Thay đổi mật khẩu", content);
+                ViewBag.message = "Đã gửi về email";
+            }
+            else
+            {
+                ViewBag.message = "Email không tồn tại";
+            }
+            return PartialView();
+        }
+            
     }
 }

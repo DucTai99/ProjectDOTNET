@@ -20,5 +20,22 @@ namespace BookStore.Controllers
             ViewBag.wishList = list;
             return View();
         }
+
+        [HttpPost]
+        public ActionResult removeBookFromWishList(int idBook)
+        {
+            int idUser = Int32.Parse(Session["UserId"].ToString());
+            WishListDao wishList = new WishListDao();
+            wishList.removeBookFromWishList(idUser, idBook);
+            ViewBag.wishList = new WishListDao().getWishListByIdUser(idUser);
+            return PartialView();
+        }
+
+        public ActionResult removeAllBookFormWishList()
+        {
+            int idUser = Int32.Parse(Session["UserId"].ToString());
+            ViewBag.wishList = new WishListDao().removeAllBookFromWishList(idUser);
+            return PartialView();
+        }
     }
 }
