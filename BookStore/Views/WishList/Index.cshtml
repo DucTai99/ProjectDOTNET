@@ -6,9 +6,10 @@
 }
 @{
     List<wishlist> wishList = ViewBag.wishList;
-
 }
-
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
+}
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
     <div class="container">
@@ -33,66 +34,64 @@
     <div class="container">
         <div class="row" style="display: flex; flex-direction: row-reverse;">
             <div class="col-md-8 col-sm-12">
-                @foreach (wishlist item in wishList)
-                {
-                    <div class="product">
-                        @if (item.sach.khuyenMai > 0)
+                <div id="content-wishlist">
+                    @if (wishList.Count != 0)
+                    {
+                        foreach (wishlist item in wishList)
                         {
-                            <div class="img-product"
-                                 style="position: relative; margin-right: 20px;">
-                                <img src="@item.sach.hinhAnh" alt="" />
-                                <div style="
-                            width: 20%;
-                            z-index: 999;
-                            position: absolute;
-                            top: 0;
-                            right: 0;
-                          ">
-                                    <img src="~/Assets/Client/img/sale.png" alt="" />
-                                    <p style="
-              font-size: 10px;
-              color: white;
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-            ">
-                                        @item.sach.khuyenMai%
-                                    </p>
+                            <div class="product">
+                                @if (item.sach.khuyenMai > 0)
+                                {
+                                    <div class="img-product" style="position: relative; margin-right: 20px;">
+                                        <img src="@item.sach.hinhAnh" alt="" />
+                                        <div style="width: 20%; z-index: 999;position: absolute;top: 0;right: 0;">
+                                            <img src="~/Assets/Client/img/sale.png" alt="" />
+                                            <p style="font-size: 10px;color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                                @item.sach.khuyenMai%
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                                @if (item.sach.khuyenMai == 0)
+                                {
+                                    <div class="img-product" style="margin-right: 20px">
+                                        <img src="@item.sach.hinhAnh" alt="">
+                                    </div>
+                                }
+
+                                <div class="title-product">
+                                    <h4><a href="@Url.Action("SingleProduct", "Shop", new {id = item.sach.maSach})">@item.sach.tenSach</a></h4>
+                                    @if (item.sach.khuyenMai > 0)
+                                    {
+                                        <p>
+                                            @{var newPrice = (item.sach.gia * 1000) - (item.sach.gia * 1000 * item.sach.khuyenMai / 100);}
+                                            @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.sach.gia * 1000)đ
+                                            <span style="color: black;" class="old-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ</span>
+                                        </p>
+                                    }
+                                    @if (item.sach.khuyenMai == 0)
+                                    {
+                                        <p>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.sach.gia * 1000)đ</p>
+                                    }
+                                    <a href="#" class="delete-book-wishList" data-id="@item.sach.maSach"><i class="flaticon-delete"></i></a>
                                 </div>
                             </div>
                         }
-                        @if (item.sach.khuyenMai == 0)
+                    }
+                    @if (wishList.Count == 0)
+                    {
+                        <div class="product" style="justify-content:center;align-items:center; padding: 20px">
+                            <h3 style="margin:0">Hiện chưa có sản phẩm</h3>
+                        </div>
+                    }
+                    <div class="shopingcart-bottom-area">
+                        <a class="left-shoping-cart" href="@Url.Action("Index","Shop")">Tiếp tục mua sắm</a>
+                        @if (wishList.Count != 0)
                         {
-                            <div class="img-product" style="margin-right: 20px">
-                                <img src="@item.sach.hinhAnh" alt="">
+                            <div class="shopingcart-bottom-area pull-right">
+                                <a class="right-shoping-cart delete-all-book-wishList" href="#">Xóa tất cả sản phẩm</a>
                             </div>
                         }
-
-                    <div class="title-product">
-                        <h4><a href="#">@item.sach.tenSach</a></h4>
-                        @if (item.sach.khuyenMai > 0)
-                        {
-                            <p>
-                                @{var newPrice = (item.sach.gia * 1000) - (item.sach.gia * 1000 * item.sach.khuyenMai / 100);}
-                                @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.sach.gia * 1000)đ
-                                <span style="color: black;" class="old-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ</span>
-                            </p>
-                        }
-                        @if (item.sach.khuyenMai == 0)
-                        {
-                            <p>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.sach.gia * 1000)đ</p>
-                        }
-                        <a href="#"><i class="flaticon-delete"></i></a>
-                    </div>
-                    </div>
-                }
-
-
-                <div class="shopingcart-bottom-area">
-                    <a class="left-shoping-cart" href="@Url.Action("Index","Shop")">Tiếp tục mua sắm</a>
-                    <div class="shopingcart-bottom-area pull-right">
-                        <a class="right-shoping-cart" href="#">Xóa tất cả sản phẩm</a>
                     </div>
                 </div>
             </div>
@@ -125,7 +124,7 @@
                     border-bottom: none;
                     padding: 0px 20px 20px 20px;
                   ">
-                            <i style="margin-right: 20px;" class="fa fa-list-ol"></i><a href="../Account">Quản lí đơn hàng</a>
+                            <i style="margin-right: 20px;" class="fa fa-list-ol"></i><a href="@Url.Action("Index","Account")">Quản lí đơn hàng</a>
                         </h2>
                     </div>
                 </div>

@@ -27,10 +27,13 @@ namespace Model.DAO
         public sach getBookWithID(int id) {
             return db.saches.Where(book => book.maSach == id).FirstOrDefault();
         }
-
         public IEnumerable<sach> getAllBookSale()
         {
             return db.saches.Where(book => book.khuyenMai > 0).OrderByDescending(book => book.khuyenMai);
+        }
+        public IEnumerable<sach> getAllBookSaleWithPaging(int pageNum, int pageSize)
+        {
+            return db.saches.Where(book => book.khuyenMai > 0).OrderByDescending(book => book.khuyenMai).ToPagedList(pageNum, pageSize);
         }
 
         public IEnumerable<sach> listAllBookWithPaging(int pageNum, int pageSize) {

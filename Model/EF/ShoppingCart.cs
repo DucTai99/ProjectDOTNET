@@ -92,7 +92,7 @@ namespace Model.EF
             }
         }
 
-        public decimal totalWithSaleCode(String code)
+        public decimal totalWithSaleCode(String code = "")
         {
             calculatorTotal();
             if(saleCode == 0)

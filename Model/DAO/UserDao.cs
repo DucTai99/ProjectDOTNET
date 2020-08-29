@@ -26,7 +26,6 @@ namespace Model.DAO
                 db.SaveChanges();
                 changeSuccess = true;
             }
-
             return changeSuccess;
         }
 
@@ -73,6 +72,38 @@ namespace Model.DAO
             password = BitConverter.ToString(encodedBytes).Replace("-", "");
             var result = password.ToLower();
             return result;
+        }
+
+        public user getUserByEmail(string email)
+        {
+            return db.users.Where(user => user.email == email).FirstOrDefault();
+        }
+
+        public string randomPassword()
+        {
+            string ran = "a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
+            string[] a = ran.Split(' ');
+            string newPassword = "";
+            for(var i = 0; i < 8; i ++)
+            {
+                int len = new Random().Next(a.Length);
+                newPassword = newPassword + a[len];
+            }
+            return newPassword;
+        }
+
+        public bool updatePasswordRandom(string email, string newPassword)
+        {
+            bool changeSuccess = false;
+            var newPass = encMd5PassWord(newPassword);
+            user userFromDB = getUserByEmail(email);
+            if (userFromDB != null)
+            {
+                userFromDB.password = newPass;
+                db.SaveChanges();
+                changeSuccess = true;
+            }
+            return changeSuccess;
         }
     }
 }

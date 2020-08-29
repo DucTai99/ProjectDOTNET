@@ -2014,6 +2014,7 @@
     <Content Include="Assets\Client\lib\img\loading.gif" />
     <Content Include="Assets\Client\lib\js\jquery.nivo.slider.js" />
     <Content Include="Assets\Client\style.css" />
+    <Content Include="Assets\Client\template\sendnewpassword.html" />
     <Content Include="Assets\Client\venobox\close.gif" />
     <Content Include="Assets\Client\venobox\next.gif" />
     <Content Include="Assets\Client\venobox\preload-circle.png" />
@@ -2145,8 +2146,17 @@
     <Content Include="Views\Cart\changeNumItem.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Cart\useCodeSale.cshtml" />
+    <Content Include="Views\WishList\removeBookFromWishList.cshtml" />
+    <Content Include="Views\WishList\removeAllBookFormWishList.cshtml" />
+    <Content Include="Views\Cart\checkOutDone.cshtml" />
+    <Content Include="Views\Shop\BookSale.cshtml" />
+    <Content Include="Views\Login\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{A5CE6707-36FD-4C73-BD30-802DA178294B}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{de4aa1ed-87bf-43e8-838a-2dc1f7965452}</Project>
       <Name>Model</Name>

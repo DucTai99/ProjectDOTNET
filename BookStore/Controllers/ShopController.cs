@@ -21,6 +21,14 @@ namespace BookStore.Controllers
             return View(model);
         }
 
+        public ActionResult BookSale(int pageNum = 1, int pageSize = 9)
+        {
+            var bookDao = new BooksDao();
+            var model = bookDao.getAllBookSaleWithPaging(pageNum, pageSize);
+            ViewData["ListBookType"] = new BookTypeDao().getAllType();
+            return View(model);
+        }
+
         public ActionResult SingleProduct(int id = 1)
         {
             var book = new BooksDao().getBookWithID(id);
@@ -36,11 +44,7 @@ namespace BookStore.Controllers
         public ActionResult listBookWithType(int id,int firstPrice = 0,int secondePrice = 0)
         {
             IEnumerable<sach> listBook;
-            if (id == 0)
-            {
-                listBook = new BooksDao().getAllBookSale();
-            }
-            else if (id == -1)
+            if (id == -1)
             {
                 listBook = new BooksDao().getAllBooksBetweenPrice(firstPrice,secondePrice);
             }

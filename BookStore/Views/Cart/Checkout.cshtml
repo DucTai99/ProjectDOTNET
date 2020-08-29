@@ -9,6 +9,9 @@
     ShoppingCart shoppingCart = (ShoppingCart)Session["shoppingCart"];
     var userEmail = Session["UserEmail"].ToString();
 }
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
+}
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
     <div class="container">
@@ -313,6 +316,7 @@
                                                     <a href="@Url.Action("Index","Cart")">Chỉnh sửa giỏ hàng</a>
                                                 </p>
                                                 <button type="submit"
+                                                        id="submit-checkout"
                                                         title="Place Order"
                                                         class="btn btn-default">
                                                     <span>Đặt Mua</span>
@@ -330,3 +334,28 @@
     </div>
 </form>
 <!-- Check Out Area End -->
+<!--Quickview Product Start -->
+<div id="quickview-wrapper">
+    <!-- Modal for error-->
+    <div class="modal animate__animated animate__fadeInDown" id="error-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="display:flex; justify-content:center">
+            <div class="modal-content" style="width:30vw">
+                <div class="modal-header">
+                    <button type="button"
+                            class="close"
+                            id="close_modal"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="error-content" style="text-align:center"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for error-->
+</div>
+<div id="quickview-modal-checkout"></div>
+<!--End of Quickview Product-->
