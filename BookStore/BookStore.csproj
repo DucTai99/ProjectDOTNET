@@ -206,6 +206,7 @@
     <Content Include="Assets\Admin\assets\demo\datatables-demo.js" />
     <Content Include="Assets\Admin\assets\img\error-404-monochrome.svg" />
     <Content Include="Assets\Admin\css\styles.css" />
+    <Content Include="Assets\Admin\js\AjaxController.js" />
     <Content Include="Assets\Admin\js\scripts.js" />
     <Content Include="Assets\Client\css\animate.css" />
     <Content Include="Assets\Client\css\bootstrap.min.css" />
@@ -2135,6 +2136,7 @@
     <Content Include="Areas\Admin\Views\Shared\_Footer.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHome\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_SideNav.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\bookDetail.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shop\listBookWithType.cshtml" />
     <Content Include="Views\Shop\listBookSearch.cshtml" />

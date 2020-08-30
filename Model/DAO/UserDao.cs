@@ -81,15 +81,51 @@ namespace Model.DAO
 
         public string randomPassword()
         {
-            string ran = "a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
-            string[] a = ran.Split(' ');
-            string newPassword = "";
-            for(var i = 0; i < 8; i ++)
+            var passwordBuilder = new StringBuilder();
+
+            // 4-Letters lower case   
+            passwordBuilder.Append(RandomString(4, true));
+
+            // 4-Digits between 1000 and 9999  
+            passwordBuilder.Append(RandomNumber(1000, 9999));
+
+            // 2-Letters upper case  
+            passwordBuilder.Append(RandomString(2));
+            return passwordBuilder.ToString();
+
+            // string ran = "a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
+            //string[] a = ran.Split(' ');
+            //string newPassword = "";
+            //for(var i = 0; i < 8; i ++)
+            //{
+            //    int len = new Random().Next(a.Length);
+            //    newPassword = newPassword + a[len];
+            //}
+            //return newPassword;
+        }
+
+        public string RandomString(int size, bool lowerCase = false)
+        {
+            Random random = new Random();
+            var builder = new StringBuilder(size);
+
+            // char is a single Unicode character  
+            char offset = lowerCase ? 'a' : 'A';
+            const int lettersOffset = 26; // A...Z or a..z: length = 26  
+
+            for (var i = 0; i < size; i++)
             {
-                int len = new Random().Next(a.Length);
-                newPassword = newPassword + a[len];
+                var @char = (char)random.Next(offset, offset + lettersOffset);
+                builder.Append(@char);
             }
-            return newPassword;
+
+            return lowerCase ? builder.ToString().ToLower() : builder.ToString();
+        }
+
+        public int RandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max);
         }
 
         public bool updatePasswordRandom(string email, string newPassword)
