@@ -1,0 +1,91 @@
+﻿@using Model.DAO;
+@using Model.EF;
+@using System.Globalization;
+@{
+    List<user> listUser = ViewBag.listUser;
+}
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Level</th>
+        <th>Active</th>
+    </tr>
+</thead>
+<tfoot>
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Level</th>
+        <th>Active</th>
+    </tr>
+</tfoot>
+<tbody>
+    @foreach (user user in listUser)
+    {
+        <tr>
+            <td>@user.idUser</td>
+            <td><a href="#userDetail" class="user-email" name="userDetail" data-id="@user.email">@user.email</a></td>
+            @{
+                var level = "";
+                if (user.level == 1)
+                {
+                    level = "Khách hàng";
+                }
+                if (user.level == 2)
+                {
+                    level = "Admin";
+                }
+
+            }
+            <td>@level</td>
+            @if (user.active == 1)
+            {
+                <td><i class="fas fa-user-check" style="font-size:20px;color:#007bff"></i></td>
+            }
+            @if (user.active != 1)
+            {
+                <td><i class="fas fa-user-times" style="font-size:20px;color:red"></i></td>
+            }
+        </tr>
+    }
+</tbody>
+<script>
+    $('.user-email').off('click').on('click', function (event) {
+        event.preventDefault();
+        $('#body').scrollTop(100);
+
+        var email = $(this).data('id');
+        var userDetail = $("#userDetail");
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AdminHome/accountArea",
+            data: {
+                "email": email
+            },
+            success: function (response) {
+                $('html, body').animate({
+                    scrollTop: userDetail.offset().top
+                }, 1000)
+                userDetail.html('');
+                userDetail.html(response);
+            }
+        })
+    });
+    $("#btn-x").on('click', function (event) {
+        event.preventDefault();
+        var email = $(this).data('email');
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AdminHome/deleteUser",
+            data: {
+                "email": email,
+            },
+            success: function (response) {
+                $("#dataTableUser").html('');
+                $("#dataTableUser").html(response);
+            }
+        })
+    });
+</script>

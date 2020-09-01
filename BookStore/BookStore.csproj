@@ -184,6 +184,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LogoutAdminController.cs" />
+    <Compile Include="Areas\Admin\Models\UserEditModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2137,6 +2138,10 @@
     <Content Include="Areas\Admin\Views\AdminHome\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_SideNav.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHome\bookDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\accountArea.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Account.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\changeTinhTrangBill.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\deleteUser.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shop\listBookWithType.cshtml" />
     <Content Include="Views\Shop\listBookSearch.cshtml" />

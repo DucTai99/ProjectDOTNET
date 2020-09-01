@@ -44,5 +44,25 @@ namespace Model.DAO
         {
             return db.bills.Where(bill => bill.idUserEmail == idUser).ToList();
         }
+
+        public List<tinhtrangbill> getAllTypeBill()
+        {
+            return db.tinhtrangbills.ToList();
+        }
+
+        public List<bill> updateTinhTrangBill(int idUser, int idBill, int tinhTrang)
+        {
+            List<bill> listBill = getListBillByIdUser(idUser);
+            foreach(var bill in listBill)
+            {
+                if(bill.idBill == idBill)
+                {
+                    bill.tinhTrangDonHang = tinhTrang;
+                    db.SaveChanges();
+                    break;
+                }
+            }
+            return db.bills.Where(bill => bill.idUserEmail == idUser).ToList();
+        }
     }
 }

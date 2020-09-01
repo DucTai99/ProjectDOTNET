@@ -1,5 +1,6 @@
 ﻿@using Model.DAO;
 @using Model.EF;
+@using System.Globalization;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -106,8 +107,8 @@
                                     <td><a href="#bookDetail" class="book" name="bookDetail" data-id="@book.maSach">@book.tenSach</a></td>
                                     <td>@book.theloaisach.tenTheLoai</td>
                                     <td>@book.soLuong</td>
-                                    <td>@book.gia</td>
-                                    <td>@book.khuyenMai</td>
+                                    <td>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ</td>
+                                    <td>@book.khuyenMai%</td>
                                 </tr>
 
                             }
