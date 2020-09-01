@@ -381,7 +381,6 @@
         $("#a-close").on('click', function (event) {
             event.preventDefault();
             var email = $("#input-forgotPassword").val();
-            alert(email);
             $.ajax({
                 type: "POST",
                 url: "/Login/ForgotPassword",

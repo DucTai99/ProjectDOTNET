@@ -186,4 +186,31 @@
             }
         })
     });
+    $(".add-item-to-wishlist").on('click', function (event) {
+        event.preventDefault();
+        var idBook = $(this).data('id');
+        var addItemToWishList = $('#addItemToWishList');
+        var needToSignIn = $('#needToSignIn');
+        $.ajax({
+            type: "POST",
+            url: "/Shop/addItemToWishList",
+            data: {
+                "idBook": idBook
+            },
+            success: function (response) {
+                if (response.error == "NoUser") {
+                    needToSignIn.removeClass("fade");
+                    needToSignIn.addClass("show");
+                }
+                else {
+                    addItemToWishList.removeClass("fade");
+                    addItemToWishList.addClass("show");
+                    setTimeout(function () {
+                        addItemToWishList.removeClass("show");
+                        addItemToWishList.addClass("fade");
+                    }, 700);
+                }
+            }
+        })
+    });
 </script>

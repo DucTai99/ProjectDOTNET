@@ -93,21 +93,20 @@ namespace BookStore.Controllers
                 //content = content.Replace("{{Password}}", newPassword);
                 //new MailHelper().sendMail(email, "Thay đổi mật khẩu", content);
                 
-
                 try
                 {
                     MailMessage mail = new MailMessage();
                     mail.To.Add(email);
-                    mail.From = new MailAddress("maiduongtai.itnlu@gmail.com");
-                    mail.Subject = "Lấy lai mât khẩu";
-                    string Body = "Mât khẩu mới của ban là : " + newPassword;
+                    mail.From = new MailAddress("emailhoctap99@gmail.com");
+                    mail.Subject = "Lấy lại mật khẩu";
+                    string Body = "Mật khẩu mới của ban là : " + newPassword;
                     mail.Body = Body;
                     mail.IsBodyHtml = true;
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = "smtp.gmail.com";
                     smtp.Port = 587;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new System.Net.NetworkCredential("maiduongtai.itnlu@gmail.com", "01658534114");
+                    smtp.Credentials = new System.Net.NetworkCredential("emailhoctap99@gmail.com", "sinhvienvuotkho");
                     smtp.EnableSsl = true;
                     smtp.Send(mail);
 

@@ -303,12 +303,23 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            @{
+                                                                var temp = 0;
+                                                            }
                                                             @foreach (var item in bill.billcontainsaches)
                                                             {
+                                                                var str = "";
+                                                                if (temp == 0)
+                                                                {
+                                                                    str = bill.idBill.ToString();
+                                                                }
                                                                 <tr role="row" class="odd">
                                                                     <td class="sorting_1">
-                                                                        @bill.idBill
+                                                                        @str
                                                                     </td>
+                                                                    @{
+                                                                        ++temp;
+                                                                    }
                                                                     <td class="sorting_1">
                                                                         @item.sach.tenSach
                                                                     </td>
@@ -399,7 +410,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a href=""@Url.Action("Index", "WishList")">
+                                    <a href="" @Url.Action("Index", "WishList") ">
                                         <i class="fa fa-heart"></i>
                                         <span>Danh sách yêu thích của tôi</span>
                                     </a>

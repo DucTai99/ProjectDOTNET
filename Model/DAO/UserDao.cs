@@ -11,11 +11,13 @@ namespace Model.DAO
     public class UserDao
     {
         private BookStoreDbContext db;
-        public UserDao() {
+        public UserDao()
+        {
             this.db = new BookStoreDbContext();
         }
 
-        public bool updatePassword(int idUser, string oldPassWordUser, string newPassWordUser) {
+        public bool updatePassword(int idUser, string oldPassWordUser, string newPassWordUser)
+        {
             bool changeSuccess = false;
             var currentPass = encMd5PassWord(oldPassWordUser);
             var newPass = encMd5PassWord(newPassWordUser);
@@ -29,7 +31,8 @@ namespace Model.DAO
             return changeSuccess;
         }
 
-        public user login(user user) {
+        public user login(user user)
+        {
             var md5Pass = encMd5PassWord(user.password);
             user.password = md5Pass;
             return db.users.Where(userInDB => userInDB.email.Equals(user.email) && userInDB.password.Equals(user.password)).FirstOrDefault();
@@ -38,14 +41,14 @@ namespace Model.DAO
         public bool isExistEmail(string email)
         {
             int count = db.users.Count(user => user.email.Equals(email));
-            if(count == 0)
+            if (count == 0)
             {
                 return false;
             }
             return true;
         }
 
-        public bool signUp(string email,string password)
+        public bool signUp(string email, string password)
         {
             if (isExistEmail(email))
             {
@@ -140,6 +143,35 @@ namespace Model.DAO
                 changeSuccess = true;
             }
             return changeSuccess;
+        }
+
+        public List<user> getAllUser()
+        {
+            return db.users.ToList();
+        }
+
+        public List<user> updateUser(string email, int level, int active)
+        {
+            user user = getUserByEmail(email);
+            user.level = level;
+            user.active = active;
+            db.SaveChanges();
+            return db.users.ToList();
+        }
+
+        public List<user> deleteUser(string email)
+        {
+            List<user> listUser = getAllUser();
+            foreach (var user in listUser)
+            {
+                if (user.email == email)
+                {
+                    db.users.Remove(user);
+                    db.SaveChanges();
+                    break;
+                }
+            }
+            return db.users.ToList();
         }
     }
 }
