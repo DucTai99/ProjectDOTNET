@@ -14,6 +14,8 @@ namespace BookStore.Controllers
         // GET: Account
         public ActionResult Index()
         {
+            int idUser = Int32.Parse(Session["UserId"].ToString());
+            ViewBag.listBill = new BillDao().getListBillByIdUser(idUser);
             return View();
         }
 

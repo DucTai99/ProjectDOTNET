@@ -3,7 +3,9 @@
     ViewBag.Title = "SignIn";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/shopController.js"></script>
+}
 <!-- Breadcrumbs Area Start -->
 <div class="breadcrumbs-area">
     <div class="container">
@@ -29,50 +31,50 @@
         <div class="row"
              style="display: flex; align-items: center; justify-content: center;">
             <div class="col-md-6 col-sm-6">
-                @using (Html.BeginForm("SignIn","Login",FormMethod.Post))
+                @using (Html.BeginForm("SignIn", "Login", FormMethod.Post))
                 {
-                <div class="create-account-form">
+                    <div class="create-account-form">
 
 
-                    @Html.AntiForgeryToken()
-                    <h2 class="heading-title">
-                        Bạn đã có tài khoản ?
-                    </h2>
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <p class="form-row">
-                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "", @style = "outline: none", @type = "email", @placeholder = "Địa chỉ email" } })
-                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
-                    </p>
+                        @Html.AntiForgeryToken()
+                        <h2 class="heading-title">
+                            Bạn đã có tài khoản ?
+                        </h2>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <p class="form-row">
+                            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "", @style = "outline: none", @type = "email", @placeholder = "Địa chỉ email" } })
+                            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                        </p>
 
-                    <p class="form-row">
-                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "", @style = "outline: none", @type = "password", @placeholder = "Mật khẩu" } })
-                        @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-                    </p>
+                        <p class="form-row">
+                            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "", @style = "outline: none", @type = "password", @placeholder = "Mật khẩu" } })
+                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                        </p>
 
-                    @if (@ViewBag.Message != null)
-                    {
-                        <div style="color: red">
-                            @ViewBag.Message
+                        @if (@ViewBag.Message != null)
+                        {
+                            <div style="color: red">
+                                @ViewBag.Message
+                            </div>
+                        }
+
+                        <p class="lost-password form-group">
+                            <a href="#" id="btn-forgot" rel="nofollow">Quên mật khẩu ?</a>
+                        </p>
+
+                        <div class="submit">
+                            <button name="submitcreate"
+                                    id="submitcreate"
+                                    type="submit"
+                                    class="btn-default">
+                                <span>
+                                    <i class="fa fa-user left"></i>
+                                    Đăng nhập
+                                </span>
+                            </button>
                         </div>
-                    }
 
-                    <p class="lost-password form-group">
-                        <a href="#" rel="nofollow">Quên mật khẩu ?</a>
-                    </p>
-
-                    <div class="submit">
-                        <button name="submitcreate"
-                                id="submitcreate"
-                                type="submit"
-                                class="btn-default">
-                            <span>
-                                <i class="fa fa-user left"></i>
-                                Đăng nhập
-                            </span>
-                        </button>
                     </div>
-
-                </div>
                 }
 
                 <!--<form action="" class="create-account-form" method="post">
@@ -111,3 +113,70 @@
     </div>
 </div>
 <!-- Loging Area End -->
+<!-- Modal for forgotpassword-->
+<div id="modal-forgotpassword" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: -1 ">
+    <div class="modal animate__animated animate__fadeInDown" id="forgot-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="display:flex; justify-content:center; margin: 150px auto">
+            <div class="modal-content" style="width:30vw">
+                <div class="modal-header">
+                    <button type="button"
+                            class="close"
+                            id="close_modal"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 style="text-align:center; margin-bottom: 15px">
+                        Nhập địa chỉ email khôi phục.
+                    </h4>
+                    <p class="form-row" style="margin:0px; margin-bottom:15px">
+                        <input style="outline: none; background: rgba(0, 0, 0, 0) none repeat scroll 0 0; border: 1px solid #bbbbbb;"
+                               type="email"
+                               name="email"
+                               id="input-forgotPassword"
+                               placeholder="Địa chỉ email khôi phục" />
+                    </p>
+                </div>
+                <div class="modal-footer" style="display:flex;justify-content:center;align-items:center">
+                    <a id="a-close" style="display:flex;justify-content:center;align-items:center" class="btn btn-default" href="#">
+                        Xác nhận
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Modal for forgotpassword-->
+<!-- Modal for message-->
+<div id="modal-mess"></div>
+<!-- Modal for message-->
+<script>
+    var signIn = $("#forgot-modal");
+    $("#btn-forgot").on('click', function () {
+        $("#modal-forgotpassword").css({
+            "z-index": "9", "background": "#000000ba"
+        })
+        signIn.css({ "display": "block" });
+    });
+    $("#close_modal").on('click', function () {
+        $("#modal-forgotpassword").css({
+            "z-index": "-1", "background": "transparent"
+        })
+        signIn.css({ "display": "none" });
+    });
+    $("#a-close").on('click', function () {
+        $("#modal-forgotpassword").css({
+            "z-index": "-1", "background": "transparent"
+        })
+        signIn.css({ "display": "none" });
+    });
+    $("#mess").on('click', function () {
+        $("#mess").css({ "display": "none" });
+    });
+    $("#close_modal_mess").on('click', function () {
+        $("#mess").css({ "display": "none" });
+    });
+</script>

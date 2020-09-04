@@ -228,6 +228,7 @@ E:\Java\dotnet\Project\BookStore\BookStore\bin\PagedList.dll
 E:\Java\dotnet\Project\BookStore\BookStore\bin\PagedList.Mvc.dll
 E:\Java\dotnet\Project\BookStore\BookStore\bin\PagedList.xml
 E:\Java\dotnet\Project\BookStore\BookStore\bin\PagedList.Mvc.xml
+<<<<<<< HEAD
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\bin\BookStore.dll.config
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\bin\BookStore.dll
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\bin\BookStore.pdb
@@ -343,3 +344,13 @@ F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\obj\Debug\BookStore.csproj
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\obj\Debug\BookStore.csproj.CopyComplete
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\obj\Debug\BookStore.dll
 F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\obj\Debug\BookStore.pdb
+=======
+E:\Java\dotnet\Project\BookStore\BookStore\bin\Common.dll
+E:\Java\dotnet\Project\BookStore\BookStore\bin\Common.pdb
+C:\Users\DuongTai\Desktop\Project\BookStore\bin\Common.dll
+C:\Users\DuongTai\Desktop\Project\BookStore\bin\Common.pdb
+>>>>>>> 40d7d4dc05863d37237791acd6e6f60cfae763ec
+F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\bin\Common.dll
+F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\bin\Common.pdb
+F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\bin\CKFinder.dll
+F:\NAM3_KY2\Net\08_08_Net_Prj\ProjectDOTNET\BookStore\bin\CKFinder.pdb

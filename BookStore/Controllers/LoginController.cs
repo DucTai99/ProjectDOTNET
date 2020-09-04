@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using Common;
+using System.Net.Mail;
+using System.Net;
 
 namespace BookStore.Controllers
 {
@@ -79,5 +83,45 @@ namespace BookStore.Controllers
             return View();
         }
 
+        public ActionResult ForgotPassword(string email)
+        {
+            UserDao userDao = new UserDao();
+            string newPassword = userDao.randomPassword();
+            if (userDao.updatePasswordRandom(email,newPassword))
+            {
+                //string content = System.IO.File.ReadAllText(Server.MapPath("~/Assets/Client/template/sendnewpassword.html"));
+                //content = content.Replace("{{Password}}", newPassword);
+                //new MailHelper().sendMail(email, "Thay đổi mật khẩu", content);
+                
+                try
+                {
+                    MailMessage mail = new MailMessage();
+                    mail.To.Add(email);
+                    mail.From = new MailAddress("emailhoctap99@gmail.com");
+                    mail.Subject = "Lấy lại mật khẩu";
+                    string Body = "Mật khẩu mới của ban là : " + newPassword;
+                    mail.Body = Body;
+                    mail.IsBodyHtml = true;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.Port = 587;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential("emailhoctap99@gmail.com", "sinhvienvuotkho");
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+
+                    ViewBag.message = "Đã gửi về email";
+                } catch (Exception)
+                {
+                    ViewBag.message = "Lỗi trong viêc gửi gmail";
+                }
+            }
+            else
+            {
+                ViewBag.message = "Email không tồn tại";
+            }
+            return PartialView();
+        }
+            
     }
 }

@@ -30,10 +30,13 @@ namespace Model.DAO
         {
             return db.saches.Where(book => book.maSach == id).FirstOrDefault();
         }
-
         public IEnumerable<sach> getAllBookSale()
         {
             return db.saches.Where(book => book.khuyenMai > 0).OrderByDescending(book => book.khuyenMai);
+        }
+        public IEnumerable<sach> getAllBookSaleWithPaging(int pageNum, int pageSize)
+        {
+            return db.saches.Where(book => book.khuyenMai > 0).OrderByDescending(book => book.khuyenMai).ToPagedList(pageNum, pageSize);
         }
 
         public IEnumerable<sach> listAllBookWithPaging(int pageNum, int pageSize)
@@ -83,5 +86,23 @@ namespace Model.DAO
         {
             return db.saches.OrderByDescending(book => book.ngayXuatBan).Take(12).ToList();
         }
+
+        public List<sach> updateBook(int id, string hinhAnh, string moTa, string tenSach, string tenTacGia, int soLuong, DateTime ngayXuatBan, int khuyenMai, decimal gia)
+        {
+            sach book = getBookWithID(id);
+            book.hinhAnh = hinhAnh;
+            book.moTa = moTa;
+            book.gia = gia;
+            book.khuyenMai = khuyenMai;
+
+            book.ngayXuatBan = ngayXuatBan;
+            book.soLuong = soLuong;
+            book.tenTacGia = tenTacGia;
+            book.tenSach = tenSach;
+            db.SaveChanges();
+            return db.saches.ToList()
+             ;
+        }
+
     }
 }

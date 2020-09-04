@@ -105,7 +105,6 @@
                             <div class="quantity-product" style="width: 20%;">
                                 <span class="pull-left" id="quantity-wanted-p">
                                     <span class="dec qtybutton" data-id="@item.book.maSach">-</span>
-                                    <!-- <p style="display: none"><%=cart.gioHang.get(i).getMaSach()%></p> -->
                                     <input type="text" value="@item.quantity" class="cart-plus-minus-box" />
                                     <span class="inc qtybutton" data-id="@item.book.maSach">+</span>
                                 </span>
@@ -115,7 +114,7 @@
                     <div class="shopingcart-bottom-area" style="margin-bottom: 30px;">
                         <a class="left-shoping-cart" href="@Url.Action("Index","Shop")">Tiếp tục mua sắm</a>
                         <div class="shopingcart-bottom-area pull-right">
-                            <a class="right-shoping-cart" href="#">Xóa tất cả sản phẩm</a>
+                            <a class="right-shoping-cart delete-all-book-cart" href="#">Xóa tất cả sản phẩm</a>
                         </div>
                     </div>
                 }

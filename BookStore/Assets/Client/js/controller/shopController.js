@@ -132,7 +132,7 @@ var book = {
             })
         });
 
-        $(".right-shoping-cart").on('click', function (event) {
+        $(".delete-all-book-cart").on('click', function (event) {
             event.preventDefault();
             var topBody = $('#topBody');
             $.ajax({
@@ -215,7 +215,7 @@ var book = {
                     url: "/Shop/addComment",
                     data: {
                         "idBook": idBook,
-                        "content" : content,
+                        "content": content,
                     },
                     success: function (response) {
                         $("#CommentArea").html('');
@@ -254,6 +254,34 @@ var book = {
             })
         });
 
+        $('.delete-book-wishList').on('click', function (event) {
+            event.preventDefault();
+            var idBook = $(this).data('id');
+            $.ajax({
+                type: "POST",
+                url: "/WishList/removeBookFromWishList",
+                data: {
+                    "idBook": idBook
+                },
+                success: function (response) {
+                    $("#content-wishlist").html('');
+                    $("#content-wishlist").html(response);
+                }
+            })
+        });
+
+        $(".delete-all-book-wishList").on('click', function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/WishList/removeAllBookFormWishList",
+                success: function (response) {
+                    $("#content-wishlist").html('');
+                    $("#content-wishlist").html(response);
+                }
+            })
+        });
+
         $("#changePass").on('click', function (event) {
             event.preventDefault();
             var currentPass = $('#current-pass');
@@ -270,15 +298,15 @@ var book = {
                 cfPass.val("");
             }
             else {
-                 $.ajax({
+                $.ajax({
                     type: "POST",
-                     url: "/Account/changePassWord",
+                    url: "/Account/changePassWord",
                     data: {
                         "currentPass": currentPass.val(),
                         "newPass": newPass.val()
                     },
-                     success: function (response) {
-                         console.log(response);
+                    success: function (response) {
+                        console.log(response);
                         if (response.error == "CurrentPassWordWrong") {
                             $('#errorWrongNewPass').text("Nhâp mât khẩu hiên tai sai ");
                             $('#errorWrongNewPass').show();
@@ -301,6 +329,70 @@ var book = {
                     }
                 })
             }
+        });
+
+        $("#submit-checkout").on('click', function (event) {
+            event.preventDefault();
+            var name = $("#collapseOne").find('input:text')[0].value + " " + $("#collapseOne").find('input:text')[1].value;
+            var address = $("#collapseOne").find('input:text')[2].value;
+            var phone = $("#collapseOne").find('input:text')[4].value;
+            var detail = $("#checkout-mess").val();
+            var payment = $("input[name = 'payment[method]']:checked").val();
+            if (address == "" || phone == "") {
+                $("#error-content").text("Vui lòng nhập thông tin địa chỉ");
+                var signIn = $("#error-modal");
+                signIn.css({ "display": "block" });
+                signIn.on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $("#close_modal").on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+            }
+            if (payment == null) {
+                $("#error-content").text("Vui lòng chọn phương thức thanh toán");
+                var signIn = $("#error-modal");
+                signIn.css({ "display": "block" });
+                signIn.on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $("#close_modal").on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+            }
+            if (address != "" || phone != "" && payment != null) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Cart/checkOutDone",
+                    data: {
+                        "payment": payment,
+                        "detail": detail,
+                        "address": address,
+                        "name": name,
+                        "phoneNumber": phone,
+                    },
+                    success: function (response) {
+                        $("#quickview-modal-checkout").html('');
+                        $("#quickview-modal-checkout").html(response);
+                    }
+                })
+            }
+        });
+
+        $("#a-close").on('click', function (event) {
+            event.preventDefault();
+            var email = $("#input-forgotPassword").val();
+            $.ajax({
+                type: "POST",
+                url: "/Login/ForgotPassword",
+                data: {
+                    "email": email
+                },
+                success: function (response) {
+                    $("#modal-mess").html('');
+                    $("#modal-mess").html(response);
+                }
+            })
         });
     }
 }

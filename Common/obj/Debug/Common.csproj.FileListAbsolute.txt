@@ -1,0 +1,12 @@
+E:\Java\dotnet\Project\BookStore\Common\bin\Debug\Common.dll
+E:\Java\dotnet\Project\BookStore\Common\bin\Debug\Common.pdb
+E:\Java\dotnet\Project\BookStore\Common\obj\Debug\Common.csprojAssemblyReference.cache
+E:\Java\dotnet\Project\BookStore\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+E:\Java\dotnet\Project\BookStore\Common\obj\Debug\Common.dll
+E:\Java\dotnet\Project\BookStore\Common\obj\Debug\Common.pdb
+C:\Users\DuongTai\Desktop\Project\Common\bin\Debug\Common.dll
+C:\Users\DuongTai\Desktop\Project\Common\bin\Debug\Common.pdb
+C:\Users\DuongTai\Desktop\Project\Common\obj\Debug\Common.csprojAssemblyReference.cache
+C:\Users\DuongTai\Desktop\Project\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\Users\DuongTai\Desktop\Project\Common\obj\Debug\Common.dll
+C:\Users\DuongTai\Desktop\Project\Common\obj\Debug\Common.pdb

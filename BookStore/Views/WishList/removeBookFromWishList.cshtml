@@ -1,0 +1,93 @@
+﻿@using Model.EF;
+@using System.Globalization;
+@{
+    List<wishlist> wishList = ViewBag.wishList;
+}
+
+@if (wishList.Count != 0)
+{
+    foreach (wishlist item in wishList)
+    {
+        <div class="product">
+            @if (item.sach.khuyenMai > 0)
+            {
+                <div class="img-product" style="position: relative; margin-right: 20px;">
+                    <img src="@item.sach.hinhAnh" alt="" />
+                    <div style="width: 20%; z-index: 999;position: absolute;top: 0;right: 0;">
+                        <img src="~/Assets/Client/img/sale.png" alt="" />
+                        <p style="font-size: 10px;color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            @item.sach.khuyenMai%
+                        </p>
+                    </div>
+                </div>
+            }
+            @if (item.sach.khuyenMai == 0)
+            {
+                <div class="img-product" style="margin-right: 20px">
+                    <img src="@item.sach.hinhAnh" alt="">
+                </div>
+            }
+
+            <div class="title-product">
+                <h4><a href="@Url.Action("SingleProduct", "Shop", new {id = item.sach.maSach})">@item.sach.tenSach</a></h4>
+                @if (item.sach.khuyenMai > 0)
+                {
+                    <p>
+                        @{var newPrice = (item.sach.gia * 1000) - (item.sach.gia * 1000 * item.sach.khuyenMai / 100);}
+                        @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.sach.gia * 1000)đ
+                        <span style="color: black;" class="old-price">@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ</span>
+                    </p>
+                }
+                @if (item.sach.khuyenMai == 0)
+                {
+                    <p>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.sach.gia * 1000)đ</p>
+                }
+                <a href="#" class="delete-book-wishList" data-id="@item.sach.maSach"><i class="flaticon-delete"></i></a>
+            </div>
+        </div>
+    }
+}
+@if (wishList.Count == 0)
+{
+    <div class="product" style="justify-content:center;align-items:center; padding: 20px">
+        <h3 style="margin:0">Hiện chưa có sản phẩm</h3>
+    </div>
+}
+<div class="shopingcart-bottom-area">
+    <a class="left-shoping-cart" href="@Url.Action("Index","Shop")">Tiếp tục mua sắm</a>
+    @if (wishList.Count != 0)
+    {
+        <div class="shopingcart-bottom-area pull-right">
+            <a class="right-shoping-cart delete-all-book-wishList" href="#">Xóa tất cả sản phẩm</a>
+        </div>
+    }
+</div>
+<script>
+    $('.delete-book-wishList').on('click', function (event) {
+        event.preventDefault();
+        var idBook = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "/WishList/removeBookFromWishList",
+            data: {
+                "idBook": idBook
+            },
+            success: function (response) {
+                $("#content-wishlist").html('');
+                $("#content-wishlist").html(response);
+            }
+        })
+    });
+
+    $(".delete-all-book-wishList").on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/WishList/removeAllBookFormWishList",
+            success: function (response) {
+                $("#content-wishlist").html('');
+                $("#content-wishlist").html(response);
+            }
+        })
+    });
+</script>

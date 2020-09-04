@@ -1,7 +1,10 @@
-﻿
+﻿@using Model.EF;
+@using System.Globalization;
+@using Model.DAO;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<bill> listBill = ViewBag.listBill;
 }
 @section jsFooter{
     <script src="~/Assets/Client/js/controller/shopController.js"></script>
@@ -209,7 +212,7 @@
                                                    placeholder="Nhập lại mật khẩu mới" />
                                         </p>
                                         <p class="form-row" hidden id="errorWrongNewPass" style="color: red">
-                                            Mât khẩu nhâp lai bi sai
+                                            Mât khẩu nhập lại bị sai
                                         </p>
                                         <div class="checkbox">
                                             <label>
@@ -259,94 +262,142 @@
                                             khoản của bạn được tạo.
                                         </p>
                                         <div class="order-history">
-                                            <p class="alert">Bạn chưa có đơn hàng nào.</p>
-                                            <!-- <%for (int i = 0; i < listBill.size(); i++) {%>
-                                                              <table id="dataTable"
-                                                                     class="table table-bordered table-condensed table-hover table-striped dataTable no-footer"
-                                                                     role="grid" aria-describedby="dataTable_info">
-                                                                  <thead>
-                                                                  <tr role="row">
-                                                                      <th class="sorting_asc" tabindex="0" aria-controls="dataTable"
-                                                                          rowspan="1" colspan="1" aria-sort="ascending"
-                                                                          aria-label="ID: activate to sort column descending"
-                                                                          style="width: 135px;">
-                                                                          Id Bill
-                                                                      </th>
-                                                                      <th class="sorting_asc" tabindex="0" aria-controls="dataTable"
-                                                                          rowspan="1" colspan="1" aria-sort="ascending"
-                                                                          aria-label="ID: activate to sort column descending"
-                                                                          style="width: 548px;">
-                                                                          Tên sách
-                                                                      </th>
-                                                                      <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                                                          rowspan="1" colspan="1"
-                                                                          aria-label="Email: activate to sort column ascending"
-                                                                          style="width:223px;">
-                                                                          Số lượng
-                                                                      </th>
-                                                                      <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                                                          rowspan="1" colspan="1"
-                                                                          aria-label="Email: activate to sort column ascending"
-                                                                          style="width: 462px;">
-                                                                          Giá
-                                                                      </th>
-                                                                  </tr>
-                                                                  </thead>
-                                                                  <tbody>
-                                                                  <%
-                                                                      ArrayList<Sach> listSach = listBill.get(i).getListSach();
-                                                                      for (int j = 0; j < listSach.size(); j++) {
-                                                                          String str = " ";
-                                                                          if (j == 0) {
-                                                                              str = listBill.get(i).getId() + "";
-                                                                          }
-                                                                  %>
-                                                                  <tr role="row" class="odd">
-                                                                      <td class="sorting_1"><%=str%>
-                                                                      </td>
-                                                                      <td class="sorting_1"><%=listSach.get(j).getTenSach()%>
-                                                                      </td>
-                                                                      <td><%=listSach.get(j).getSoLuongMua()%>
-                                                                      </td>
-                                                                      <td><%=listSach.get(j).getGia()%>.000đ
-                                                                      </td>
-                                                                  </tr>
-                                                                  <%}%>
-                                                                  </tbody>
-                                                              </table>
-                                                              <div class="progress" style="width: 85%; margin: auto;">
-                                                                  <div
-                                                                          class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
-                                                                          role="progressbar"
-                                                                          aria-valuenow="75"
-                                                                          aria-valuemin="0"
-                                                                          aria-valuemax="100"
-                                                                          <%if (listBill.get(i).getTinhTrangBill() == 1) {%>
-                                                                          style="width: 10%"
-                                                                          <%} else if (listBill.get(i).getTinhTrangBill() == 2) {%>
-                                                                          style="width: 25%"
-                                                                          <%} else if (listBill.get(i).getTinhTrangBill() == 3) {%>
-                                                                          style="width: 50%"
-                                                                          <%} else if (listBill.get(i).getTinhTrangBill() == 4) {%>
-                                                                          style="width: 75%"
-                                                                          <%} else if (listBill.get(i).getTinhTrangBill() == 5) {%>
-                                                                          style="width: 100%"
-                                                                          <%}%>
+                                            @if (listBill.Count == 0)
+                                            {
+                                                <p class="alert">Bạn chưa có đơn hàng nào.</p>
 
-                                                                  ></div>
-                                                              </div>
-                                                              <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px; text-align: center; width: 100%; margin: auto;">
-                                                                  <p style="background-color: transparent; color: black">Đặt hàng thành
-                                                                      công</p>
-                                                                  <p style="background-color: transparent; color: black">Đang lấy hàng</p>
-                                                                  <p style="background-color: transparent; color: black">Đóng gói xong</p>
-                                                                  <p style="background-color: transparent; color: black">Bàn giao vận
-                                                                      chuyển</p>
-                                                                  <p style="background-color: transparent; color: black">Giao hàng thành
-                                                                      công</p>
-                                                              </div>
-                                                              <p>Tổng: <%=listBill.get(i).total()%>.000đ</p>
-                                                              <%}%> -->
+                                            }
+                                            @if (listBill.Count != 0)
+                                            {
+                                                foreach (var bill in listBill)
+                                                {
+                                                    <table id="dataTable"
+                                                           class="table table-bordered table-condensed table-hover table-striped dataTable no-footer"
+                                                           role="grid" aria-describedby="dataTable_info">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th class="sorting_asc" tabindex="0" aria-controls="dataTable"
+                                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                                    aria-label="ID: activate to sort column descending"
+                                                                    style="width: 135px;">
+                                                                    Id Bill
+                                                                </th>
+                                                                <th class="sorting_asc" tabindex="0" aria-controls="dataTable"
+                                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                                    aria-label="ID: activate to sort column descending"
+                                                                    style="width: 548px;">
+                                                                    Tên sách
+                                                                </th>
+                                                                <th class="sorting" tabindex="0" aria-controls="dataTable"
+                                                                    rowspan="1" colspan="1"
+                                                                    aria-label="Email: activate to sort column ascending"
+                                                                    style="width:223px;">
+                                                                    Số lượng
+                                                                </th>
+                                                                <th class="sorting" tabindex="0" aria-controls="dataTable"
+                                                                    rowspan="1" colspan="1"
+                                                                    aria-label="Email: activate to sort column ascending"
+                                                                    style="width: 462px;">
+                                                                    Giá
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                var temp = 0;
+                                                            }
+                                                            @foreach (var item in bill.billcontainsaches)
+                                                            {
+                                                                var str = "";
+                                                                if (temp == 0)
+                                                                {
+                                                                    str = bill.idBill.ToString();
+                                                                }
+                                                                <tr role="row" class="odd">
+                                                                    <td class="sorting_1">
+                                                                        @str
+                                                                    </td>
+                                                                    @{
+                                                                        ++temp;
+                                                                    }
+                                                                    <td class="sorting_1">
+                                                                        @item.sach.tenSach
+                                                                    </td>
+                                                                    <td>
+                                                                        @item.quantity
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (item.sach.khuyenMai > 0)
+                                                                        {
+                                                                            var newPrice = (item.sach.gia * 1000) - (item.sach.gia * 1000 * item.sach.khuyenMai / 100);
+                                                                            <p style="background: transparent; color: #444444; padding: 0px">
+                                                                                @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", newPrice)đ
+
+                                                                            </p>
+                                                                        }
+                                                                        @if (item.sach.khuyenMai == 0)
+                                                                        {
+                                                                            <p style="background: transparent; color: #444444; padding: 0px">
+                                                                                @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", item.sach.gia * 1000)đ
+
+                                                                            </p>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="progress" style="width: 85%; margin: auto;">
+                                                        @{
+                                                            var width = "10%";
+                                                            if (bill.tinhTrangDonHang == 1)
+                                                            {
+                                                                width = "10%";
+                                                            }
+                                                            if (bill.tinhTrangDonHang == 2)
+                                                            {
+                                                                width = "25%";
+                                                            }
+                                                            if (bill.tinhTrangDonHang == 3)
+                                                            {
+                                                                width = "50%";
+                                                            }
+                                                            if (bill.tinhTrangDonHang == 4)
+                                                            {
+                                                                width = "75%";
+                                                            }
+                                                            if (bill.tinhTrangDonHang == 5)
+                                                            {
+                                                                width = "100%";
+                                                            }
+                                                        }
+                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                                             role="progressbar"
+                                                             aria-valuenow="75"
+                                                             aria-valuemin="0"
+                                                             aria-valuemax="100"
+                                                             style="width : @width">
+                                                        </div>
+                                                    </div>
+                                                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px; text-align: center; width: 100%; margin: auto;">
+                                                        <p style="background-color: transparent; color: black">
+                                                            Đặt hàng thành
+                                                            công
+                                                        </p>
+                                                        <p style="background-color: transparent; color: black">Đang lấy hàng</p>
+                                                        <p style="background-color: transparent; color: black">Đóng gói xong</p>
+                                                        <p style="background-color: transparent; color: black">
+                                                            Bàn giao vận
+                                                            chuyển
+                                                        </p>
+                                                        <p style="background-color: transparent; color: black">
+                                                            Giao hàng thành
+                                                            công
+                                                        </p>
+                                                    </div>
+                                                    <p>Tổng:  @String.Format(CultureInfo.InvariantCulture, "{0:#,#}", bill.total * 1000)đ</p>
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -359,7 +410,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a href="#">
+                                    <a href="" @Url.Action("Index", "WishList") ">
                                         <i class="fa fa-heart"></i>
                                         <span>Danh sách yêu thích của tôi</span>
                                     </a>
@@ -369,7 +420,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a href="cart.html">
+                                    <a href="@Url.Action("Index", "Cart")">
                                         <i class="flaticon-shop"></i>
                                         <span>Giỏ hàng của tôi</span>
                                     </a>
@@ -383,7 +434,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="create-account-button pull-left">
-                    <a href="../Home/Index" class="btn button button-small" title="Home">
+                    <a href="@Url.Action("Index", "Home")" class="btn button button-small" title="Home">
                         <span>
                             <i class="fa fa-chevron-left"></i>
                             Trở về

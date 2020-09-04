@@ -7,6 +7,8 @@
 
 @section jsFooter{
     <script src="~/Assets/Client/js/controller/shopController.js"></script>
+    <script src="~/Assets/Admin/js/plugins/ckeditor/ckeditor.js"></script>
+    <script src="~/Assets/Admin/js/plugins/ckfinder/ckfinder.js"></script>
 }
 
 <!-- Breadcrumbs Area Start -->
@@ -175,7 +177,8 @@
                     <div class="clearfix"></div>
                     <div class="tab-content review">
                         <div role="tabpanel" class="tab-pane active" id="more-info">
-                            <p>@book.moTa</p>
+                           <p> <textarea class="ckeditor" id="moTa" name="moTa"  rows="3"  readonly
+                                          ><p>@book.moTa</p></textarea></p>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="data">
                             <table class="table-data-sheet">
@@ -210,7 +213,7 @@
                                         {
                                             <label style="display: block;" id="lableUserEmail">NoName</label>
                                         }
-                                        <input type="hidden" id="maSach" style="display : none" value="@book.maSach"/>
+                                        <input type="hidden" id="maSach" style="display : none" value="@book.maSach" />
                                         <input type="text"
                                                placeholder="Thêm bình luận ...."
                                                id="commentText" />
@@ -341,7 +344,6 @@
     </div>
 </div>
 <!-- Related Product Area End -->
-
 <!--Quickview Product Start -->
 <div id="quickview-wrapper">
     @foreach (var relatedBook in listBook)
