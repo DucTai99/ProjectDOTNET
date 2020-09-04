@@ -10,3 +10,9 @@ C:\Users\DuongTai\Desktop\Project\Common\obj\Debug\Common.csprojAssemblyReferenc
 C:\Users\DuongTai\Desktop\Project\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
 C:\Users\DuongTai\Desktop\Project\Common\obj\Debug\Common.dll
 C:\Users\DuongTai\Desktop\Project\Common\obj\Debug\Common.pdb
+C:\Users\DuongTai\Desktop\asp.net\ProjectDOTNET\Common\bin\Debug\Common.dll
+C:\Users\DuongTai\Desktop\asp.net\ProjectDOTNET\Common\bin\Debug\Common.pdb
+C:\Users\DuongTai\Desktop\asp.net\ProjectDOTNET\Common\obj\Debug\Common.csprojAssemblyReference.cache
+C:\Users\DuongTai\Desktop\asp.net\ProjectDOTNET\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\Users\DuongTai\Desktop\asp.net\ProjectDOTNET\Common\obj\Debug\Common.dll
+C:\Users\DuongTai\Desktop\asp.net\ProjectDOTNET\Common\obj\Debug\Common.pdb

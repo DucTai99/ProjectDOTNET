@@ -1,0 +1,48 @@
+﻿@using Model.EF;
+@using System.Globalization;
+@{
+    List<sach> listBook = ViewBag.listBook;
+}
+<div class="card-header"><i class="fas fa-table mr-1"></i>DataTable Example</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Mã sách</th>
+                    <th>Tên sách</th>
+                    <th>Loai sách</th>
+                    <th>Số lương</th>
+                    <th>Đơn giá</th>
+                    <th>khuyến mãi</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Mã sách</th>
+                    <th>Tên sách</th>
+                    <th>Loai sách</th>
+                    <th>Số lương</th>
+                    <th>Đơn giá</th>
+                    <th>khuyến mãi</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (sach book in listBook)
+                {
+                    <tr>
+                        <td>@book.maSach</td>
+                        <td><a href="#bookDetail" class="book" name="bookDetail" data-id="@book.maSach">@book.tenSach</a></td>
+                        <td>@book.theloaisach.tenTheLoai</td>
+                        <td>@book.soLuong</td>
+                        <td>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ</td>
+                        <td>@book.khuyenMai%</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/Assets/Admin/assets/demo/datatables-demo.js"></script>
+<script src="~/Assets/Admin/js/AjaxController.js"></script>

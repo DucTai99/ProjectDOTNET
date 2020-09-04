@@ -5,7 +5,6 @@
     registerEvents: function () {
         $('.book').off('click').on('click', function (event) {
             event.preventDefault();
-            $('#body').scrollTop(100);
 
             var idBook = $(this).data('id');
             var bookDetail = $("#bookDetail");

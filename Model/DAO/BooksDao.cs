@@ -27,6 +27,32 @@ namespace Model.DAO
         public sach getBookWithID(int id) {
             return db.saches.Where(book => book.maSach == id).FirstOrDefault();
         }
+
+        public bool removeBook(int id)
+        {
+            sach book = getBookWithID(id);
+            if (book != null)
+            {
+                db.saches.Remove(book);
+                db.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public void updateBook(int idBook, string inputBookName, int inputCategory, string inputAuthor, string areaDescription, string imageBook, int inputPrice, int inputQuantity, int inputSale)
+        {
+            sach book = getBookWithID(idBook);
+            book.tenSach = inputBookName;
+            book.loaiSach = inputCategory;
+            book.tenTacGia = inputAuthor;
+            book.moTa = areaDescription;
+            book.hinhAnh = imageBook;
+            book.gia = inputPrice;
+            book.soLuong = inputQuantity;
+            book.khuyenMai = inputSale;
+            db.SaveChanges();
+        }
         public IEnumerable<sach> getAllBookSale()
         {
             return db.saches.Where(book => book.khuyenMai > 0).OrderByDescending(book => book.khuyenMai);

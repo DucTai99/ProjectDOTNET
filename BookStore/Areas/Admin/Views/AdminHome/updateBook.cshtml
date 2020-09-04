@@ -1,0 +1,233 @@
+﻿@using Model.DAO;
+@using Model.EF;
+@using System.Globalization;
+@{
+    List<sach> listBook = ViewBag.listBook;
+    sach bookChoose = ViewBag.book;
+}
+<h1 class="mt-4">Quản lý sách</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Quản lý sách</li>
+</ol>
+<div class="card mb-4" id="tableChange">
+    <div class="card-header"><i class="fas fa-table mr-1"></i>DataTable Example</div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã sách</th>
+                        <th>Tên sách</th>
+                        <th>Loai sách</th>
+                        <th>Số lương</th>
+                        <th>Đơn giá</th>
+                        <th>khuyến mãi</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Mã sách</th>
+                        <th>Tên sách</th>
+                        <th>Loai sách</th>
+                        <th>Số lương</th>
+                        <th>Đơn giá</th>
+                        <th>khuyến mãi</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (sach book in listBook)
+                    {
+                        <tr>
+                            <td>@book.maSach</td>
+                            <td><a href="#bookDetail" class="book" name="bookDetail" data-id="@book.maSach">@book.tenSach</a></td>
+                            <td>@book.theloaisach.tenTheLoai</td>
+                            <td>@book.soLuong</td>
+                            <td>@String.Format(CultureInfo.InvariantCulture, "{0:#,#}", book.gia * 1000)đ</td>
+                            <td>@book.khuyenMai%</td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<br />
+<hr />
+<div id="bookDetail" style="padding-top: 15px">
+    <h1>Chi tiết sách</h1>
+    <form>
+        <div class="form-row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="inputBookName">Tên sách</label>
+                    <input type="hidden" id="idBook" value="@bookChoose.maSach" />
+                    <input type="text" class="form-control" id="inputBookName" value="@bookChoose.tenSach">
+                </div>
+                <div class="form-group">
+                    <label for="inputCategory">Tên thể loai</label>
+                    <select id="inputCategory" class="form-control">
+                        @{
+                            var listType = new BookTypeDao().getAllType();
+                        }
+                        @foreach (var type in listType)
+                        {
+                            if (type.maTheLoai == bookChoose.loaiSach)
+                            {
+                                <option data-id="@type.maTheLoai" selected>@type.tenTheLoai</option>
+                            }
+                            else
+                            {
+                                <option>@type.tenTheLoai</option>
+
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputAuthor">Tên tác giả</label>
+                    <input type="text" class="form-control" id="inputAuthor" value="@bookChoose.tenTacGia">
+                </div>
+                <div class="form-group">
+                    <label for="areaDescription">Mô tả</label>
+                    <textarea class="form-control" id="areaDescription" rows="3">@bookChoose.moTa</textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group" style="justify-content: center">
+                    <label style="padding-left: 65px">Hình ảnh</label>
+                    <img style="height: 300px;" alt="" src="@bookChoose.hinhAnh" id="imageBook" />
+                    <input style="margin-left: 120px; color: red" type="button" id="changeImage" value="Đổi hình" />
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputPrice">Giá</label>
+                <input type="number" class="form-control" id="inputPrice" value="@bookChoose.gia">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputQuantity">Số lương</label>
+                <input type="number" class="form-control" id="inputQuantity" value="@bookChoose.soLuong">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputSale">khuyến Mãi</label>
+                <input type="number" class="form-control" id="inputSale" value="@bookChoose.khuyenMai">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputDate">Ngày xuất bản</label>
+                <input type="date" class="form-control" id="inputDate" value="@bookChoose.ngayXuatBan">
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="updateBook">Câp nhât</button>
+        <button type="button" class="btn btn-outline-secondary" id="remove">Xóa</button>
+    </form>
+</div>
+<div id="quickview-wrapper">
+    <!-- Modal for error-->
+    <div class="modal animate__animated animate__fadeInDown" id="error-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="display:flex; justify-content:center">
+            <div class="modal-content" style="width:30vw">
+                <div class="modal-header" style="background-color: powderblue">
+                    <button type="button"
+                            class="close"
+                            id="close_modal"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="error-content" style="text-align:center"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for error-->
+</div>
+
+<script>
+    $('#changeImage').on('click', function (e) {
+        e.preventDefault();
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (url) {
+            $('#imageBook').attr('src', url);
+        };
+        finder.popup();
+    });
+    $('#remove').on('click', function (e) {
+        e.preventDefault();
+        var idBook = $('#idBook').val();
+        var table = $('#tableChange');
+        var bookDetail = $('#bookDetail');
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AdminHome/removeBook",
+            data: {
+                "idBook": idBook
+            },
+            success: function (response) {
+                table.html(response);
+                $("#error-content").text("Xóa sản phẩm thành công");
+                var signIn = $("#error-modal");
+                signIn.css({ "display": "block" });
+                signIn.on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $("#close_modal").on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $('html, body').animate({
+                    scrollTop: table.offset().top
+                }, 1000)
+                bookDetail.html('');
+            }
+        })
+    });
+    $('#updateBook').on('click', function (e) {
+        e.preventDefault();
+        var idBook = $('#idBook').val();
+        var inputBookName = $('#inputBookName').val();
+        var inputCategory = $('#inputCategory').find(":selected").text();
+        var inputAuthor = $('#inputAuthor').val();
+        var areaDescription = $('#areaDescription').val();
+        var imageBook = $('#imageBook').attr("src");
+        var inputPrice = $('#inputPrice').val();
+        var inputQuantity = $('#inputQuantity').val();
+        var inputSale = $('#inputSale').val();
+        var changeUpdatHtml = $('#changeUpdatHtml');
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AdminHome/updateBook",
+            data: {
+                "idBook": idBook,
+                "inputBookName": inputBookName,
+                "inputCategory": inputCategory,
+                "inputAuthor": inputAuthor,
+                "areaDescription": areaDescription,
+                "imageBook": imageBook,
+                "inputPrice": inputPrice,
+                "inputQuantity": inputQuantity,
+                "inputSale": inputSale
+            },
+            success: function (response) {
+                changeUpdatHtml.html(response);
+                $("#error-content").text("Câp nhât sản phẩm thành công");
+                var signIn = $("#error-modal");
+                signIn.css({ "display": "block" });
+                signIn.on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $("#close_modal").on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+            }
+        })
+
+    })
+</script>
+<script src="~/Assets/Admin/assets/demo/datatables-demo.js"></script>
+<script src="~/Assets/Admin/js/AjaxController.js"></script>

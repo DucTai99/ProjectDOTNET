@@ -1,4 +1,5 @@
 ﻿@using Model.EF;
+@using Model.DAO;
 @{ 
     sach book = ViewBag.book;
 }
@@ -8,13 +9,27 @@
             <div class="col-md-8">
                 <div class="form-group">
                     <label for="inputBookName">Tên sách</label>
+                    <input type="hidden" id="idBook" value="@book.maSach" />
                     <input type="text" class="form-control" id="inputBookName" value="@book.tenSach">
                 </div>
                 <div class="form-group">
                     <label for="inputCategory">Tên thể loai</label>
                     <select id="inputCategory" class="form-control">
-                        <option selected>@book.theloaisach.tenTheLoai</option>
-                        <option>...</option>
+                        @{
+                            var listType = new BookTypeDao().getAllType();
+                        }
+                        @foreach (var type in listType)
+                        {
+                            if (type.maTheLoai == book.loaiSach)
+                            {
+                                <option data-id="@type.maTheLoai" selected>@type.tenTheLoai</option>
+                            }
+                            else
+                            {
+                                <option data-id="@type.maTheLoai">@type.tenTheLoai</option>
+
+                            }
+                        }
                     </select>
                 </div>
                 <div class="form-group">
@@ -29,8 +44,8 @@
             <div class="col-md-4">
                 <div class="form-group" style="justify-content: center">
                     <label style="padding-left: 65px">Hình ảnh</label>
-                    <img style="height: 300px;" alt="" src="@book.hinhAnh" />
-                    <input style="padding-left: 65px" type="file" class="form-control-file">
+                    <img style="height: 300px;" alt="" src="@book.hinhAnh" id="imageBook"/>
+                    <input style="margin-left: 120px; color: red" type="button" id="changeImage" value="Đổi hình" />
                 </div>
             </div>
         </div>
@@ -55,51 +70,87 @@
                 <input type="date" class="form-control" id="inputDate" value="@book.ngayXuatBan">
             </div>
         </div>
-        <!--
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputEmail4">Email</label>
-                <input type="email" class="form-control" id="inputEmail4">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Password</label>
-                <input type="password" class="form-control" id="inputPassword4">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputAddress">Address</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-        </div>
-        <div class="form-group">
-            <label for="inputAddress2">Address 2</label>
-            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputCity">City</label>
-                <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="form-group col-md-4">
-                <label for="inputState">State</label>
-                <select id="inputState" class="form-control">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="inputZip">Zip</label>
-                <input type="text" class="form-control" id="inputZip">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                    Check me out
-                </label>
-            </div>
-        </div>
-        -->
-        <button type="submit" class="btn btn-primary">Câp nhât</button>
-        <button type="button" class="btn btn-outline-secondary">Xóa</button>
+        <button type="button" class="btn btn-primary" id="updateBook">Câp nhât</button>
+        <button type="button" class="btn btn-outline-secondary" id="remove">Xóa</button>
     </form>
+
+<script>
+    $('#changeImage').on('click', function (e) {
+        e.preventDefault();
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (url) {
+            $('#imageBook').attr('src', url);
+        };
+        finder.popup();
+    });
+    $('#remove').on('click', function (e) {
+        e.preventDefault();
+        var idBook = $('#idBook').val();
+        var table = $('#tableChange');
+        var bookDetail = $('#bookDetail');
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AdminHome/removeBook",
+            data: {
+                "idBook": idBook
+            },
+            success: function (response) {
+                table.html(response);
+                $("#error-content").text("Xóa sản phẩm thành công");
+                var signIn = $("#error-modal");
+                signIn.css({ "display": "block" });
+                signIn.on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $("#close_modal").on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $('html, body').animate({
+                    scrollTop: table.offset().top
+                }, 1000)
+                bookDetail.html('');
+            }
+        })
+    });
+    $('#updateBook').on('click', function (e) {
+        e.preventDefault();
+        var idBook = $('#idBook').val();
+        var inputBookName = $('#inputBookName').val();
+        var inputCategory = $('#inputCategory').find(":selected").data('id');
+        var inputAuthor = $('#inputAuthor').val();
+        var areaDescription = $('#areaDescription').val();
+        var imageBook = $('#imageBook').attr("src");
+        var inputPrice = $('#inputPrice').val();
+        var inputQuantity = $('#inputQuantity').val();
+        var inputSale = $('#inputSale').val();
+        var changeUpdatHtml = $('#changeUpdatHtml');
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AdminHome/updateBook",
+            data: {
+                "idBook": idBook,
+                "inputBookName": inputBookName,
+                "inputCategory": inputCategory,
+                "inputAuthor": inputAuthor,
+                "areaDescription": areaDescription,
+                "imageBook": imageBook,
+                "inputPrice": inputPrice,
+                "inputQuantity": inputQuantity,
+                "inputSale": inputSale
+            },
+            success: function (response) {
+                changeUpdatHtml.html(response);
+                $("#error-content").text("Câp nhât sản phẩm thành công");
+                var signIn = $("#error-modal");
+                signIn.css({ "display": "block" });
+                signIn.on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+                $("#close_modal").on('click', function () {
+                    signIn.css({ "display": "none" });
+                });
+            }
+        })
+
+    })
+</script>

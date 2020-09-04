@@ -29,6 +29,30 @@ namespace BookStore.Areas.Admin.Controllers
             return PartialView();
         }
 
+        [HttpPost]
+        public ActionResult removeBook(int idBook) 
+        {
+            BooksDao bookDao = new BooksDao();
+            bool success = bookDao.removeBook(idBook);
+            //if (!success)
+            //{
+            //    return 
+            //}
+            
+            ViewBag.listBook = bookDao.getAllBook();
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult updateBook(int idBook, string inputBookName, int inputCategory, string inputAuthor, string areaDescription, string imageBook, int inputPrice,int inputQuantity,int inputSale)
+        {
+            BooksDao bookDao = new BooksDao();
+            bookDao.updateBook(idBook,inputBookName,inputCategory,inputAuthor,areaDescription,imageBook,inputPrice,inputQuantity,inputSale);
+            ViewBag.listBook = bookDao.getAllBook();
+            sach book = bookDao.getBookWithID(idBook);
+            ViewBag.book = book;
+            return PartialView();
+        }
         public ActionResult Account()
         {
             ViewBag.listUser = new UserDao().getAllUser();
